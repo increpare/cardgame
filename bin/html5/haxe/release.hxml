@@ -1,0 +1,25 @@
+-main ApplicationMain 
+-cp /usr/local/lib/haxelib/haxegon/0,10,0
+-D haxegon=0.10.0
+--macro openfl._internal.utils.ExtraParams.include()
+-cp /usr/local/lib/haxelib/openfl/6,5,3
+-D openfl=6.5.3
+--macro lime.Lib.extraParams()
+-cp /usr/local/lib/haxelib/lime/5,9,1
+-D lime=5.9.1
+-cp src
+-D tools=5.9.1
+-D howlerjs
+-D no-compilation
+-D lime-opengl
+-D openfl-html5
+-D windowheight=91
+-D startfullscreen=false
+-D lime-html5
+-D windowwidth=69
+-D html5
+-D web
+--remap flash:openfl
+-js bin/html5/bin/superfluous letters.js
+-cp bin/html5/haxe
+-D html5
