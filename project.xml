@@ -3,17 +3,17 @@
   <set name="startfullscreen" value="false" />
   
 	<meta 
-    title="superfluous letters" 
-    package="com.haxegon.redundantletters" 
+    title="Ruestung" 
+    package="com.increpare.ruestung" 
     version="1.0.0" 
-    company="by @increpare + @noa_cubestudio" 
+    company="increpare" 
   />
   
   <app swf-version="17.0" if="flash"/>
 	<app 
       main="haxegon.Load"
       path="bin" 
-      file="superfluous letters" 
+      file="Ruestung" 
    />
 
 	<window
@@ -37,8 +37,8 @@
 	<source path="src" />
 	<haxelib name="haxegon" />
 	<haxelib name="openfl" />
-	<haxedef name="windowwidth" value="69" />
-  <haxedef name="windowheight" value="91" />
+	<haxedef name="windowwidth" value="840" />
+  <haxedef name="windowheight" value="860" />
   <haxedef name="startfullscreen" value="${startfullscreen}" />
 	
   <dependency name="js/recorder.js" />

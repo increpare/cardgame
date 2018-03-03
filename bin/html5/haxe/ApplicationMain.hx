@@ -20,17 +20,17 @@ import haxe.macro.Expr;
 	
 	public static function main () {
 		
-		var projectName = "superfluous letters";
+		var projectName = "Ruestung";
 		
 		var config = {
 			
 			build: "1",
-			company: "by @increpare + @noa_cubestudio",
-			file: "superfluous letters",
+			company: "increpare",
+			file: "Ruestung",
 			fps: 30,
-			name: "superfluous letters",
+			name: "Ruestung",
 			orientation: "landscape",
-			packageName: "com.haxegon.redundantletters",
+			packageName: "com.increpare.ruestung",
 			version: "1.0.0",
 			windows: [
 				
@@ -52,7 +52,7 @@ import haxe.macro.Expr;
 					parameters: {},
 					resizable: true,
 					stencilBuffer: true,
-					title: "superfluous letters",
+					title: "Ruestung",
 					vsync: true,
 					width: null,
 					x: null,
