@@ -34,7 +34,7 @@ class Globals
       language:0,
   };
 
-  public static function S(de:String,en:String){
+  public static function S(de:String,en:String):String{
       if (state.language==0){
           return de;
       } else {

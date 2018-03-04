@@ -9,10 +9,19 @@ class Main {
 	// shows truetype fonts only.
 	
 	
+	
 	function init(){
 		//Truetype fonts look a LOT better when we don't scale the canvas!
 		Gfx.resizescreen(0, 0);
 		Text.font = GUI.font;
+
+		//initial all globals here
+
+		state.language = Save.loadvalue("language");
+		if (state.language==0){
+			state.language=0;//ok does't do much
+		}
+
 	}
 	
 	function drawPairButton(x,y,text1,text2,selection:Int) {
@@ -130,7 +139,7 @@ class Main {
 		Text.wordwrap=w;
 
 		Text.size=GUI.titleTextSize;
-		Text.display(Text.CENTER,h/5,S("Rüstung","Rüstung"), PAL.titelFarbe);
+		Text.display(Text.CENTER,h/5,S("Ruestung","Ruestung"), PAL.titelFarbe);
 
 		if (drawButton( Text.CENTER,Math.round(h/2+80),S("Zu einer Reise aufbrechen","Set off on an Adventure"))){
 			Scene.change(CharacterSelect);
@@ -141,6 +150,7 @@ class Main {
 		S("Englisch","English"),
 		1-state.language)){
 			state.language=1-state.language;
+			Save.savevalue("language",state.language);
 		}
 
 		Text.size=1;

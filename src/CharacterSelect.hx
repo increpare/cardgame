@@ -123,6 +123,7 @@ class CharacterSelect {
 	}
 
 	function update() {	
+	
 		Text.size=GUI.subTitleTextSize;
 		var h = Gfx.screenheight;
 		var w = Gfx.screenwidth;
@@ -134,7 +135,7 @@ class CharacterSelect {
 
 		Text.display(Text.CENTER,GUI.screenPaddingTop,s);	
 
-		for (i in 0...3){
+		for (i in 0...3) {
 	  			var m = (Save.loadvalue("unlocked")) ;
 				m++;
 		}
