@@ -2,16 +2,17 @@ package;
 import haxegon.*;
 import Globals.*;
 
-interface StringPair
+class StringPair
 {
-    public de:String;
-    public en:String; 
-    public new(de:String,en:String){
-        this.de=de;
-        this.en=en;
+    public var de:String;
+    public var en:String; 
+
+    function new(_de:String,_en:String){
+        this.de=_de;
+        this.en=_en;
     }
 
-    public S():String{
+    public function Eval():String{
         return S(de,en);
     }
 }

@@ -1,5 +1,6 @@
 import haxegon.*;
 import Globals.*;
+import haxe.rtti.Meta;
 
 class Main {
 	// These fonts are located in the data/fonts/ directory.
@@ -19,9 +20,23 @@ class Main {
 
 		state.language = Save.loadvalue("language");
 		if (state.language==0){
-			state.language=0;//ok does't do much
+			state.language=0;//ok does't do much			
 		}
-
+		//var r = new klasse.Ritter();
+		//var r = new klasse.Bauer();
+		
+		CompileTime.importPackage("klasse");
+        var klassen = CompileTime.getAllClasses("klasse",klasse.Klasse);
+		for ( k in klassen ) {
+			trace(k);
+			
+			var statics = Meta.getType(k);
+			trace(statics);
+			if (Reflect.hasField(statics,"playable"))
+			{
+				trace("playable :D");
+			}
+		}	
 	}
 	
 	function drawPairButton(x,y,text1,text2,selection:Int) {

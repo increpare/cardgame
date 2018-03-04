@@ -33,6 +33,7 @@
 	<source path="plugins" />
 	<haxelib name="openfl" />
 	<haxelib name="haxegon" />
+	<haxelib name="compiletime" />
 	
   <haxedef name="windowwidth" value="${windowwidth}" />
   <haxedef name="windowheight" value="${windowheight}" />

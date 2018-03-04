@@ -1042,7 +1042,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "truetypefonts";
-	var config = { build : "7", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
+	var config = { build : "8", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -2066,6 +2066,14 @@ List.prototype = {
 			this.q.next = x;
 		}
 		this.q = x;
+		this.length++;
+	}
+	,push: function(item) {
+		var x = new _$List_ListNode(item,this.h);
+		this.h = x;
+		if(this.q == null) {
+			this.q = x;
+		}
 		this.length++;
 	}
 	,pop: function() {
@@ -4340,6 +4348,57 @@ CharacterSelect.prototype = {
 	}
 	,__class__: CharacterSelect
 };
+var CompileTime = function() { };
+$hxClasses["CompileTime"] = CompileTime;
+CompileTime.__name__ = ["CompileTime"];
+var CompileTimeClassList = function() { };
+$hxClasses["CompileTimeClassList"] = CompileTimeClassList;
+CompileTimeClassList.__name__ = ["CompileTimeClassList"];
+CompileTimeClassList.get = function(id) {
+	if(CompileTimeClassList.lists == null) {
+		CompileTimeClassList.initialise();
+	}
+	var _this = CompileTimeClassList.lists;
+	if(__map_reserved[id] != null) {
+		return _this.getReserved(id);
+	} else {
+		return _this.h[id];
+	}
+};
+CompileTimeClassList.getTyped = function(id,type) {
+	return CompileTimeClassList.get(id);
+};
+CompileTimeClassList.initialise = function() {
+	CompileTimeClassList.lists = new haxe_ds_StringMap();
+	var m = haxe_rtti_Meta.getType(CompileTimeClassList);
+	if(m.classLists != null) {
+		var _g = 0;
+		var _g1 = m.classLists;
+		while(_g < _g1.length) {
+			var item = _g1[_g];
+			++_g;
+			var array = item;
+			var listID = array[0];
+			var list = new List();
+			var _g2 = 0;
+			var _g3 = array[1].split(",");
+			while(_g2 < _g3.length) {
+				var typeName = _g3[_g2];
+				++_g2;
+				var type = Type.resolveClass(typeName);
+				if(type != null) {
+					list.push(type);
+				}
+			}
+			var _this = CompileTimeClassList.lists;
+			if(__map_reserved[listID] != null) {
+				_this.setReserved(listID,list);
+			} else {
+				_this.h[listID] = list;
+			}
+		}
+	}
+};
 var EReg = function(r,opt) {
 	this.r = new RegExp(r,opt.split("u").join(""));
 };
@@ -4431,6 +4490,15 @@ EReg.prototype = {
 		return buf_b;
 	}
 	,__class__: EReg
+};
+var Fertigkeit = function() { };
+$hxClasses["Fertigkeit"] = Fertigkeit;
+Fertigkeit.__name__ = ["Fertigkeit"];
+Fertigkeit.prototype = {
+	bild: null
+	,name: null
+	,description: null
+	,__class__: Fertigkeit
 };
 var haxegon_Col = function() { };
 $hxClasses["haxegon.Col"] = haxegon_Col;
@@ -4664,6 +4732,19 @@ Main.prototype = {
 		Globals.state.language = haxegon_Save.loadvalue("language");
 		if(Globals.state.language == 0) {
 			Globals.state.language = 0;
+		}
+		var klassen = CompileTimeClassList.get("klasse,true,klasse.Klasse");
+		var _g_head = klassen.h;
+		while(_g_head != null) {
+			var val = _g_head.item;
+			_g_head = _g_head.next;
+			var k = val;
+			haxe_Log.trace(k,{ fileName : "Main.hx", lineNumber : 31, className : "Main", methodName : "init"});
+			var statics = haxe_rtti_Meta.getType(k);
+			haxe_Log.trace(statics,{ fileName : "Main.hx", lineNumber : 34, className : "Main", methodName : "init"});
+			if(Object.prototype.hasOwnProperty.call(statics,"playable")) {
+				haxe_Log.trace("playable :D",{ fileName : "Main.hx", lineNumber : 37, className : "Main", methodName : "init"});
+			}
 		}
 	}
 	,drawPairButton: function(x,y,text1,text2,selection) {
@@ -5260,6 +5341,20 @@ StringBuf.__name__ = ["StringBuf"];
 StringBuf.prototype = {
 	b: null
 	,__class__: StringBuf
+};
+var StringPair = function(_de,_en) {
+	this.de = _de;
+	this.en = _en;
+};
+$hxClasses["StringPair"] = StringPair;
+StringPair.__name__ = ["StringPair"];
+StringPair.prototype = {
+	de: null
+	,en: null
+	,Eval: function() {
+		return Globals.S(this.de,this.en);
+	}
+	,__class__: StringPair
 };
 var StringTools = function() { };
 $hxClasses["StringTools"] = StringTools;
@@ -7341,6 +7436,20 @@ haxe_io_Path.prototype = {
 	,ext: null
 	,backslash: null
 	,__class__: haxe_io_Path
+};
+var haxe_rtti_Meta = function() { };
+$hxClasses["haxe.rtti.Meta"] = haxe_rtti_Meta;
+haxe_rtti_Meta.__name__ = ["haxe","rtti","Meta"];
+haxe_rtti_Meta.getType = function(t) {
+	var meta = haxe_rtti_Meta.getMeta(t);
+	if(meta == null || meta.obj == null) {
+		return { };
+	} else {
+		return meta.obj;
+	}
+};
+haxe_rtti_Meta.getMeta = function(t) {
+	return t.__meta__;
 };
 var haxe_xml_XmlParserException = function(message,xml,position) {
 	this.xml = xml;
@@ -20321,6 +20430,40 @@ js_html_compat_Uint8Array._subarray = function(start,end) {
 	var a = js_html_compat_Uint8Array._new(this.slice(start,end));
 	a.byteOffset = start;
 	return a;
+};
+var klasse_Klasse = function() { };
+$hxClasses["klasse.Klasse"] = klasse_Klasse;
+klasse_Klasse.__name__ = ["klasse","Klasse"];
+klasse_Klasse.prototype = {
+	bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Klasse
+};
+var klasse_Bauer = function() {
+};
+$hxClasses["klasse.Bauer"] = klasse_Bauer;
+klasse_Bauer.__name__ = ["klasse","Bauer"];
+klasse_Bauer.__interfaces__ = [klasse_Klasse];
+klasse_Bauer.prototype = {
+	bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Bauer
+};
+var klasse_Ritter = function() {
+};
+$hxClasses["klasse.Ritter"] = klasse_Ritter;
+klasse_Ritter.__name__ = ["klasse","Ritter"];
+klasse_Ritter.__interfaces__ = [klasse_Klasse];
+klasse_Ritter.prototype = {
+	bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Ritter
 };
 var lime__$backend_html5_GameDeviceData = function() {
 	this.connected = true;
@@ -44348,7 +44491,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 145781;
+	this.version = 84250;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
@@ -94398,6 +94541,7 @@ openfl_display_DisplayObject.__tempStack = new lime_utils_ObjectPool(function() 
 },function(stack) {
 	stack.data.set_length(0);
 });
+CompileTimeClassList.__meta__ = { obj : { classLists : [["klasse,true,klasse.Klasse","klasse.Bauer,klasse.Ritter"]]}};
 haxegon_Col.BLACK = 0;
 haxegon_Col.GREY = 10329501;
 haxegon_Col.GRAY = 10329501;
@@ -94648,6 +94792,7 @@ haxegon_embeddedassets_DefaultFont.XML_DATA = "\r\n\t\t<font>\r\n\t\t\t<info fac
 js_html_compat_Float32Array.BYTES_PER_ELEMENT = 4;
 js_html_compat_Float64Array.BYTES_PER_ELEMENT = 8;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
+klasse_Ritter.__meta__ = { obj : { playable : null}};
 lime__$backend_html5_HTML5HTTPRequest.activeRequests = 0;
 lime__$backend_html5_HTML5HTTPRequest.requestLimit = 4;
 lime__$backend_html5_HTML5HTTPRequest.requestQueue = new List();

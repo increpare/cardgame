@@ -7,6 +7,8 @@
 --macro openfl._internal.utils.ExtraParams.include()
 -cp /usr/local/lib/haxe/lib/openfl/7,1,2/src
 -D openfl=7.1.2
+-cp /usr/local/lib/haxe/lib/compiletime/2,7,0/src
+-D compiletime=2.7.0
 -cp src
 -cp plugins
 -D tools=6.2.0
