@@ -4,9 +4,8 @@ import klasse.*;
 import fertigkeit.*;
 import utils.*;
 
-class KlasseManager
+class Klassemanager
 {
-
     public static function AlleAufschliessendenKlassen():Array<Class<Klasse> > {     
           
         var ks = CompileTime.getAllClasses(Klasse);
@@ -15,7 +14,8 @@ class KlasseManager
         for ( k in ks ) {           
             var meta = Meta.getType(k);
             if (Reflect.hasField(meta,"spielbar")){
-                if (Save.loadvalue("unlocked_"+Type.getClassName(k))==1){
+                if (Save.loadvalue("aufgeschlossen_"+Type.getClassName(k))==1 || 
+                    Reflect.hasField(meta,"aufgeschlossen")){
                     ergebnis.push(k);
                 }
             }

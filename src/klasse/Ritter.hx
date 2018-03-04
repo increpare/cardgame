@@ -6,6 +6,7 @@ import fertigkeit.*;
 import utils.*;
 
 @spielbar
+@aufgeschlossen
 class Ritter implements Klasse
 {       
     public var bild:String = "ritter";

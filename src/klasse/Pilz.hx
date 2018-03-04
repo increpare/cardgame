@@ -10,7 +10,7 @@ class Pilz implements Klasse
 
     public var spielbar:Bool = true;
     
-    public var bild:String = "ungeheuer";
+    public var bild:String = "pilz";
 
     public var name:StringPair = new StringPair(
         "Pilz",

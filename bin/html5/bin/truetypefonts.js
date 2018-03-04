@@ -1042,7 +1042,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "truetypefonts";
-	var config = { build : "10", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
+	var config = { build : "11", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -4243,111 +4243,6 @@ DocumentClass.__super__ = haxegon_Load;
 DocumentClass.prototype = $extend(haxegon_Load.prototype,{
 	__class__: DocumentClass
 });
-var CharacterSelect = function() { };
-$hxClasses["CharacterSelect"] = CharacterSelect;
-CharacterSelect.__name__ = ["CharacterSelect"];
-CharacterSelect.prototype = {
-	init: function() {
-		haxegon_Gfx.resizescreen(0,0);
-		haxegon_Text.set_font(Globals.GUI.font);
-	}
-	,drawPairButton: function(x,y,text1,text2,selection) {
-		var oldtextsize = haxegon_Text.get_size();
-		haxegon_Text.set_size(Globals.GUI.buttonTextSize);
-		var textcolor = Globals.PAL.buttonTextCol;
-		var color = Globals.PAL.buttonCol;
-		var colorhover = Globals.PAL.buttonHighlightCol;
-		var borderCol = Globals.PAL.buttonBorderCol;
-		var linethickness = Globals.GUI.linethickness;
-		var xpadding = Globals.GUI.buttonPaddingX;
-		var ypadding = Globals.GUI.buttonPaddingY;
-		haxegon_Gfx.set_linethickness(linethickness);
-		var width = 39;
-		var w1 = Math.round(haxegon_Text.width(text1));
-		var w2 = Math.round(haxegon_Text.width(text1));
-		var w = w1 + w2 + xpadding * 2;
-		if(w + 6 >= width) {
-			width = w + 6;
-		}
-		width += xpadding * 2;
-		var height = Math.round(Math.max(haxegon_Text.height(text1),haxegon_Text.height(text2)));
-		if(x == haxegon_Text.CENTER) {
-			x = Math.round(haxegon_Gfx.screenwidthmid - width / 2);
-		}
-		height += ypadding * 2;
-		var dx = haxegon_Mouse.get_x() - x;
-		var dy = haxegon_Mouse.get_y() - y;
-		var collide = !(dx < 0 || dx >= width || dy < 0 || dy >= height);
-		var click = collide && haxegon_Mouse.leftclick();
-		if(collide && !click) {
-			color = colorhover;
-		}
-		haxegon_Gfx.fillbox(x,y,width,height,color);
-		if(selection == 1) {
-			haxegon_Gfx.fillbox(x,y,w1 + 2 * xpadding,height,Globals.PAL.buttonTextCol);
-		} else {
-			haxegon_Gfx.fillbox(x + w1 + 2 * xpadding,y,x + width - (x + w1 + 2 * xpadding),height,Globals.PAL.buttonTextCol);
-		}
-		haxegon_Gfx.drawbox(x,y,width,height,borderCol);
-		haxegon_Text.display(x + xpadding,y + ypadding,text1,selection == 0 ? textcolor : Globals.PAL.buttonCol);
-		haxegon_Text.display(x + xpadding + w1 + xpadding * 2,y + ypadding,text2,selection == 1 ? textcolor : Globals.PAL.buttonCol);
-		haxegon_Text.set_size(oldtextsize);
-		return click;
-	}
-	,drawButton: function(x,y,text) {
-		var oldtextsize = haxegon_Text.get_size();
-		haxegon_Text.set_size(Globals.GUI.buttonTextSize);
-		var textcolor = Globals.PAL.buttonTextCol;
-		var color = Globals.PAL.buttonCol;
-		var colorhover = Globals.PAL.buttonHighlightCol;
-		var borderCol = Globals.PAL.buttonBorderCol;
-		var linethickness = Globals.GUI.linethickness;
-		var xpadding = Globals.GUI.buttonPaddingX;
-		var ypadding = Globals.GUI.buttonPaddingY;
-		haxegon_Gfx.set_linethickness(linethickness);
-		var width = 39;
-		var w = Math.round(haxegon_Text.width(text));
-		if(w + 6 >= width) {
-			width = w + 6;
-		}
-		width += xpadding * 2;
-		var height = Math.round(haxegon_Text.height(text));
-		if(x == haxegon_Text.CENTER) {
-			x = Math.round(haxegon_Gfx.screenwidthmid - width / 2);
-		}
-		height += ypadding * 2;
-		var dx = haxegon_Mouse.get_x() - x;
-		var dy = haxegon_Mouse.get_y() - y;
-		var collide = !(dx < 0 || dx >= width || dy < 0 || dy >= height);
-		var click = collide && haxegon_Mouse.leftclick();
-		if(collide && !click) {
-			color = colorhover;
-		}
-		haxegon_Gfx.fillbox(x,y,width,height,color);
-		haxegon_Gfx.drawbox(x,y,width,height,borderCol);
-		haxegon_Text.display(x + xpadding,y + ypadding,text,textcolor);
-		haxegon_Text.set_size(oldtextsize);
-		return click;
-	}
-	,update: function() {
-		haxegon_Text.set_size(Globals.GUI.subTitleTextSize);
-		var h = haxegon_Gfx.screenheight;
-		var w = haxegon_Gfx.screenwidth;
-		var s = Globals.S("Heldenauswahl","Hero Selection");
-		var th = haxegon_Text.height(s);
-		haxegon_Text.display(haxegon_Text.CENTER,Globals.GUI.screenPaddingTop,s);
-		var _g = 0;
-		while(_g < 3) {
-			var i = _g++;
-			var m = haxegon_Save.loadvalue("unlocked");
-			++m;
-		}
-		haxegon_Gfx.set_linethickness(Globals.GUI.linethickness);
-		var ty = Globals.GUI.screenPaddingTop + th + Globals.GUI.buttonPaddingY;
-		haxegon_Gfx.drawline(0,ty,w,ty,Globals.PAL.buttonBorderCol);
-	}
-	,__class__: CharacterSelect
-};
 var CompileTime = function() { };
 $hxClasses["CompileTime"] = CompileTime;
 CompileTime.__name__ = ["CompileTime"];
@@ -4677,15 +4572,16 @@ var KlasseManager = function() { };
 $hxClasses["KlasseManager"] = KlasseManager;
 KlasseManager.__name__ = ["KlasseManager"];
 KlasseManager.AlleAufschliessendenKlassen = function() {
-	var klassen = CompileTimeClassList.get("null,true,klasse.Klasse");
+	var ks = CompileTimeClassList.get("null,true,klasse.Klasse");
 	var ergebnis = [];
-	var _g_head = klassen.h;
+	var _g_head = ks.h;
 	while(_g_head != null) {
 		var val = _g_head.item;
 		_g_head = _g_head.next;
 		var k = val;
-		if(Object.prototype.hasOwnProperty.call(k,"spielbar")) {
-			if(haxegon_Save.loadvalue("unlocked_" + Std.string(k)) == 1) {
+		var meta = haxe_rtti_Meta.getType(k);
+		if(Object.prototype.hasOwnProperty.call(meta,"spielbar")) {
+			if(haxegon_Save.loadvalue("aufgeschlossen_" + Type.getClassName(k)) == 1 || Object.prototype.hasOwnProperty.call(meta,"aufgeschlossen")) {
 				ergebnis.push(k);
 			}
 		}
@@ -4703,7 +4599,6 @@ KlasseManager.AlleSpielbareKlassen = function() {
 		var meta = haxe_rtti_Meta.getType(k);
 		if(Object.prototype.hasOwnProperty.call(meta,"spielbar")) {
 			ergebnis.push(k);
-			haxe_Log.trace("WOO " + Type.getClassName(k) + "IST SPIELBAR",{ fileName : "KlasseManager.hx", lineNumber : 32, className : "KlasseManager", methodName : "AlleSpielbareKlassen"});
 		}
 	}
 	return ergebnis;
@@ -4768,92 +4663,10 @@ Main.prototype = {
 		haxegon_Gfx.resizescreen(0,0);
 		haxegon_Text.set_font(Globals.GUI.font);
 		var playableClasses = KlasseManager.AlleSpielbareKlassen();
-		haxe_Log.trace(playableClasses,{ fileName : "Main.hx", lineNumber : 21, className : "Main", methodName : "init"});
 		Globals.state.language = haxegon_Save.loadvalue("language");
 		if(Globals.state.language == 0) {
 			Globals.state.language = 0;
 		}
-	}
-	,drawPairButton: function(x,y,text1,text2,selection) {
-		var oldtextsize = haxegon_Text.get_size();
-		haxegon_Text.set_size(Globals.GUI.buttonTextSize);
-		var textcolor = Globals.PAL.buttonTextCol;
-		var color = Globals.PAL.buttonCol;
-		var colorhover = Globals.PAL.buttonHighlightCol;
-		var colorhover2 = Globals.PAL.buttonHighlightCol2;
-		var borderCol = Globals.PAL.buttonBorderCol;
-		var lightbgcol = Globals.PAL.buttonTextCol;
-		var linethickness = Globals.GUI.linethickness;
-		var xpadding = Globals.GUI.buttonPaddingX;
-		var ypadding = Globals.GUI.buttonPaddingY;
-		haxegon_Gfx.set_linethickness(linethickness);
-		var width = 39;
-		var w1 = Math.round(haxegon_Text.width(text1));
-		var w2 = Math.round(haxegon_Text.width(text1));
-		var w = w1 + w2 + xpadding * 2;
-		if(w + 6 >= width) {
-			width = w + 6;
-		}
-		width += xpadding * 2;
-		var height = Math.round(Math.max(haxegon_Text.height(text1),haxegon_Text.height(text2)));
-		if(x == haxegon_Text.CENTER) {
-			x = Math.round(haxegon_Gfx.screenwidthmid - width / 2);
-		}
-		height += ypadding * 2;
-		var dx = haxegon_Mouse.get_x() - x;
-		var dy = haxegon_Mouse.get_y() - y;
-		var collide = !(dx < 0 || dx >= width || dy < 0 || dy >= height);
-		var click = collide && haxegon_Mouse.leftclick();
-		if(collide) {
-			color = colorhover;
-			lightbgcol = colorhover2;
-		}
-		haxegon_Gfx.fillbox(x,y,width,height,color);
-		if(selection == 1) {
-			haxegon_Gfx.fillbox(x,y,w1 + 2 * xpadding,height,lightbgcol);
-		} else {
-			haxegon_Gfx.fillbox(x + w1 + 2 * xpadding,y,x + width - (x + w1 + 2 * xpadding),height,lightbgcol);
-		}
-		haxegon_Gfx.drawbox(x,y,width,height,borderCol);
-		haxegon_Text.display(x + xpadding,y + ypadding,text1,selection == 0 ? textcolor : Globals.PAL.buttonCol);
-		haxegon_Text.display(x + xpadding + w1 + xpadding * 2,y + ypadding,text2,selection == 1 ? textcolor : Globals.PAL.buttonCol);
-		haxegon_Text.set_size(oldtextsize);
-		return click;
-	}
-	,drawButton: function(x,y,text) {
-		var oldtextsize = haxegon_Text.get_size();
-		haxegon_Text.set_size(Globals.GUI.buttonTextSize);
-		var textcolor = Globals.PAL.buttonTextCol;
-		var color = Globals.PAL.buttonCol;
-		var colorhover = Globals.PAL.buttonHighlightCol;
-		var borderCol = Globals.PAL.buttonBorderCol;
-		var linethickness = Globals.GUI.linethickness;
-		var xpadding = Globals.GUI.buttonPaddingX;
-		var ypadding = Globals.GUI.buttonPaddingY;
-		haxegon_Gfx.set_linethickness(linethickness);
-		var width = 39;
-		var w = Math.round(haxegon_Text.width(text));
-		if(w + 6 >= width) {
-			width = w + 6;
-		}
-		width += xpadding * 2;
-		var height = Math.round(haxegon_Text.height(text));
-		if(x == haxegon_Text.CENTER) {
-			x = Math.round(haxegon_Gfx.screenwidthmid - width / 2);
-		}
-		height += ypadding * 2;
-		var dx = haxegon_Mouse.get_x() - x;
-		var dy = haxegon_Mouse.get_y() - y;
-		var collide = !(dx < 0 || dx >= width || dy < 0 || dy >= height);
-		var click = collide && haxegon_Mouse.leftclick();
-		if(collide && !click) {
-			color = colorhover;
-		}
-		haxegon_Gfx.fillbox(x,y,width,height,color);
-		haxegon_Gfx.drawbox(x,y,width,height,borderCol);
-		haxegon_Text.display(x + xpadding,y + ypadding,text,textcolor);
-		haxegon_Text.set_size(oldtextsize);
-		return click;
 	}
 	,update: function() {
 		haxegon_Gfx.clearscreen(Globals.PAL.bg);
@@ -4862,10 +4675,10 @@ Main.prototype = {
 		haxegon_Text.set_wordwrap(w);
 		haxegon_Text.set_size(Globals.GUI.titleTextSize);
 		haxegon_Text.display(haxegon_Text.CENTER,h / 5,Globals.S("Ruestung","Ruestung"),Globals.PAL.titelFarbe);
-		if(this.drawButton(haxegon_Text.CENTER,Math.round(h / 2 + 80),Globals.S("Zu einer Reise aufbrechen","Set off on an Adventure"))) {
-			haxegon_Scene.change(CharacterSelect);
+		if(utils_IMGUI.button(haxegon_Text.CENTER,Math.round(h / 2 + 80),Globals.S("Zu einer Reise aufbrechen","Set off on an Adventure"))) {
+			haxegon_Scene.change(szene_CharakterAuswahl);
 		}
-		if(this.drawPairButton(haxegon_Text.CENTER,Math.round(h / 2 + Globals.GUI.buttonTextSize * 2.0 + 80),Globals.S("Deutsch","German"),Globals.S("Englisch","English"),1 - Globals.state.language)) {
+		if(utils_IMGUI.schalter(haxegon_Text.CENTER,Math.round(h / 2 + Globals.GUI.buttonTextSize * 2.0 + 80),Globals.S("Deutsch","German"),Globals.S("Englisch","English"),1 - Globals.state.language)) {
 			Globals.state.language = 1 - Globals.state.language;
 			haxegon_Save.savevalue("language",Globals.state.language);
 		}
@@ -20479,7 +20292,7 @@ var klasse_Pilz = function() {
 	this.fertigkeiten = [];
 	this.beschreibung = new utils_StringPair("Lecker!","Delicious");
 	this.name = new utils_StringPair("Pilz","Mushroom");
-	this.bild = "ungeheuer";
+	this.bild = "pilz";
 	this.spielbar = true;
 };
 $hxClasses["klasse.Pilz"] = klasse_Pilz;
@@ -44553,7 +44366,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 84250;
+	this.version = 772157;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
@@ -94527,6 +94340,167 @@ starling_utils_SystemUtil.get_isDesktop = function() {
 		return true;
 	}
 };
+var szene_CharakterAuswahl = function() { };
+$hxClasses["szene.CharakterAuswahl"] = szene_CharakterAuswahl;
+szene_CharakterAuswahl.__name__ = ["szene","CharakterAuswahl"];
+szene_CharakterAuswahl.prototype = {
+	init: function() {
+		haxegon_Text.set_font(Globals.GUI.font);
+	}
+	,update: function() {
+		haxegon_Text.set_size(Globals.GUI.subTitleTextSize);
+		var h = haxegon_Gfx.screenheight;
+		var w = haxegon_Gfx.screenwidth;
+		var cellw = 128;
+		var cellh = 256;
+		var cellmarginx = 30;
+		var cellmarginy = 30;
+		var klassen = KlasseManager.AlleSpielbareKlassen();
+		var klassenZahl = klassen.length;
+		var s = Globals.S("Heldenauswahl","Hero Selection");
+		var th = haxegon_Text.height(s);
+		haxegon_Text.display(haxegon_Text.CENTER,Globals.GUI.screenPaddingTop,s);
+		var _g = 0;
+		while(_g < 3) {
+			var i = _g++;
+			var m = haxegon_Save.loadvalue("aufgeschlossen");
+			++m;
+		}
+		haxegon_Gfx.set_linethickness(Globals.GUI.linethickness);
+		var ty = Globals.GUI.screenPaddingTop + th + Globals.GUI.buttonPaddingY;
+		haxegon_Gfx.drawline(0,ty,w,ty,Globals.PAL.buttonBorderCol);
+		var imageselectionwidth = cellw * klassenZahl + cellmarginx * (klassenZahl - 1);
+		var l = w / 2 - imageselectionwidth / 2;
+		var _g1 = 0;
+		var _g2 = klassenZahl;
+		while(_g1 < _g2) {
+			var i1 = _g1++;
+			haxe_Log.trace(i1,{ fileName : "CharakterAuswahl.hx", lineNumber : 45, className : "szene.CharakterAuswahl", methodName : "update"});
+			haxe_Log.trace([l + (cellw + cellmarginx) * i1,ty + cellmarginy,cellw,cellh,Globals.PAL.buttonBorderCol],{ fileName : "CharakterAuswahl.hx", lineNumber : 46, className : "szene.CharakterAuswahl", methodName : "update"});
+			haxegon_Gfx.drawbox(l + (cellw + cellmarginx) * i1,ty + cellmarginy,cellw,cellh,Globals.PAL.buttonBorderCol);
+		}
+	}
+	,__class__: szene_CharakterAuswahl
+};
+var utils_IMGUI = function() { };
+$hxClasses["utils.IMGUI"] = utils_IMGUI;
+utils_IMGUI.__name__ = ["utils","IMGUI"];
+utils_IMGUI.schalter = function(x,y,text1,text2,selection) {
+	var oldtextsize = haxegon_Text.get_size();
+	haxegon_Text.set_size(Globals.GUI.buttonTextSize);
+	var textcolor = Globals.PAL.buttonTextCol;
+	var color = Globals.PAL.buttonCol;
+	var colorhover = Globals.PAL.buttonHighlightCol;
+	var colorhover2 = Globals.PAL.buttonHighlightCol2;
+	var borderCol = Globals.PAL.buttonBorderCol;
+	var lightbgcol = Globals.PAL.buttonTextCol;
+	var linethickness = Globals.GUI.linethickness;
+	var xpadding = Globals.GUI.buttonPaddingX;
+	var ypadding = Globals.GUI.buttonPaddingY;
+	haxegon_Gfx.set_linethickness(linethickness);
+	var width = 39;
+	var w1 = Math.round(haxegon_Text.width(text1));
+	var w2 = Math.round(haxegon_Text.width(text1));
+	var w = w1 + w2 + xpadding * 2;
+	if(w + 6 >= width) {
+		width = w + 6;
+	}
+	width += xpadding * 2;
+	var height = Math.round(Math.max(haxegon_Text.height(text1),haxegon_Text.height(text2)));
+	if(x == haxegon_Text.CENTER) {
+		x = Math.round(haxegon_Gfx.screenwidthmid - width / 2);
+	}
+	height += ypadding * 2;
+	var dx = haxegon_Mouse.get_x() - x;
+	var dy = haxegon_Mouse.get_y() - y;
+	var collide = !(dx < 0 || dx >= width || dy < 0 || dy >= height);
+	var click = collide && haxegon_Mouse.leftclick();
+	if(collide) {
+		color = colorhover;
+		lightbgcol = colorhover2;
+	}
+	haxegon_Gfx.fillbox(x,y,width,height,color);
+	if(selection == 1) {
+		haxegon_Gfx.fillbox(x,y,w1 + 2 * xpadding,height,lightbgcol);
+	} else {
+		haxegon_Gfx.fillbox(x + w1 + 2 * xpadding,y,x + width - (x + w1 + 2 * xpadding),height,lightbgcol);
+	}
+	haxegon_Gfx.drawbox(x,y,width,height,borderCol);
+	haxegon_Text.display(x + xpadding,y + ypadding,text1,selection == 0 ? textcolor : Globals.PAL.buttonCol);
+	haxegon_Text.display(x + xpadding + w1 + xpadding * 2,y + ypadding,text2,selection == 1 ? textcolor : Globals.PAL.buttonCol);
+	haxegon_Text.set_size(oldtextsize);
+	return click;
+};
+utils_IMGUI.button = function(x,y,text) {
+	var oldtextsize = haxegon_Text.get_size();
+	haxegon_Text.set_size(Globals.GUI.buttonTextSize);
+	var textcolor = Globals.PAL.buttonTextCol;
+	var color = Globals.PAL.buttonCol;
+	var colorhover = Globals.PAL.buttonHighlightCol;
+	var borderCol = Globals.PAL.buttonBorderCol;
+	var linethickness = Globals.GUI.linethickness;
+	var xpadding = Globals.GUI.buttonPaddingX;
+	var ypadding = Globals.GUI.buttonPaddingY;
+	haxegon_Gfx.set_linethickness(linethickness);
+	var width = 39;
+	var w = Math.round(haxegon_Text.width(text));
+	if(w + 6 >= width) {
+		width = w + 6;
+	}
+	width += xpadding * 2;
+	var height = Math.round(haxegon_Text.height(text));
+	if(x == haxegon_Text.CENTER) {
+		x = Math.round(haxegon_Gfx.screenwidthmid - width / 2);
+	}
+	height += ypadding * 2;
+	var dx = haxegon_Mouse.get_x() - x;
+	var dy = haxegon_Mouse.get_y() - y;
+	var collide = !(dx < 0 || dx >= width || dy < 0 || dy >= height);
+	var click = collide && haxegon_Mouse.leftclick();
+	if(collide && !click) {
+		color = colorhover;
+	}
+	haxegon_Gfx.fillbox(x,y,width,height,color);
+	haxegon_Gfx.drawbox(x,y,width,height,borderCol);
+	haxegon_Text.display(x + xpadding,y + ypadding,text,textcolor);
+	haxegon_Text.set_size(oldtextsize);
+	return click;
+};
+utils_IMGUI.imageButton = function(x,y,text) {
+	var oldtextsize = haxegon_Text.get_size();
+	haxegon_Text.set_size(Globals.GUI.buttonTextSize);
+	var textcolor = Globals.PAL.buttonTextCol;
+	var color = Globals.PAL.buttonCol;
+	var colorhover = Globals.PAL.buttonHighlightCol;
+	var borderCol = Globals.PAL.buttonBorderCol;
+	var linethickness = Globals.GUI.linethickness;
+	var xpadding = Globals.GUI.buttonPaddingX;
+	var ypadding = Globals.GUI.buttonPaddingY;
+	haxegon_Gfx.set_linethickness(linethickness);
+	var width = 39;
+	var w = Math.round(haxegon_Text.width(text));
+	if(w + 6 >= width) {
+		width = w + 6;
+	}
+	width += xpadding * 2;
+	var height = Math.round(haxegon_Text.height(text));
+	if(x == haxegon_Text.CENTER) {
+		x = Math.round(haxegon_Gfx.screenwidthmid - width / 2);
+	}
+	height += ypadding * 2;
+	var dx = haxegon_Mouse.get_x() - x;
+	var dy = haxegon_Mouse.get_y() - y;
+	var collide = !(dx < 0 || dx >= width || dy < 0 || dy >= height);
+	var click = collide && haxegon_Mouse.leftclick();
+	if(collide && !click) {
+		color = colorhover;
+	}
+	haxegon_Gfx.fillbox(x,y,width,height,color);
+	haxegon_Gfx.drawbox(x,y,width,height,borderCol);
+	haxegon_Text.display(x + xpadding,y + ypadding,text,textcolor);
+	haxegon_Text.set_size(oldtextsize);
+	return click;
+};
 var utils_StringPair = function(_de,_en) {
 	this.de = _de;
 	this.en = _en;
@@ -94592,7 +94566,7 @@ while(_g11 < _g2) {
 }
 lime_system_CFFI.available = false;
 lime_system_CFFI.enabled = false;
-lime_utils_Log.level = 3;
+lime_utils_Log.level = 5;
 if(typeof console == "undefined") {
 	console = {}
 }
@@ -94869,7 +94843,7 @@ js_html_compat_Float32Array.BYTES_PER_ELEMENT = 4;
 js_html_compat_Float64Array.BYTES_PER_ELEMENT = 8;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 klasse_Bauer.__meta__ = { obj : { spielbar : null}};
-klasse_Ritter.__meta__ = { obj : { spielbar : null}};
+klasse_Ritter.__meta__ = { obj : { spielbar : null, aufgeschlossen : null}};
 klasse_Ungeheuer.__meta__ = { obj : { spielbar : null}};
 lime__$backend_html5_HTML5HTTPRequest.activeRequests = 0;
 lime__$backend_html5_HTML5HTTPRequest.requestLimit = 4;
