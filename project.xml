@@ -4,10 +4,10 @@
   <set name="windowheight" value="860" />
   
 	<meta 
-    title="Truetype Fonts" 
-    package="com.yournamehere.truetypefonts" 
+    title="Ruestug" 
+    package="com.increpare.Ruestung" 
     version="1.0.0" 
-    company="Haxegon" 
+    company="increpare games" 
   />
   
   <app swf-version="17.0" if="flash"/>

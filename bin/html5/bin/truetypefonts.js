@@ -1042,7 +1042,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "truetypefonts";
-	var config = { build : "3", company : "Haxegon", file : "truetypefonts", fps : 60, name : "Truetype Fonts", orientation : "landscape", packageName : "com.yournamehere.truetypefonts", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Truetype Fonts", vsync : true, width : 840, x : null, y : null}]};
+	var config = { build : "5", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -4319,7 +4319,7 @@ Main.prototype = {
 		var w = haxegon_Gfx.screenwidth;
 		haxegon_Text.set_wordwrap(w);
 		haxegon_Text.set_size(Globals.GUI.titleTextSize);
-		haxegon_Text.display(haxegon_Text.CENTER,h / 5,Globals.S("Ruestung","Ruestung"));
+		haxegon_Text.display(haxegon_Text.CENTER,h / 5,Globals.S("Spiel","Game"));
 		this.drawButton(haxegon_Text.CENTER,Math.round(h / 2),Globals.S("Zu einer Reise aufbrechen","Set off on an Adventure"));
 		if(this.drawPairButton(haxegon_Text.CENTER,Math.round(h / 2 + Globals.GUI.buttonTextSize * 1.5),Globals.S("Deutsch","German"),Globals.S("Englisch","English"),1 - Globals.state.language)) {
 			Globals.state.language = 1 - Globals.state.language;
@@ -43617,7 +43617,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 629828;
+	this.version = 123498;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
