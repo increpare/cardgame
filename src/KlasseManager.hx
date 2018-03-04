@@ -1,29 +1,47 @@
-package klasse;
 import haxe.rtti.Meta;
+import haxegon.*;
+import klasse.*;
+import fertigkeit.*;
+import utils.*;
 
 class KlasseManager
 {
-    static function AllSpielbareKlassen:Array<Class>(){        
-        var klassen = CompileTime.getAllClasses(klasse.Klasse);
-        var ergebnis:Array<Type> = new Array<Type>();
-		for ( k in klassen ) {
-			var statics = Meta.getType(k);            
-			if (Reflect.hasField(statics,"spielbar"))
-			{            
-                ergebnis.push(k);
-			}
-    }
-    static function AlleKlassen:Array<Class>(){        
-        var klassen = CompileTime.getAllClasses(klasse.Klasse);
-        var ergebnis:Array<Type> = new Array<Type>();
-		for ( k in klassen ) {
-			var statics = Meta.getType(k);            
-			if (Reflect.hasField(statics,"spielbar"))
-			{            
-                ergebnis.push(k);
-			}
-    }
-    
-    return ergebnis;
 
+    public static function AlleAufschliessendenKlassen():Array<Class<Klasse> > {     
+          
+        var ks = CompileTime.getAllClasses(Klasse);
+        var ergebnis:Array<Class<Klasse> > = new Array<Class<Klasse> >();
+		
+        for ( k in ks ) {           
+            var meta = Meta.getType(k);
+            if (Reflect.hasField(meta,"spielbar")){
+                if (Save.loadvalue("unlocked_"+Type.getClassName(k))==1){
+                    ergebnis.push(k);
+                }
+            }
+        }
+        return ergebnis;                   
+    }
+
+    public static function AlleSpielbareKlassen() : Array<Class<Klasse> > {        
+        var ks = CompileTime.getAllClasses(Klasse);
+        var ergebnis:Array<Class<Klasse> > = new Array<Class<Klasse> >();
+		
+        for ( k in ks ) {           
+            var meta = Meta.getType(k);
+            if (Reflect.hasField(meta,"spielbar")){
+                ergebnis.push(k);
+            }
+        }
+        return ergebnis;        
+    }
+
+    public static function AlleKlassen():Array<Class<Klasse> > {        
+        var ks = CompileTime.getAllClasses(Klasse);
+        var ergebnis:Array<Class<Klasse> > = new Array < Class <Klasse> > ();
+		for ( k in ks ) {
+            ergebnis.push(k);
+        }
+        return ergebnis;
+    }
 }

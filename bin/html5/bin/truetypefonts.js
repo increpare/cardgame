@@ -1042,7 +1042,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "truetypefonts";
-	var config = { build : "9", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
+	var config = { build : "10", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -2066,6 +2066,14 @@ List.prototype = {
 			this.q.next = x;
 		}
 		this.q = x;
+		this.length++;
+	}
+	,push: function(item) {
+		var x = new _$List_ListNode(item,this.h);
+		this.h = x;
+		if(this.q == null) {
+			this.q = x;
+		}
 		this.length++;
 	}
 	,pop: function() {
@@ -4343,6 +4351,54 @@ CharacterSelect.prototype = {
 var CompileTime = function() { };
 $hxClasses["CompileTime"] = CompileTime;
 CompileTime.__name__ = ["CompileTime"];
+var CompileTimeClassList = function() { };
+$hxClasses["CompileTimeClassList"] = CompileTimeClassList;
+CompileTimeClassList.__name__ = ["CompileTimeClassList"];
+CompileTimeClassList.get = function(id) {
+	if(CompileTimeClassList.lists == null) {
+		CompileTimeClassList.initialise();
+	}
+	var _this = CompileTimeClassList.lists;
+	if(__map_reserved[id] != null) {
+		return _this.getReserved(id);
+	} else {
+		return _this.h[id];
+	}
+};
+CompileTimeClassList.getTyped = function(id,type) {
+	return CompileTimeClassList.get(id);
+};
+CompileTimeClassList.initialise = function() {
+	CompileTimeClassList.lists = new haxe_ds_StringMap();
+	var m = haxe_rtti_Meta.getType(CompileTimeClassList);
+	if(m.classLists != null) {
+		var _g = 0;
+		var _g1 = m.classLists;
+		while(_g < _g1.length) {
+			var item = _g1[_g];
+			++_g;
+			var array = item;
+			var listID = array[0];
+			var list = new List();
+			var _g2 = 0;
+			var _g3 = array[1].split(",");
+			while(_g2 < _g3.length) {
+				var typeName = _g3[_g2];
+				++_g2;
+				var type = Type.resolveClass(typeName);
+				if(type != null) {
+					list.push(type);
+				}
+			}
+			var _this = CompileTimeClassList.lists;
+			if(__map_reserved[listID] != null) {
+				_this.setReserved(listID,list);
+			} else {
+				_this.h[listID] = list;
+			}
+		}
+	}
+};
 var EReg = function(r,opt) {
 	this.r = new RegExp(r,opt.split("u").join(""));
 };
@@ -4434,15 +4490,6 @@ EReg.prototype = {
 		return buf_b;
 	}
 	,__class__: EReg
-};
-var Fertigkeit = function() { };
-$hxClasses["Fertigkeit"] = Fertigkeit;
-Fertigkeit.__name__ = ["Fertigkeit"];
-Fertigkeit.prototype = {
-	bild: null
-	,name: null
-	,description: null
-	,__class__: Fertigkeit
 };
 var haxegon_Col = function() { };
 $hxClasses["haxegon.Col"] = haxegon_Col;
@@ -4626,6 +4673,53 @@ HxOverrides.iter = function(a) {
 		return this.arr[this.cur++];
 	}};
 };
+var KlasseManager = function() { };
+$hxClasses["KlasseManager"] = KlasseManager;
+KlasseManager.__name__ = ["KlasseManager"];
+KlasseManager.AlleAufschliessendenKlassen = function() {
+	var klassen = CompileTimeClassList.get("null,true,klasse.Klasse");
+	var ergebnis = [];
+	var _g_head = klassen.h;
+	while(_g_head != null) {
+		var val = _g_head.item;
+		_g_head = _g_head.next;
+		var k = val;
+		if(Object.prototype.hasOwnProperty.call(k,"spielbar")) {
+			if(haxegon_Save.loadvalue("unlocked_" + Std.string(k)) == 1) {
+				ergebnis.push(k);
+			}
+		}
+	}
+	return ergebnis;
+};
+KlasseManager.AlleSpielbareKlassen = function() {
+	var ks = CompileTimeClassList.get("null,true,klasse.Klasse");
+	var ergebnis = [];
+	var _g_head = ks.h;
+	while(_g_head != null) {
+		var val = _g_head.item;
+		_g_head = _g_head.next;
+		var k = val;
+		var meta = haxe_rtti_Meta.getType(k);
+		if(Object.prototype.hasOwnProperty.call(meta,"spielbar")) {
+			ergebnis.push(k);
+			haxe_Log.trace("WOO " + Type.getClassName(k) + "IST SPIELBAR",{ fileName : "KlasseManager.hx", lineNumber : 32, className : "KlasseManager", methodName : "AlleSpielbareKlassen"});
+		}
+	}
+	return ergebnis;
+};
+KlasseManager.AlleKlassen = function() {
+	var ks = CompileTimeClassList.get("null,true,klasse.Klasse");
+	var ergebnis = [];
+	var _g_head = ks.h;
+	while(_g_head != null) {
+		var val = _g_head.item;
+		_g_head = _g_head.next;
+		var k = val;
+		ergebnis.push(k);
+	}
+	return ergebnis;
+};
 var Lambda = function() { };
 $hxClasses["Lambda"] = Lambda;
 Lambda.__name__ = ["Lambda"];
@@ -4673,6 +4767,8 @@ Main.prototype = {
 	init: function() {
 		haxegon_Gfx.resizescreen(0,0);
 		haxegon_Text.set_font(Globals.GUI.font);
+		var playableClasses = KlasseManager.AlleSpielbareKlassen();
+		haxe_Log.trace(playableClasses,{ fileName : "Main.hx", lineNumber : 21, className : "Main", methodName : "init"});
 		Globals.state.language = haxegon_Save.loadvalue("language");
 		if(Globals.state.language == 0) {
 			Globals.state.language = 0;
@@ -4797,7 +4893,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":null,\"assets\":\"aoy4:pathy15:data%2Ficon.pngy4:sizei143966y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y34:data%2Fhow%20to%20add%20assets.txtR2i6664R3y4:TEXTR5R7R6tgoR2i41344R3y4:FONTy9:classNamey40:__ASSET__data_fonts_rosarivo_regular_ttfR5y35:data%2Ffonts%2FRosarivo-Regular.ttfR6tgoR2i33240R3R9R10y43:__ASSET__data_fonts_germaniaone_regular_ttfR5y38:data%2Ffonts%2FGermaniaOne-Regular.ttfR6tgoR2i39244R3R9R10y39:__ASSET__data_fonts_rosarivo_italic_ttfR5y34:data%2Ffonts%2FRosarivo-Italic.ttfR6tgh\",\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
+	data = "{\"name\":null,\"assets\":\"aoy4:pathy15:data%2Ficon.pngy4:sizei143966y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y34:data%2Fhow%20to%20add%20assets.txtR2i6664R3y4:TEXTR5R7R6tgoR0y38:data%2Fgraphics%2FBilder%2Fritter3.pngR2i3211R3R4R5R9R6tgoR0y37:data%2Fgraphics%2FBilder%2Fritter.pngR2i3242R3R4R5R10R6tgoR0y38:data%2Fgraphics%2FBilder%2Fritter2.pngR2i3570R3R4R5R11R6tgoR0y38:data%2Fgraphics%2FBilder%2Fritter5.pngR2i3293R3R4R5R12R6tgoR0y42:data%2Fgraphics%2FBilder%2Fritter6plus.pngR2i3101R3R4R5R13R6tgoR0y38:data%2Fgraphics%2FBilder%2Fritter4.pngR2i3229R3R4R5R14R6tgoR2i41344R3y4:FONTy9:classNamey40:__ASSET__data_fonts_rosarivo_regular_ttfR5y35:data%2Ffonts%2FRosarivo-Regular.ttfR6tgoR2i33240R3R15R16y43:__ASSET__data_fonts_germaniaone_regular_ttfR5y38:data%2Ffonts%2FGermaniaOne-Regular.ttfR6tgoR2i39244R3R15R16y39:__ASSET__data_fonts_rosarivo_italic_ttfR5y34:data%2Ffonts%2FRosarivo-Italic.ttfR6tgh\",\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	manifest = lime_utils_AssetManifest.parse(data,rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
@@ -5273,20 +5369,6 @@ StringBuf.prototype = {
 	b: null
 	,__class__: StringBuf
 };
-var StringPair = function(_de,_en) {
-	this.de = _de;
-	this.en = _en;
-};
-$hxClasses["StringPair"] = StringPair;
-StringPair.__name__ = ["StringPair"];
-StringPair.prototype = {
-	de: null
-	,en: null
-	,Eval: function() {
-		return Globals.S(this.de,this.en);
-	}
-	,__class__: StringPair
-};
 var StringTools = function() { };
 $hxClasses["StringTools"] = StringTools;
 StringTools.__name__ = ["StringTools"];
@@ -5708,6 +5790,9 @@ Xml.prototype = {
 	}
 	,__class__: Xml
 };
+var fertigkeit_Fertigkeit = function() { };
+$hxClasses["fertigkeit.Fertigkeit"] = fertigkeit_Fertigkeit;
+fertigkeit_Fertigkeit.__name__ = ["fertigkeit","Fertigkeit"];
 var haxe_StackItem = $hxClasses["haxe.StackItem"] = { __ename__ : ["haxe","StackItem"], __constructs__ : ["CFunction","Module","FilePos","Method","LocalFunction"] };
 haxe_StackItem.CFunction = ["CFunction",0];
 haxe_StackItem.CFunction.toString = $estr;
@@ -7367,6 +7452,20 @@ haxe_io_Path.prototype = {
 	,ext: null
 	,backslash: null
 	,__class__: haxe_io_Path
+};
+var haxe_rtti_Meta = function() { };
+$hxClasses["haxe.rtti.Meta"] = haxe_rtti_Meta;
+haxe_rtti_Meta.__name__ = ["haxe","rtti","Meta"];
+haxe_rtti_Meta.getType = function(t) {
+	var meta = haxe_rtti_Meta.getMeta(t);
+	if(meta == null || meta.obj == null) {
+		return { };
+	} else {
+		return meta.obj;
+	}
+};
+haxe_rtti_Meta.getMeta = function(t) {
+	return t.__meta__;
 };
 var haxe_xml_XmlParserException = function(message,xml,position) {
 	this.xml = xml;
@@ -20359,19 +20458,46 @@ klasse_Klasse.prototype = {
 	,__class__: klasse_Klasse
 };
 var klasse_Bauer = function() {
+	this.fertigkeiten = [];
+	this.beschreibung = new utils_StringPair("Er hat ein armes Leben!","He has a miserable life!");
+	this.name = new utils_StringPair("Bauer","Peasant");
+	this.bild = "bauer";
+	this.spielbar = true;
 };
 $hxClasses["klasse.Bauer"] = klasse_Bauer;
 klasse_Bauer.__name__ = ["klasse","Bauer"];
 klasse_Bauer.__interfaces__ = [klasse_Klasse];
 klasse_Bauer.prototype = {
-	bild: null
+	spielbar: null
+	,bild: null
 	,name: null
 	,beschreibung: null
 	,fertigkeiten: null
 	,__class__: klasse_Bauer
 };
+var klasse_Pilz = function() {
+	this.fertigkeiten = [];
+	this.beschreibung = new utils_StringPair("Lecker!","Delicious");
+	this.name = new utils_StringPair("Pilz","Mushroom");
+	this.bild = "ungeheuer";
+	this.spielbar = true;
+};
+$hxClasses["klasse.Pilz"] = klasse_Pilz;
+klasse_Pilz.__name__ = ["klasse","Pilz"];
+klasse_Pilz.__interfaces__ = [klasse_Klasse];
+klasse_Pilz.prototype = {
+	spielbar: null
+	,bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Pilz
+};
 var klasse_Ritter = function() {
-	this.bild = "Ritter";
+	this.fertigkeiten = [];
+	this.beschreibung = new utils_StringPair("Was für ein Held!","What a hero!");
+	this.name = new utils_StringPair("Ritter","Knight");
+	this.bild = "ritter";
 };
 $hxClasses["klasse.Ritter"] = klasse_Ritter;
 klasse_Ritter.__name__ = ["klasse","Ritter"];
@@ -20383,122 +20509,23 @@ klasse_Ritter.prototype = {
 	,fertigkeiten: null
 	,__class__: klasse_Ritter
 };
-var klasse_Ritter10 = function() {
-	this.bild = "Ritter10";
+var klasse_Ungeheuer = function() {
+	this.fertigkeiten = [];
+	this.beschreibung = new utils_StringPair("So groß!","A monstrous being.");
+	this.name = new utils_StringPair("Ungeheuer","Immensity");
+	this.bild = "ungeheuer";
+	this.spielbar = true;
 };
-$hxClasses["klasse.Ritter10"] = klasse_Ritter10;
-klasse_Ritter10.__name__ = ["klasse","Ritter10"];
-klasse_Ritter10.__interfaces__ = [klasse_Klasse];
-klasse_Ritter10.prototype = {
-	bild: null
+$hxClasses["klasse.Ungeheuer"] = klasse_Ungeheuer;
+klasse_Ungeheuer.__name__ = ["klasse","Ungeheuer"];
+klasse_Ungeheuer.__interfaces__ = [klasse_Klasse];
+klasse_Ungeheuer.prototype = {
+	spielbar: null
+	,bild: null
 	,name: null
 	,beschreibung: null
 	,fertigkeiten: null
-	,__class__: klasse_Ritter10
-};
-var klasse_Ritter2 = function() {
-	this.bild = "Ritter2";
-};
-$hxClasses["klasse.Ritter2"] = klasse_Ritter2;
-klasse_Ritter2.__name__ = ["klasse","Ritter2"];
-klasse_Ritter2.__interfaces__ = [klasse_Klasse];
-klasse_Ritter2.prototype = {
-	bild: null
-	,name: null
-	,beschreibung: null
-	,fertigkeiten: null
-	,__class__: klasse_Ritter2
-};
-var klasse_Ritter3 = function() {
-	this.bild = "Ritter3";
-};
-$hxClasses["klasse.Ritter3"] = klasse_Ritter3;
-klasse_Ritter3.__name__ = ["klasse","Ritter3"];
-klasse_Ritter3.__interfaces__ = [klasse_Klasse];
-klasse_Ritter3.prototype = {
-	bild: null
-	,name: null
-	,beschreibung: null
-	,fertigkeiten: null
-	,__class__: klasse_Ritter3
-};
-var klasse_Ritter4 = function() {
-	this.bild = "Ritter4";
-};
-$hxClasses["klasse.Ritter4"] = klasse_Ritter4;
-klasse_Ritter4.__name__ = ["klasse","Ritter4"];
-klasse_Ritter4.__interfaces__ = [klasse_Klasse];
-klasse_Ritter4.prototype = {
-	bild: null
-	,name: null
-	,beschreibung: null
-	,fertigkeiten: null
-	,__class__: klasse_Ritter4
-};
-var klasse_Ritter5 = function() {
-	this.bild = "Ritter5";
-};
-$hxClasses["klasse.Ritter5"] = klasse_Ritter5;
-klasse_Ritter5.__name__ = ["klasse","Ritter5"];
-klasse_Ritter5.__interfaces__ = [klasse_Klasse];
-klasse_Ritter5.prototype = {
-	bild: null
-	,name: null
-	,beschreibung: null
-	,fertigkeiten: null
-	,__class__: klasse_Ritter5
-};
-var klasse_Ritter6 = function() {
-	this.bild = "Ritter6";
-};
-$hxClasses["klasse.Ritter6"] = klasse_Ritter6;
-klasse_Ritter6.__name__ = ["klasse","Ritter6"];
-klasse_Ritter6.__interfaces__ = [klasse_Klasse];
-klasse_Ritter6.prototype = {
-	bild: null
-	,name: null
-	,beschreibung: null
-	,fertigkeiten: null
-	,__class__: klasse_Ritter6
-};
-var klasse_Ritter7 = function() {
-	this.bild = "Ritter7";
-};
-$hxClasses["klasse.Ritter7"] = klasse_Ritter7;
-klasse_Ritter7.__name__ = ["klasse","Ritter7"];
-klasse_Ritter7.__interfaces__ = [klasse_Klasse];
-klasse_Ritter7.prototype = {
-	bild: null
-	,name: null
-	,beschreibung: null
-	,fertigkeiten: null
-	,__class__: klasse_Ritter7
-};
-var klasse_Ritter8 = function() {
-	this.bild = "Ritter8";
-};
-$hxClasses["klasse.Ritter8"] = klasse_Ritter8;
-klasse_Ritter8.__name__ = ["klasse","Ritter8"];
-klasse_Ritter8.__interfaces__ = [klasse_Klasse];
-klasse_Ritter8.prototype = {
-	bild: null
-	,name: null
-	,beschreibung: null
-	,fertigkeiten: null
-	,__class__: klasse_Ritter8
-};
-var klasse_Ritter9 = function() {
-	this.bild = "Ritter9";
-};
-$hxClasses["klasse.Ritter9"] = klasse_Ritter9;
-klasse_Ritter9.__name__ = ["klasse","Ritter9"];
-klasse_Ritter9.__interfaces__ = [klasse_Klasse];
-klasse_Ritter9.prototype = {
-	bild: null
-	,name: null
-	,beschreibung: null
-	,fertigkeiten: null
-	,__class__: klasse_Ritter9
+	,__class__: klasse_Ungeheuer
 };
 var lime__$backend_html5_GameDeviceData = function() {
 	this.connected = true;
@@ -44526,7 +44553,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 772157;
+	this.version = 84250;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
@@ -94500,6 +94527,20 @@ starling_utils_SystemUtil.get_isDesktop = function() {
 		return true;
 	}
 };
+var utils_StringPair = function(_de,_en) {
+	this.de = _de;
+	this.en = _en;
+};
+$hxClasses["utils.StringPair"] = utils_StringPair;
+utils_StringPair.__name__ = ["utils","StringPair"];
+utils_StringPair.prototype = {
+	de: null
+	,en: null
+	,Eval: function() {
+		return Globals.S(this.de,this.en);
+	}
+	,__class__: utils_StringPair
+};
 function $iterator(o) { if( o instanceof Array ) return function() { return HxOverrides.iter(o); }; return typeof(o.iterator) == 'function' ? $bind(o,o.iterator) : o.iterator; }
 var $_, $fid = 0;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $fid++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; o.hx__closures__[m.__id__] = f; } return f; }
@@ -94551,7 +94592,7 @@ while(_g11 < _g2) {
 }
 lime_system_CFFI.available = false;
 lime_system_CFFI.enabled = false;
-lime_utils_Log.level = 5;
+lime_utils_Log.level = 3;
 if(typeof console == "undefined") {
 	console = {}
 }
@@ -94576,6 +94617,7 @@ openfl_display_DisplayObject.__tempStack = new lime_utils_ObjectPool(function() 
 },function(stack) {
 	stack.data.set_length(0);
 });
+CompileTimeClassList.__meta__ = { obj : { classLists : [["null,true,klasse.Klasse","klasse.Bauer,klasse.Pilz,klasse.Ritter,klasse.Ungeheuer"]]}};
 haxegon_Col.BLACK = 0;
 haxegon_Col.GREY = 10329501;
 haxegon_Col.GRAY = 10329501;
@@ -94826,16 +94868,9 @@ haxegon_embeddedassets_DefaultFont.XML_DATA = "\r\n\t\t<font>\r\n\t\t\t<info fac
 js_html_compat_Float32Array.BYTES_PER_ELEMENT = 4;
 js_html_compat_Float64Array.BYTES_PER_ELEMENT = 8;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
-klasse_Ritter.__meta__ = { obj : { playable : null}};
-klasse_Ritter10.__meta__ = { obj : { playable : null}};
-klasse_Ritter2.__meta__ = { obj : { playable : null}};
-klasse_Ritter3.__meta__ = { obj : { playable : null}};
-klasse_Ritter4.__meta__ = { obj : { playable : null}};
-klasse_Ritter5.__meta__ = { obj : { playable : null}};
-klasse_Ritter6.__meta__ = { obj : { playable : null}};
-klasse_Ritter7.__meta__ = { obj : { playable : null}};
-klasse_Ritter8.__meta__ = { obj : { playable : null}};
-klasse_Ritter9.__meta__ = { obj : { playable : null}};
+klasse_Bauer.__meta__ = { obj : { spielbar : null}};
+klasse_Ritter.__meta__ = { obj : { spielbar : null}};
+klasse_Ungeheuer.__meta__ = { obj : { spielbar : null}};
 lime__$backend_html5_HTML5HTTPRequest.activeRequests = 0;
 lime__$backend_html5_HTML5HTTPRequest.requestLimit = 4;
 lime__$backend_html5_HTML5HTTPRequest.requestQueue = new List();

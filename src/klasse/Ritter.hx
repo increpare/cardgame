@@ -2,20 +2,27 @@ package klasse;
 import haxegon.*;
 import std.*;
 import haxe.rtti.Meta;
+import fertigkeit.*;
+import utils.*;
 
-@:keep
 @spielbar
 class Ritter implements Klasse
-{   
+{       
+    public var bild:String = "ritter";
+
+    public var name:StringPair = new StringPair(
+        "Ritter",
+        "Knight"
+        );
+
+    public var beschreibung:StringPair = new StringPair(
+        "Was für ein Held!",
+        "What a hero!"
+    );
+
+    public var fertigkeiten:Array<Fertigkeit> = new Array<Fertigkeit>();
+
     public function new(){
-        //Reflect()
-        //https://haxe.org/manual/cr-rtti.html
-        //trace(Meta.getType(Ritter));
+        
     }
-
-    public var bild:String = "Ritter";
-    public var name:StringPair;
-    public var beschreibung:StringPair;
-    public var fertigkeiten:Array<Fertigkeit>;
-
 }

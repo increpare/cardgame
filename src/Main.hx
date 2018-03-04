@@ -1,6 +1,5 @@
 import haxegon.*;
 import Globals.*;
-import haxe.rtti.Meta;
 
 class Main {
 	// These fonts are located in the data/fonts/ directory.
@@ -18,6 +17,8 @@ class Main {
 		Gfx.resizescreen(0, 0);
 		Text.font = GUI.font;
 
+		var playableClasses = KlasseManager.AlleSpielbareKlassen();
+		trace(playableClasses);
 		//initial all globals here
 
 		state.language = Save.loadvalue("language");

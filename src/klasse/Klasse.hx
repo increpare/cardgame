@@ -1,7 +1,8 @@
 package klasse;
-import haxegon.*;
 
-@:keep
+import utils.*;
+import fertigkeit.*;
+
 interface Klasse
 {
     public var bild:String;

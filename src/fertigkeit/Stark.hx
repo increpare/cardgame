@@ -1,7 +1,8 @@
-package;
-import haxegon.*;
+package fertigkeit;
 
-interface Fertigkeit 
+import utils.*;
+
+class Stark
 {
     public var bild : String;
     public var name : StringPair;

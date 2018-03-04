@@ -5,22 +5,21 @@ import haxe.rtti.Meta;
 import fertigkeit.*;
 import utils.*;
 
-@spielbar
-class Bauer implements Klasse
+class Pilz implements Klasse
 {   
 
     public var spielbar:Bool = true;
     
-    public var bild:String = "bauer";
+    public var bild:String = "ungeheuer";
 
     public var name:StringPair = new StringPair(
-        "Bauer",
-        "Peasant"
+        "Pilz",
+        "Mushroom"
     );
 
     public var beschreibung:StringPair = new StringPair(
-        "Er hat ein armes Leben!",
-        "He has a miserable life!"
+        "Lecker!",
+        "Delicious"
     );
 
     public var fertigkeiten:Array<Fertigkeit > = new Array<Fertigkeit >();

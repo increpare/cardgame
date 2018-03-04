@@ -6,21 +6,21 @@ import fertigkeit.*;
 import utils.*;
 
 @spielbar
-class Bauer implements Klasse
+class Ungeheuer implements Klasse
 {   
 
     public var spielbar:Bool = true;
     
-    public var bild:String = "bauer";
+    public var bild:String = "ungeheuer";
 
     public var name:StringPair = new StringPair(
-        "Bauer",
-        "Peasant"
+        "Ungeheuer",
+        "Immensity"
     );
 
     public var beschreibung:StringPair = new StringPair(
-        "Er hat ein armes Leben!",
-        "He has a miserable life!"
+        "So groß!",
+        "A monstrous being."
     );
 
     public var fertigkeiten:Array<Fertigkeit > = new Array<Fertigkeit >();
