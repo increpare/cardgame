@@ -1042,7 +1042,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "truetypefonts";
-	var config = { build : "8", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
+	var config = { build : "9", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -2066,14 +2066,6 @@ List.prototype = {
 			this.q.next = x;
 		}
 		this.q = x;
-		this.length++;
-	}
-	,push: function(item) {
-		var x = new _$List_ListNode(item,this.h);
-		this.h = x;
-		if(this.q == null) {
-			this.q = x;
-		}
 		this.length++;
 	}
 	,pop: function() {
@@ -4351,54 +4343,6 @@ CharacterSelect.prototype = {
 var CompileTime = function() { };
 $hxClasses["CompileTime"] = CompileTime;
 CompileTime.__name__ = ["CompileTime"];
-var CompileTimeClassList = function() { };
-$hxClasses["CompileTimeClassList"] = CompileTimeClassList;
-CompileTimeClassList.__name__ = ["CompileTimeClassList"];
-CompileTimeClassList.get = function(id) {
-	if(CompileTimeClassList.lists == null) {
-		CompileTimeClassList.initialise();
-	}
-	var _this = CompileTimeClassList.lists;
-	if(__map_reserved[id] != null) {
-		return _this.getReserved(id);
-	} else {
-		return _this.h[id];
-	}
-};
-CompileTimeClassList.getTyped = function(id,type) {
-	return CompileTimeClassList.get(id);
-};
-CompileTimeClassList.initialise = function() {
-	CompileTimeClassList.lists = new haxe_ds_StringMap();
-	var m = haxe_rtti_Meta.getType(CompileTimeClassList);
-	if(m.classLists != null) {
-		var _g = 0;
-		var _g1 = m.classLists;
-		while(_g < _g1.length) {
-			var item = _g1[_g];
-			++_g;
-			var array = item;
-			var listID = array[0];
-			var list = new List();
-			var _g2 = 0;
-			var _g3 = array[1].split(",");
-			while(_g2 < _g3.length) {
-				var typeName = _g3[_g2];
-				++_g2;
-				var type = Type.resolveClass(typeName);
-				if(type != null) {
-					list.push(type);
-				}
-			}
-			var _this = CompileTimeClassList.lists;
-			if(__map_reserved[listID] != null) {
-				_this.setReserved(listID,list);
-			} else {
-				_this.h[listID] = list;
-			}
-		}
-	}
-};
 var EReg = function(r,opt) {
 	this.r = new RegExp(r,opt.split("u").join(""));
 };
@@ -4732,19 +4676,6 @@ Main.prototype = {
 		Globals.state.language = haxegon_Save.loadvalue("language");
 		if(Globals.state.language == 0) {
 			Globals.state.language = 0;
-		}
-		var klassen = CompileTimeClassList.get("klasse,true,klasse.Klasse");
-		var _g_head = klassen.h;
-		while(_g_head != null) {
-			var val = _g_head.item;
-			_g_head = _g_head.next;
-			var k = val;
-			haxe_Log.trace(k,{ fileName : "Main.hx", lineNumber : 31, className : "Main", methodName : "init"});
-			var statics = haxe_rtti_Meta.getType(k);
-			haxe_Log.trace(statics,{ fileName : "Main.hx", lineNumber : 34, className : "Main", methodName : "init"});
-			if(Object.prototype.hasOwnProperty.call(statics,"playable")) {
-				haxe_Log.trace("playable :D",{ fileName : "Main.hx", lineNumber : 37, className : "Main", methodName : "init"});
-			}
 		}
 	}
 	,drawPairButton: function(x,y,text1,text2,selection) {
@@ -7436,20 +7367,6 @@ haxe_io_Path.prototype = {
 	,ext: null
 	,backslash: null
 	,__class__: haxe_io_Path
-};
-var haxe_rtti_Meta = function() { };
-$hxClasses["haxe.rtti.Meta"] = haxe_rtti_Meta;
-haxe_rtti_Meta.__name__ = ["haxe","rtti","Meta"];
-haxe_rtti_Meta.getType = function(t) {
-	var meta = haxe_rtti_Meta.getMeta(t);
-	if(meta == null || meta.obj == null) {
-		return { };
-	} else {
-		return meta.obj;
-	}
-};
-haxe_rtti_Meta.getMeta = function(t) {
-	return t.__meta__;
 };
 var haxe_xml_XmlParserException = function(message,xml,position) {
 	this.xml = xml;
@@ -20454,6 +20371,7 @@ klasse_Bauer.prototype = {
 	,__class__: klasse_Bauer
 };
 var klasse_Ritter = function() {
+	this.bild = "Ritter";
 };
 $hxClasses["klasse.Ritter"] = klasse_Ritter;
 klasse_Ritter.__name__ = ["klasse","Ritter"];
@@ -20464,6 +20382,123 @@ klasse_Ritter.prototype = {
 	,beschreibung: null
 	,fertigkeiten: null
 	,__class__: klasse_Ritter
+};
+var klasse_Ritter10 = function() {
+	this.bild = "Ritter10";
+};
+$hxClasses["klasse.Ritter10"] = klasse_Ritter10;
+klasse_Ritter10.__name__ = ["klasse","Ritter10"];
+klasse_Ritter10.__interfaces__ = [klasse_Klasse];
+klasse_Ritter10.prototype = {
+	bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Ritter10
+};
+var klasse_Ritter2 = function() {
+	this.bild = "Ritter2";
+};
+$hxClasses["klasse.Ritter2"] = klasse_Ritter2;
+klasse_Ritter2.__name__ = ["klasse","Ritter2"];
+klasse_Ritter2.__interfaces__ = [klasse_Klasse];
+klasse_Ritter2.prototype = {
+	bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Ritter2
+};
+var klasse_Ritter3 = function() {
+	this.bild = "Ritter3";
+};
+$hxClasses["klasse.Ritter3"] = klasse_Ritter3;
+klasse_Ritter3.__name__ = ["klasse","Ritter3"];
+klasse_Ritter3.__interfaces__ = [klasse_Klasse];
+klasse_Ritter3.prototype = {
+	bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Ritter3
+};
+var klasse_Ritter4 = function() {
+	this.bild = "Ritter4";
+};
+$hxClasses["klasse.Ritter4"] = klasse_Ritter4;
+klasse_Ritter4.__name__ = ["klasse","Ritter4"];
+klasse_Ritter4.__interfaces__ = [klasse_Klasse];
+klasse_Ritter4.prototype = {
+	bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Ritter4
+};
+var klasse_Ritter5 = function() {
+	this.bild = "Ritter5";
+};
+$hxClasses["klasse.Ritter5"] = klasse_Ritter5;
+klasse_Ritter5.__name__ = ["klasse","Ritter5"];
+klasse_Ritter5.__interfaces__ = [klasse_Klasse];
+klasse_Ritter5.prototype = {
+	bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Ritter5
+};
+var klasse_Ritter6 = function() {
+	this.bild = "Ritter6";
+};
+$hxClasses["klasse.Ritter6"] = klasse_Ritter6;
+klasse_Ritter6.__name__ = ["klasse","Ritter6"];
+klasse_Ritter6.__interfaces__ = [klasse_Klasse];
+klasse_Ritter6.prototype = {
+	bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Ritter6
+};
+var klasse_Ritter7 = function() {
+	this.bild = "Ritter7";
+};
+$hxClasses["klasse.Ritter7"] = klasse_Ritter7;
+klasse_Ritter7.__name__ = ["klasse","Ritter7"];
+klasse_Ritter7.__interfaces__ = [klasse_Klasse];
+klasse_Ritter7.prototype = {
+	bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Ritter7
+};
+var klasse_Ritter8 = function() {
+	this.bild = "Ritter8";
+};
+$hxClasses["klasse.Ritter8"] = klasse_Ritter8;
+klasse_Ritter8.__name__ = ["klasse","Ritter8"];
+klasse_Ritter8.__interfaces__ = [klasse_Klasse];
+klasse_Ritter8.prototype = {
+	bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Ritter8
+};
+var klasse_Ritter9 = function() {
+	this.bild = "Ritter9";
+};
+$hxClasses["klasse.Ritter9"] = klasse_Ritter9;
+klasse_Ritter9.__name__ = ["klasse","Ritter9"];
+klasse_Ritter9.__interfaces__ = [klasse_Klasse];
+klasse_Ritter9.prototype = {
+	bild: null
+	,name: null
+	,beschreibung: null
+	,fertigkeiten: null
+	,__class__: klasse_Ritter9
 };
 var lime__$backend_html5_GameDeviceData = function() {
 	this.connected = true;
@@ -44491,7 +44526,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 84250;
+	this.version = 772157;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
@@ -94516,7 +94551,7 @@ while(_g11 < _g2) {
 }
 lime_system_CFFI.available = false;
 lime_system_CFFI.enabled = false;
-lime_utils_Log.level = 3;
+lime_utils_Log.level = 5;
 if(typeof console == "undefined") {
 	console = {}
 }
@@ -94541,7 +94576,6 @@ openfl_display_DisplayObject.__tempStack = new lime_utils_ObjectPool(function() 
 },function(stack) {
 	stack.data.set_length(0);
 });
-CompileTimeClassList.__meta__ = { obj : { classLists : [["klasse,true,klasse.Klasse","klasse.Bauer,klasse.Ritter"]]}};
 haxegon_Col.BLACK = 0;
 haxegon_Col.GREY = 10329501;
 haxegon_Col.GRAY = 10329501;
@@ -94793,6 +94827,15 @@ js_html_compat_Float32Array.BYTES_PER_ELEMENT = 4;
 js_html_compat_Float64Array.BYTES_PER_ELEMENT = 8;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
 klasse_Ritter.__meta__ = { obj : { playable : null}};
+klasse_Ritter10.__meta__ = { obj : { playable : null}};
+klasse_Ritter2.__meta__ = { obj : { playable : null}};
+klasse_Ritter3.__meta__ = { obj : { playable : null}};
+klasse_Ritter4.__meta__ = { obj : { playable : null}};
+klasse_Ritter5.__meta__ = { obj : { playable : null}};
+klasse_Ritter6.__meta__ = { obj : { playable : null}};
+klasse_Ritter7.__meta__ = { obj : { playable : null}};
+klasse_Ritter8.__meta__ = { obj : { playable : null}};
+klasse_Ritter9.__meta__ = { obj : { playable : null}};
 lime__$backend_html5_HTML5HTTPRequest.activeRequests = 0;
 lime__$backend_html5_HTML5HTTPRequest.requestLimit = 4;
 lime__$backend_html5_HTML5HTTPRequest.requestQueue = new List();

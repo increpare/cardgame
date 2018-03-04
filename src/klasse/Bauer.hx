@@ -1,10 +1,8 @@
 package klasse;
-import haxegon.*;
 import std.*;
-import haxe.rtti.Meta;
 
 @:keep
-//@playable
+//@spielbar
 class Bauer implements Klasse
 {   
     public function new(){

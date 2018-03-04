@@ -1,6 +1,7 @@
 package klasse;
 import haxegon.*;
 
+@:keep
 interface Klasse
 {
     public var bild:String;

@@ -5,7 +5,7 @@ import haxe.rtti.Meta;
 
 @:keep
 @spielbar
-class Ritter implements Klasse
+class Ritter7 implements Klasse
 {   
     public function new(){
         //Reflect()
@@ -13,7 +13,7 @@ class Ritter implements Klasse
         //trace(Meta.getType(Ritter));
     }
 
-    public var bild:String = "Ritter";
+    public var bild:String = "Ritter7";
     public var name:StringPair;
     public var beschreibung:StringPair;
     public var fertigkeiten:Array<Fertigkeit>;

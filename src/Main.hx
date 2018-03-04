@@ -12,6 +12,8 @@ class Main {
 	
 	
 	function init(){
+		CompileTime.importPackage("klasse");
+
 		//Truetype fonts look a LOT better when we don't scale the canvas!
 		Gfx.resizescreen(0, 0);
 		Text.font = GUI.font;
@@ -22,21 +24,6 @@ class Main {
 		if (state.language==0){
 			state.language=0;//ok does't do much			
 		}
-		//var r = new klasse.Ritter();
-		//var r = new klasse.Bauer();
-		
-		CompileTime.importPackage("klasse");
-        var klassen = CompileTime.getAllClasses("klasse",klasse.Klasse);
-		for ( k in klassen ) {
-			trace(k);
-			
-			var statics = Meta.getType(k);
-			trace(statics);
-			if (Reflect.hasField(statics,"playable"))
-			{
-				trace("playable :D");
-			}
-		}	
 	}
 	
 	function drawPairButton(x,y,text1,text2,selection:Int) {
