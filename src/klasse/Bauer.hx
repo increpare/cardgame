@@ -19,8 +19,8 @@ class Bauer implements Klasse
     );
 
     public var beschreibung:StringPair = new StringPair(
-        "Er hat ein armes Leben!",
-        "He has a miserable life!"
+        "Er hat ein armes Leben :(",
+        "He has a miserable life :("
     );
 
     public var fertigkeiten:Array<Fertigkeit > = new Array<Fertigkeit >();

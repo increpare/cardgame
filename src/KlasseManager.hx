@@ -6,6 +6,22 @@ import utils.*;
 
 class Klassemanager
 {
+
+    public static var charakterklassen : Map<String,Klasse>;
+
+    public static function klasseBeispiel(kt:Class<Klasse>):Klasse{
+        return charakterklassen[Type.getClassName(kt)];
+    }
+
+    public static function init(){
+        var ks = CompileTime.getAllClasses(Klasse);
+        charakterklassen=new Map<String,Klasse>();
+        for (kt in ks){
+            var k = Type.createInstance(kt,[]);
+            charakterklassen[Type.getClassName(kt)]=k;
+        }
+    }
+
     public static function AlleAufschliessendenKlassen():Array<Class<Klasse> > {     
           
         var ks = CompileTime.getAllClasses(Klasse);

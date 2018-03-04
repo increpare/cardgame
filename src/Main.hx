@@ -7,7 +7,8 @@ class Main {
 
 	function init(){
 		CompileTime.importPackage("klasse");
-
+		Klassemanager.init();
+		
 		//Truetype fonts look a LOT better when we don't scale the canvas!
 		Gfx.resizescreen(0, 0);
 		Text.font = GUI.font;
@@ -15,9 +16,9 @@ class Main {
 		var playableClasses = Klassemanager.AlleSpielbareKlassen();
 		//initial all globals here
 
-		state.language = Save.loadvalue("language");
-		if (state.language==0){
-			state.language=0;//ok does't do much			
+		state.sprache = Save.loadvalue("language");
+		if (state.sprache==0){
+			state.sprache=0;//ok does't do much			
 		}
 	}	
 
@@ -38,9 +39,9 @@ class Main {
 		if (IMGUI.schalter( Text.CENTER,Math.round(h/2+GUI.buttonTextSize*2.0+80),
 		S("Deutsch","German"),
 		S("Englisch","English"),
-		1-state.language)){
-			state.language=1-state.language;
-			Save.savevalue("language",state.language);
+		1-state.sprache)){
+			state.sprache=1-state.sprache;
+			Save.savevalue("language",state.sprache);
 		}
 
 		Text.size=1;

@@ -127,11 +127,7 @@ class IMGUI {
 
 	  Gfx.linethickness=linethickness;
 
-	  var width=39;
-	  var w = Gfx.imagewidth(bild);
-	  if (w+6>=width){
-	  	width=w+6;
-	  }
+	  var width = Gfx.imagewidth(bild);
 
 	  var height=Gfx.imageheight(bild);
 	  if (x==Text.CENTER){
@@ -145,14 +141,20 @@ class IMGUI {
 
 	  var click = collide && Mouse.leftclick();
 
-	  if (collide&& !click){
-	    color=colorhover;
+	var alpha=1.0;
+	  if ( collide && !click ){
+		  if (!an){
+	    	color=colorhover;
+			alpha=0.6;
+		  }
 	  }
 
 	  Gfx.fillbox(x,y,width,height,color);
+	  Gfx.imagealpha=alpha;
 	  Gfx.drawimage(x,y,bild);
 	  Gfx.drawbox(x,y,width,height,borderCol);
-
+	  
+	  Gfx.imagealpha=1.0;
 	  Text.size=oldtextsize;
 
 	  return click;

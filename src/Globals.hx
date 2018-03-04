@@ -16,26 +16,28 @@ class Globals
   };
 
   public static var GUI = {
-      textsize:40,
+      textsize:60,
       buttonTextSize:140,
       buttonPaddingX : 40,
       buttonPaddingY : 5,
       linethickness : 5,
       titleTextSize:415,
-
       subTitleTextSize:215,
 
+    subSubTitleTextSize:120,
+      
       screenPaddingTop:30,
       
       font:"GermaniaOne-Regular",
   };
 
   public static var state = {
-      language:0,
+      sprache:0,
+      auserwaehlte:0,
   };
 
   public static function S(de:String,en:String):String{
-      if (state.language==0){
+      if (state.sprache==0){
           return de;
       } else {
         return en;

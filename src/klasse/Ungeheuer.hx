@@ -19,7 +19,7 @@ class Ungeheuer implements Klasse
     );
 
     public var beschreibung:StringPair = new StringPair(
-        "So groß!",
+        "So einschüchternd groß!",
         "A monstrous being."
     );
 

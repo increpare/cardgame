@@ -1042,7 +1042,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "truetypefonts";
-	var config = { build : "11", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
+	var config = { build : "12", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -4494,7 +4494,7 @@ var Globals = function() { };
 $hxClasses["Globals"] = Globals;
 Globals.__name__ = ["Globals"];
 Globals.S = function(de,en) {
-	if(Globals.state.language == 0) {
+	if(Globals.state.sprache == 0) {
 		return de;
 	} else {
 		return en;
@@ -4568,10 +4568,39 @@ HxOverrides.iter = function(a) {
 		return this.arr[this.cur++];
 	}};
 };
-var KlasseManager = function() { };
-$hxClasses["KlasseManager"] = KlasseManager;
-KlasseManager.__name__ = ["KlasseManager"];
-KlasseManager.AlleAufschliessendenKlassen = function() {
+var Klassemanager = function() { };
+$hxClasses["Klassemanager"] = Klassemanager;
+Klassemanager.__name__ = ["Klassemanager"];
+Klassemanager.klasseBeispiel = function(kt) {
+	var this1 = Klassemanager.charakterklassen;
+	var key = Type.getClassName(kt);
+	var _this = this1;
+	if(__map_reserved[key] != null) {
+		return _this.getReserved(key);
+	} else {
+		return _this.h[key];
+	}
+};
+Klassemanager.init = function() {
+	var ks = CompileTimeClassList.get("null,true,klasse.Klasse");
+	Klassemanager.charakterklassen = new haxe_ds_StringMap();
+	var _g_head = ks.h;
+	while(_g_head != null) {
+		var val = _g_head.item;
+		_g_head = _g_head.next;
+		var kt = val;
+		var k = Type.createInstance(kt,[]);
+		var this1 = Klassemanager.charakterklassen;
+		var k1 = Type.getClassName(kt);
+		var _this = this1;
+		if(__map_reserved[k1] != null) {
+			_this.setReserved(k1,k);
+		} else {
+			_this.h[k1] = k;
+		}
+	}
+};
+Klassemanager.AlleAufschliessendenKlassen = function() {
 	var ks = CompileTimeClassList.get("null,true,klasse.Klasse");
 	var ergebnis = [];
 	var _g_head = ks.h;
@@ -4588,7 +4617,7 @@ KlasseManager.AlleAufschliessendenKlassen = function() {
 	}
 	return ergebnis;
 };
-KlasseManager.AlleSpielbareKlassen = function() {
+Klassemanager.AlleSpielbareKlassen = function() {
 	var ks = CompileTimeClassList.get("null,true,klasse.Klasse");
 	var ergebnis = [];
 	var _g_head = ks.h;
@@ -4603,7 +4632,7 @@ KlasseManager.AlleSpielbareKlassen = function() {
 	}
 	return ergebnis;
 };
-KlasseManager.AlleKlassen = function() {
+Klassemanager.AlleKlassen = function() {
 	var ks = CompileTimeClassList.get("null,true,klasse.Klasse");
 	var ergebnis = [];
 	var _g_head = ks.h;
@@ -4660,12 +4689,13 @@ $hxClasses["Main"] = Main;
 Main.__name__ = ["Main"];
 Main.prototype = {
 	init: function() {
+		Klassemanager.init();
 		haxegon_Gfx.resizescreen(0,0);
 		haxegon_Text.set_font(Globals.GUI.font);
-		var playableClasses = KlasseManager.AlleSpielbareKlassen();
-		Globals.state.language = haxegon_Save.loadvalue("language");
-		if(Globals.state.language == 0) {
-			Globals.state.language = 0;
+		var playableClasses = Klassemanager.AlleSpielbareKlassen();
+		Globals.state.sprache = haxegon_Save.loadvalue("language");
+		if(Globals.state.sprache == 0) {
+			Globals.state.sprache = 0;
 		}
 	}
 	,update: function() {
@@ -4678,9 +4708,9 @@ Main.prototype = {
 		if(utils_IMGUI.button(haxegon_Text.CENTER,Math.round(h / 2 + 80),Globals.S("Zu einer Reise aufbrechen","Set off on an Adventure"))) {
 			haxegon_Scene.change(szene_CharakterAuswahl);
 		}
-		if(utils_IMGUI.schalter(haxegon_Text.CENTER,Math.round(h / 2 + Globals.GUI.buttonTextSize * 2.0 + 80),Globals.S("Deutsch","German"),Globals.S("Englisch","English"),1 - Globals.state.language)) {
-			Globals.state.language = 1 - Globals.state.language;
-			haxegon_Save.savevalue("language",Globals.state.language);
+		if(utils_IMGUI.schalter(haxegon_Text.CENTER,Math.round(h / 2 + Globals.GUI.buttonTextSize * 2.0 + 80),Globals.S("Deutsch","German"),Globals.S("Englisch","English"),1 - Globals.state.sprache)) {
+			Globals.state.sprache = 1 - Globals.state.sprache;
+			haxegon_Save.savevalue("language",Globals.state.sprache);
 		}
 		haxegon_Text.set_size(1);
 	}
@@ -4706,7 +4736,7 @@ ManifestResources.init = function(config) {
 	var data;
 	var manifest;
 	var library;
-	data = "{\"name\":null,\"assets\":\"aoy4:pathy15:data%2Ficon.pngy4:sizei143966y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y34:data%2Fhow%20to%20add%20assets.txtR2i6664R3y4:TEXTR5R7R6tgoR0y38:data%2Fgraphics%2FBilder%2Fritter3.pngR2i3211R3R4R5R9R6tgoR0y37:data%2Fgraphics%2FBilder%2Fritter.pngR2i3242R3R4R5R10R6tgoR0y38:data%2Fgraphics%2FBilder%2Fritter2.pngR2i3570R3R4R5R11R6tgoR0y38:data%2Fgraphics%2FBilder%2Fritter5.pngR2i3293R3R4R5R12R6tgoR0y42:data%2Fgraphics%2FBilder%2Fritter6plus.pngR2i3101R3R4R5R13R6tgoR0y38:data%2Fgraphics%2FBilder%2Fritter4.pngR2i3229R3R4R5R14R6tgoR2i41344R3y4:FONTy9:classNamey40:__ASSET__data_fonts_rosarivo_regular_ttfR5y35:data%2Ffonts%2FRosarivo-Regular.ttfR6tgoR2i33240R3R15R16y43:__ASSET__data_fonts_germaniaone_regular_ttfR5y38:data%2Ffonts%2FGermaniaOne-Regular.ttfR6tgoR2i39244R3R15R16y39:__ASSET__data_fonts_rosarivo_italic_ttfR5y34:data%2Ffonts%2FRosarivo-Italic.ttfR6tgh\",\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
+	data = "{\"name\":null,\"assets\":\"aoy4:pathy15:data%2Ficon.pngy4:sizei143966y4:typey5:IMAGEy2:idR1y7:preloadtgoR0y34:data%2Fhow%20to%20add%20assets.txtR2i6664R3y4:TEXTR5R7R6tgoR0y38:data%2Fgraphics%2Fbilder%2Fritter3.pngR2i3211R3R4R5R9R6tgoR0y37:data%2Fgraphics%2Fbilder%2Fritter.pngR2i5899R3R4R5R10R6tgoR0y38:data%2Fgraphics%2Fbilder%2Fritter2.pngR2i3570R3R4R5R11R6tgoR0y38:data%2Fgraphics%2Fbilder%2Fritter5.pngR2i3293R3R4R5R12R6tgoR0y42:data%2Fgraphics%2Fbilder%2Fritter6plus.pngR2i3101R3R4R5R13R6tgoR0y38:data%2Fgraphics%2Fbilder%2Fritter4.pngR2i3229R3R4R5R14R6tgoR0y35:data%2Fgraphics%2Fbilder%2Fpilz.pngR2i4635R3R4R5R15R6tgoR0y40:data%2Fgraphics%2Fbilder%2Fungeheuer.pngR2i5014R3R4R5R16R6tgoR0y36:data%2Fgraphics%2Fbilder%2Fbauer.pngR2i6110R3R4R5R17R6tgoR2i41344R3y4:FONTy9:classNamey40:__ASSET__data_fonts_rosarivo_regular_ttfR5y35:data%2Ffonts%2FRosarivo-Regular.ttfR6tgoR2i33240R3R18R19y43:__ASSET__data_fonts_germaniaone_regular_ttfR5y38:data%2Ffonts%2FGermaniaOne-Regular.ttfR6tgoR2i39244R3R18R19y39:__ASSET__data_fonts_rosarivo_italic_ttfR5y34:data%2Ffonts%2FRosarivo-Italic.ttfR6tgh\",\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	manifest = lime_utils_AssetManifest.parse(data,rootPath);
 	library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
@@ -44366,7 +44396,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 772157;
+	this.version = 191541;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
@@ -94348,14 +94378,14 @@ szene_CharakterAuswahl.prototype = {
 		haxegon_Text.set_font(Globals.GUI.font);
 	}
 	,update: function() {
-		haxegon_Text.set_size(Globals.GUI.subTitleTextSize);
+		haxegon_Text.set_size(Globals.GUI.subSubTitleTextSize);
 		var h = haxegon_Gfx.screenheight;
 		var w = haxegon_Gfx.screenwidth;
-		var cellw = 128;
-		var cellh = 256;
+		var cellw = 256;
+		var cellh = 384;
 		var cellmarginx = 30;
 		var cellmarginy = 30;
-		var klassen = KlasseManager.AlleSpielbareKlassen();
+		var klassen = Klassemanager.AlleSpielbareKlassen();
 		var klassenZahl = klassen.length;
 		var s = Globals.S("Heldenauswahl","Hero Selection");
 		var th = haxegon_Text.height(s);
@@ -94367,18 +94397,34 @@ szene_CharakterAuswahl.prototype = {
 			++m;
 		}
 		haxegon_Gfx.set_linethickness(Globals.GUI.linethickness);
-		var ty = Globals.GUI.screenPaddingTop + th + Globals.GUI.buttonPaddingY;
+		var ty = Math.round(Globals.GUI.screenPaddingTop + th + Globals.GUI.buttonPaddingY);
 		haxegon_Gfx.drawline(0,ty,w,ty,Globals.PAL.buttonBorderCol);
+		var ty2 = ty + cellmarginy * 2 + cellh;
+		haxegon_Gfx.drawline(0,ty2,w,ty2,Globals.PAL.buttonBorderCol);
 		var imageselectionwidth = cellw * klassenZahl + cellmarginx * (klassenZahl - 1);
-		var l = w / 2 - imageselectionwidth / 2;
+		var l = Math.round(w / 2 - imageselectionwidth / 2);
 		var _g1 = 0;
 		var _g2 = klassenZahl;
 		while(_g1 < _g2) {
 			var i1 = _g1++;
-			haxe_Log.trace(i1,{ fileName : "CharakterAuswahl.hx", lineNumber : 45, className : "szene.CharakterAuswahl", methodName : "update"});
-			haxe_Log.trace([l + (cellw + cellmarginx) * i1,ty + cellmarginy,cellw,cellh,Globals.PAL.buttonBorderCol],{ fileName : "CharakterAuswahl.hx", lineNumber : 46, className : "szene.CharakterAuswahl", methodName : "update"});
-			haxegon_Gfx.drawbox(l + (cellw + cellmarginx) * i1,ty + cellmarginy,cellw,cellh,Globals.PAL.buttonBorderCol);
+			var m1 = klassen[i1];
+			var t = Klassemanager.klasseBeispiel(m1);
+			var bump = 0;
+			if(Globals.state.auserwaehlte == i1) {
+				bump += cellmarginy * 2;
+			}
+			if(utils_IMGUI.Bildbutton(l + (cellw + cellmarginx) * i1,ty + cellmarginy + bump,"bilder/" + t.bild,Globals.state.auserwaehlte == i1)) {
+				haxe_Log.trace("clicked",{ fileName : "CharakterAuswahl.hx", lineNumber : 59, className : "szene.CharakterAuswahl", methodName : "update"});
+				Globals.state.auserwaehlte = i1;
+			}
 		}
+		var bs = Klassemanager.klasseBeispiel(klassen[Globals.state.auserwaehlte]);
+		var ty3 = ty2 + cellmarginy;
+		haxegon_Text.set_size(Globals.GUI.subSubTitleTextSize);
+		haxegon_Text.display(haxegon_Text.CENTER,ty3,bs.name.Eval());
+		var ty4 = ty3 + haxegon_Text.get_size();
+		haxegon_Text.set_size(Globals.GUI.textsize);
+		haxegon_Text.display(20,ty4,bs.beschreibung.Eval(),Globals.PAL.fg);
 	}
 	,__class__: szene_CharakterAuswahl
 };
@@ -94466,7 +94512,7 @@ utils_IMGUI.button = function(x,y,text) {
 	haxegon_Text.set_size(oldtextsize);
 	return click;
 };
-utils_IMGUI.imageButton = function(x,y,text) {
+utils_IMGUI.Bildbutton = function(x,y,bild,an) {
 	var oldtextsize = haxegon_Text.get_size();
 	haxegon_Text.set_size(Globals.GUI.buttonTextSize);
 	var textcolor = Globals.PAL.buttonTextCol;
@@ -94477,27 +94523,27 @@ utils_IMGUI.imageButton = function(x,y,text) {
 	var xpadding = Globals.GUI.buttonPaddingX;
 	var ypadding = Globals.GUI.buttonPaddingY;
 	haxegon_Gfx.set_linethickness(linethickness);
-	var width = 39;
-	var w = Math.round(haxegon_Text.width(text));
-	if(w + 6 >= width) {
-		width = w + 6;
-	}
-	width += xpadding * 2;
-	var height = Math.round(haxegon_Text.height(text));
+	var width = haxegon_Gfx.imagewidth(bild);
+	var height = haxegon_Gfx.imageheight(bild);
 	if(x == haxegon_Text.CENTER) {
 		x = Math.round(haxegon_Gfx.screenwidthmid - width / 2);
 	}
-	height += ypadding * 2;
 	var dx = haxegon_Mouse.get_x() - x;
 	var dy = haxegon_Mouse.get_y() - y;
 	var collide = !(dx < 0 || dx >= width || dy < 0 || dy >= height);
 	var click = collide && haxegon_Mouse.leftclick();
+	var alpha = 1.0;
 	if(collide && !click) {
-		color = colorhover;
+		if(!an) {
+			color = colorhover;
+			alpha = 0.6;
+		}
 	}
 	haxegon_Gfx.fillbox(x,y,width,height,color);
+	haxegon_Gfx.set_imagealpha(alpha);
+	haxegon_Gfx.drawimage(x,y,bild);
 	haxegon_Gfx.drawbox(x,y,width,height,borderCol);
-	haxegon_Text.display(x + xpadding,y + ypadding,text,textcolor);
+	haxegon_Gfx.set_imagealpha(1.0);
 	haxegon_Text.set_size(oldtextsize);
 	return click;
 };
@@ -94566,7 +94612,7 @@ while(_g11 < _g2) {
 }
 lime_system_CFFI.available = false;
 lime_system_CFFI.enabled = false;
-lime_utils_Log.level = 5;
+lime_utils_Log.level = 3;
 if(typeof console == "undefined") {
 	console = {}
 }
@@ -94613,8 +94659,8 @@ haxegon_Col.MAGENTA = 16711935;
 haxegon_Col.TRANSPARENT = 1;
 haxegon_Col.hslval = [0.0,0.0,0.0];
 Globals.PAL = { fg : haxegon_Col.WHITE, bg : haxegon_Col.BLACK, buttonTextCol : haxegon_Col.WHITE, buttonBorderCol : haxegon_Col.WHITE, buttonCol : haxegon_Col.BLACK, buttonHighlightCol : 4473924, buttonHighlightCol2 : 13421772, titelFarbe : haxegon_Col.RED};
-Globals.GUI = { textsize : 40, buttonTextSize : 140, buttonPaddingX : 40, buttonPaddingY : 5, linethickness : 5, titleTextSize : 415, subTitleTextSize : 215, screenPaddingTop : 30, font : "GermaniaOne-Regular"};
-Globals.state = { language : 0};
+Globals.GUI = { textsize : 60, buttonTextSize : 140, buttonPaddingX : 40, buttonPaddingY : 5, linethickness : 5, titleTextSize : 415, subTitleTextSize : 215, subSubTitleTextSize : 120, screenPaddingTop : 30, font : "GermaniaOne-Regular"};
+Globals.state = { sprache : 0, auserwaehlte : 0};
 openfl_text_Font.__fontByName = new haxe_ds_StringMap();
 openfl_text_Font.__registeredFonts = [];
 Xml.Element = 0;
