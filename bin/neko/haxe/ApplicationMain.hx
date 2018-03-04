@@ -20,17 +20,17 @@ import haxe.macro.Expr;
 	
 	public static function main () {
 		
-		var projectName = "Ruestung";
+		var projectName = "truetypefonts";
 		
 		var config = {
 			
-			build: "1",
-			company: "by @increpare + @noa_cubestudio",
-			file: "Ruestung",
-			fps: 30,
-			name: "Ruestung",
+			build: "3",
+			company: "Haxegon",
+			file: "truetypefonts",
+			fps: 60,
+			name: "Truetype Fonts",
 			orientation: "landscape",
-			packageName: "com.increpare.ruestung",
+			packageName: "com.yournamehere.truetypefonts",
 			version: "1.0.0",
 			windows: [
 				
@@ -45,16 +45,16 @@ import haxe.macro.Expr;
 					display: 0,
 					fullscreen: false,
 					hardware: true,
-					height: null,
+					height: 860,
 					hidden: #if munit true #else false #end,
 					maximized: false,
 					minimized: false,
 					parameters: {},
 					resizable: true,
 					stencilBuffer: true,
-					title: "Ruestung",
+					title: "Truetype Fonts",
 					vsync: true,
-					width: null,
+					width: 840,
 					x: null,
 					y: null
 				},
@@ -74,7 +74,7 @@ import haxe.macro.Expr;
 		
 		#if (js && html5)
 		#if (munit || utest)
-		lime.system.System.embed (projectName, null, null, null, config);
+		lime.system.System.embed (projectName, null, 840, 860, config);
 		#end
 		#else
 		create (config);

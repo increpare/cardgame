@@ -1,22 +1,145 @@
 import haxegon.*;
+import Globals.*;
 
 class Main {
+	// These fonts are located in the data/fonts/ directory.
+	
+	// Haxegon supports both TrueType fonts (which are high resolution and anti aliased)
+	// or Bitmap fonts (which are crisp and good for low resolutions). This demo
+	// shows truetype fonts only.
+	
+	
 	function init(){
-		Gfx.resizescreen(768, 480);
-		Text.font = "pixel";
+		//Truetype fonts look a LOT better when we don't scale the canvas!
+		Gfx.resizescreen(0, 0);
+		Text.font = GUI.font;
 	}
 	
-	function update() {
-		//Change scene when you click the mouse.
-		if (Mouse.leftclick()) {
-			Scene.change(TitleScene);           // Loads the "Space.hx" file.
-		}
+	function drawPairButton(x,y,text1,text2,selection:Int) {
+		var oldtextsize=Text.size;
+		Text.size = GUI.buttonTextSize;
 		
-		//Show the title screen text.		
-		Text.size = 4;
-		Text.align = Text.LEFT;
-		Text.display(Text.CENTER, Gfx.screenheightmid - 30, "SCENE CHANGE EXAMPLE", Col.WHITE);
-		Text.size = 2;
-		Text.display(Text.CENTER, Gfx.screenheightmid + 10, "LEFT CLICK TO CHANGE", Col.WHITE);
-  }
+	  var textcolor =PAL.buttonTextCol;
+	  var color = PAL.buttonCol;
+	  var colorhover = PAL.buttonHighlightCol;
+	  var borderCol = PAL.buttonBorderCol;
+
+	  var linethickness=GUI.linethickness;
+	  var xpadding = GUI.buttonPaddingX;
+	  var ypadding = GUI.buttonPaddingY;
+
+	  Gfx.linethickness=linethickness;
+
+	  var width=39;
+	  var w1 = Math.round(Text.width(text1));
+	  var w2 = Math.round(Text.width(text1));
+	  var w = w1+w2+xpadding*2;
+	  if (w+6>=width){
+	  	width=w+6;
+	  }
+	  width+=xpadding*2;
+
+	  var height=Math.round(Math.max(Text.height(text1),Text.height(text2)));
+	  if (x==Text.CENTER){
+		  x=Math.round(Gfx.screenwidthmid-width/2);
+	  }
+	  height+=ypadding*2;
+
+	  var dx = Mouse.x-x;
+	  var dy = Mouse.y-y;
+
+	  var collide = !(dx<0||dx>=width||dy<0||dy>=height);
+
+	  var click = collide && Mouse.leftclick();
+
+	  if (collide&& !click){
+	    color=colorhover;
+	  }
+
+	  Gfx.fillbox(x,y,width,height,color);
+	  if (selection==1){
+		  Gfx.fillbox(x,y,w1+2*xpadding,height,PAL.buttonTextCol);
+	  } else {
+		  Gfx.fillbox(x+w1+2*xpadding,y,x+width-(x+w1+2*xpadding),height,PAL.buttonTextCol);
+	  }
+
+	  Gfx.drawbox(x,y,width,height,borderCol);
+
+	  Text.display(x+xpadding, y+ypadding, text1, selection==0?textcolor:PAL.buttonCol);
+	  Text.display(x+xpadding+w1+xpadding*2, y+ypadding,text2,selection==1?textcolor:PAL.buttonCol);
+
+
+	  Text.size=oldtextsize;
+
+	  return click;
+	}
+
+	function drawButton(x,y,text) {
+		var oldtextsize=Text.size;
+		Text.size = GUI.buttonTextSize;
+		
+	  var textcolor =PAL.buttonTextCol;
+	  var color = PAL.buttonCol;
+	  var colorhover = PAL.buttonHighlightCol;
+	  var borderCol = PAL.buttonBorderCol;
+
+	  var linethickness=GUI.linethickness;
+	  var xpadding = GUI.buttonPaddingX;
+	  var ypadding = GUI.buttonPaddingY;
+
+	  Gfx.linethickness=linethickness;
+
+	  var width=39;
+	  var w = Math.round(Text.width(text));
+	  if (w+6>=width){
+	  	width=w+6;
+	  }
+	  width+=xpadding*2;
+
+	  var height=Math.round(Text.height(text));
+	  if (x==Text.CENTER){
+		  x=Math.round(Gfx.screenwidthmid-width/2);
+	  }
+	  height+=ypadding*2;
+
+	  var dx = Mouse.x-x;
+	  var dy = Mouse.y-y;
+
+	  var collide = !(dx<0||dx>=width||dy<0||dy>=height);
+
+	  var click = collide && Mouse.leftclick();
+
+	  if (collide&& !click){
+	    color=colorhover;
+	  }
+
+	  Gfx.fillbox(x,y,width,height,color);
+	  Gfx.drawbox(x,y,width,height,borderCol);
+
+	  Text.display(x+xpadding, y+ypadding, text, textcolor);
+	  Text.size=oldtextsize;
+
+	  return click;
+	}
+
+	function update() {	
+		// Draw a white background
+		Gfx.clearscreen(PAL.bg);
+		var h = Gfx.screenheight;
+		var w = Gfx.screenwidth;
+		Text.wordwrap=w;
+
+		Text.size=GUI.titleTextSize;
+		Text.display(Text.CENTER,h/5,S("Ruestung","Ruestung"));
+
+
+		drawButton( Text.CENTER,Math.round(h/2),S("Zu einer Reise aufbrechen","Set off on an Adventure"));
+
+		if (drawPairButton( Text.CENTER,Math.round(h/2+GUI.buttonTextSize*1.5),
+		S("Deutsch","German"),
+		S("Englisch","English"),
+		1-state.language)){
+			state.language=1-state.language;
+		}
+	}
 }

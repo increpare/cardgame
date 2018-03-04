@@ -4,7 +4,7 @@
 	
 	<meta charset="utf-8">
 	
-	<title>Ruestung</title>
+	<title>Truetype Fonts</title>
 	
 	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,10 +16,7 @@
 	<script type="text/javascript" src="./lib/howler.min.js"></script>
 	<script type="text/javascript" src="./lib/pako.min.js"></script>
 	<script type="text/javascript" src="./lib/FileSaver.min.js"></script>
-	<script type="text/javascript" src="js/recorder.js"></script>
-	<script type="text/javascript" src="js/rng.js"></script>
-	<script type="text/javascript" src="js/sfxr.js"></script>
-	<script type="text/javascript" src="./Ruestung.js"></script>
+	<script type="text/javascript" src="./truetypefonts.js"></script>
 	
 	<script>
 		window.addEventListener ("touchmove", function (event) { event.preventDefault (); }, false);
@@ -31,62 +28,34 @@
 	
 	<style>
 		html,body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-
-		canvas {				
-		  image-rendering: -moz-crisp-edges;
-		  image-rendering: -webkit-crisp-edges;
-		  image-rendering: pixelated;
-		  image-rendering: crisp-edges;
-		  -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
-		}
 		#openfl-content { background: #000000; width: 100%; height: 100%; }
 		@font-face {
-			font-family: 'Inconsolata Bold';
-			src: url('data/graphics/fonts/inconsolata_bold.eot');
-			src: url('data/graphics/fonts/inconsolata_bold.eot?#iefix') format('embedded-opentype'),
-			url('data/graphics/fonts/inconsolata_bold.svg#my-font-family') format('svg'),
-			url('data/graphics/fonts/inconsolata_bold.woff') format('woff'),
-			url('data/graphics/fonts/inconsolata_bold.ttf') format('truetype');
+			font-family: 'Rosarivo';
+			src: url('data/fonts/Rosarivo-Regular.eot');
+			src: url('data/fonts/Rosarivo-Regular.eot?#iefix') format('embedded-opentype'),
+			url('data/fonts/Rosarivo-Regular.svg#my-font-family') format('svg'),
+			url('data/fonts/Rosarivo-Regular.woff') format('woff'),
+			url('data/fonts/Rosarivo-Regular.ttf') format('truetype');
 			font-weight: normal;
 			font-style: normal;
 		}
 		@font-face {
-			font-family: 'Inconsolata';
-			src: url('data/graphics/fonts/inconsolata.eot');
-			src: url('data/graphics/fonts/inconsolata.eot?#iefix') format('embedded-opentype'),
-			url('data/graphics/fonts/inconsolata.svg#my-font-family') format('svg'),
-			url('data/graphics/fonts/inconsolata.woff') format('woff'),
-			url('data/graphics/fonts/inconsolata.ttf') format('truetype');
+			font-family: 'Germania One';
+			src: url('data/fonts/GermaniaOne-Regular.eot');
+			src: url('data/fonts/GermaniaOne-Regular.eot?#iefix') format('embedded-opentype'),
+			url('data/fonts/GermaniaOne-Regular.svg#my-font-family') format('svg'),
+			url('data/fonts/GermaniaOne-Regular.woff') format('woff'),
+			url('data/fonts/GermaniaOne-Regular.ttf') format('truetype');
 			font-weight: normal;
 			font-style: normal;
 		}
 		@font-face {
-			font-family: 'Oswald Regular';
-			src: url('data/graphics/fonts/oswald.eot');
-			src: url('data/graphics/fonts/oswald.eot?#iefix') format('embedded-opentype'),
-			url('data/graphics/fonts/oswald.svg#my-font-family') format('svg'),
-			url('data/graphics/fonts/oswald.woff') format('woff'),
-			url('data/graphics/fonts/oswald.ttf') format('truetype');
-			font-weight: normal;
-			font-style: normal;
-		}
-		@font-face {
-			font-family: 'Open Sans';
-			src: url('data/graphics/fonts/opensans.eot');
-			src: url('data/graphics/fonts/opensans.eot?#iefix') format('embedded-opentype'),
-			url('data/graphics/fonts/opensans.svg#my-font-family') format('svg'),
-			url('data/graphics/fonts/opensans.woff') format('woff'),
-			url('data/graphics/fonts/opensans.ttf') format('truetype');
-			font-weight: normal;
-			font-style: normal;
-		}
-		@font-face {
-			font-family: 'Shadows Into Light';
-			src: url('data/graphics/fonts/shadowsintolight.eot');
-			src: url('data/graphics/fonts/shadowsintolight.eot?#iefix') format('embedded-opentype'),
-			url('data/graphics/fonts/shadowsintolight.svg#my-font-family') format('svg'),
-			url('data/graphics/fonts/shadowsintolight.woff') format('woff'),
-			url('data/graphics/fonts/shadowsintolight.ttf') format('truetype');
+			font-family: 'Rosarivo Italic';
+			src: url('data/fonts/Rosarivo-Italic.eot');
+			src: url('data/fonts/Rosarivo-Italic.eot?#iefix') format('embedded-opentype'),
+			url('data/fonts/Rosarivo-Italic.svg#my-font-family') format('svg'),
+			url('data/fonts/Rosarivo-Italic.woff') format('woff'),
+			url('data/fonts/Rosarivo-Italic.ttf') format('truetype');
 			font-weight: normal;
 			font-style: normal;
 		}
@@ -101,7 +70,7 @@
 	<div id="openfl-content"></div>
 	
 	<script type="text/javascript">
-		lime.embed ("Ruestung", "openfl-content", null, null, { parameters: {} });
+		lime.embed ("truetypefonts", "openfl-content", 840, 860, { parameters: {} });
 	</script>
 	
 </body>
