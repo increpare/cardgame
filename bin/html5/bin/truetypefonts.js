@@ -1042,7 +1042,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "truetypefonts";
-	var config = { build : "12", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
+	var config = { build : "13", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -20302,7 +20302,7 @@ klasse_Klasse.prototype = {
 };
 var klasse_Bauer = function() {
 	this.fertigkeiten = [];
-	this.beschreibung = new utils_StringPair("Er hat ein armes Leben!","He has a miserable life!");
+	this.beschreibung = new utils_StringPair("Er hat ein armes Leben :(","He has a miserable life :(");
 	this.name = new utils_StringPair("Bauer","Peasant");
 	this.bild = "bauer";
 	this.spielbar = true;
@@ -20354,7 +20354,7 @@ klasse_Ritter.prototype = {
 };
 var klasse_Ungeheuer = function() {
 	this.fertigkeiten = [];
-	this.beschreibung = new utils_StringPair("So groß!","A monstrous being.");
+	this.beschreibung = new utils_StringPair("So einschüchternd groß!","A monstrous being.");
 	this.name = new utils_StringPair("Ungeheuer","Immensity");
 	this.bild = "ungeheuer";
 	this.spielbar = true;
@@ -94419,12 +94419,17 @@ szene_CharakterAuswahl.prototype = {
 			}
 		}
 		var bs = Klassemanager.klasseBeispiel(klassen[Globals.state.auserwaehlte]);
-		var ty3 = ty2 + cellmarginy;
+		var ty3 = ty2 + 4 * cellmarginy;
 		haxegon_Text.set_size(Globals.GUI.subSubTitleTextSize);
 		haxegon_Text.display(haxegon_Text.CENTER,ty3,bs.name.Eval());
-		var ty4 = ty3 + haxegon_Text.get_size();
+		var ty4 = ty3 + haxegon_Text.get_size() + 2 * cellmarginy;
 		haxegon_Text.set_size(Globals.GUI.textsize);
 		haxegon_Text.display(20,ty4,bs.beschreibung.Eval(),Globals.PAL.fg);
+		if(utils_IMGUI.button(0,h - Globals.GUI.buttonTextSize - 8 * Globals.GUI.buttonPaddingY,Globals.S("Zurück","Back"))) {
+			haxegon_Scene.change(Main);
+		}
+		haxegon_Text.set_size(Globals.GUI.buttonTextSize);
+		var tmp = utils_IMGUI.button(w - Math.round(haxegon_Text.width(Globals.S("Vormarsch!","Onwards"))) - 2 * Globals.GUI.buttonPaddingX - 4,h - Globals.GUI.buttonTextSize - 8 * Globals.GUI.buttonPaddingY,Globals.S("Vormarsch!","Onwards"));
 	}
 	,__class__: szene_CharakterAuswahl
 };

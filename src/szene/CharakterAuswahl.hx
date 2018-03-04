@@ -64,15 +64,31 @@ class CharakterAuswahl {
 
 		var bs : klasse.Klasse = Klassemanager.klasseBeispiel(klassen[state.auserwaehlte]);
 
-		var ty3 = ty2+cellmarginy;
+		var ty3 = ty2+4*cellmarginy;
 
 
 		Text.size=GUI.subSubTitleTextSize;
 		Text.display(Text.CENTER,ty3,bs.name.Eval());
-		var ty4=ty3+Text.size;
+		var ty4=ty3+Text.size+2*cellmarginy;
 		
 		Text.size = GUI.textsize;
 		Text.display(20,ty4,bs.beschreibung.Eval(),PAL.fg);
+	
+		if (IMGUI.button(
+				0,
+				h-GUI.buttonTextSize-8*GUI.buttonPaddingY,
+				S("Zurück","Back"))
+			) {
+			Scene.change(Main);
+		}
 
+		Text.size=GUI.buttonTextSize;
+		if (IMGUI.button(
+				w-Math.round(Text.width(S("Vormarsch!","Onwards")))-2*GUI.buttonPaddingX-4,
+				h-GUI.buttonTextSize-8*GUI.buttonPaddingY,
+				S("Vormarsch!","Onwards!"))
+			) {
+			//Scene.change(szene.Main);
+		}		
 	}
 }

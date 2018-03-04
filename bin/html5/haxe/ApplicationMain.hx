@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "12",
+			build: "13",
 			company: "increpare games",
 			file: "truetypefonts",
 			fps: 60,
