@@ -33,9 +33,12 @@
 	<source path="plugins" />
 	<haxelib name="openfl" />
 	<haxelib name="haxegon" />
-	<haxedef name="windowwidth" value="${windowwidth}" />
+	
+  <haxedef name="windowwidth" value="${windowwidth}" />
   <haxedef name="windowheight" value="${windowheight}" />
   
+  <haxeflag name="--connect" value="6000"/>
+
 	<assets path="data" exclude="*.mp3" if="cpp || neko"/>
 	<assets path="data" exclude="*.ogg" if="flash"/>
 	<assets path="data" if="html5"/>

@@ -19,6 +19,7 @@
 -D openfl-flash
 -D windowwidth=840
 -D web
+--connect 6000
 -cp bin/flash
 -swf-lib obj/assets.swf
 -swf-version 17

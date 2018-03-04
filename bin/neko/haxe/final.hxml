@@ -26,6 +26,8 @@
 -D mac
 -D desktop
 --remap flash:openfl
+--connect 6000
+--connect 6000
 -cp bin/neko/haxe
 -neko bin/neko/obj/ApplicationMain.n
 --macro keep("haxegon.Load")

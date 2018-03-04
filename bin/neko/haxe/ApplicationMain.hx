@@ -24,13 +24,13 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "3",
-			company: "Haxegon",
+			build: "6",
+			company: "increpare games",
 			file: "truetypefonts",
 			fps: 60,
-			name: "Truetype Fonts",
+			name: "Ruestug",
 			orientation: "landscape",
-			packageName: "com.yournamehere.truetypefonts",
+			packageName: "com.increpare.Ruestung",
 			version: "1.0.0",
 			windows: [
 				
@@ -52,7 +52,7 @@ import haxe.macro.Expr;
 					parameters: {},
 					resizable: true,
 					stencilBuffer: true,
-					title: "Truetype Fonts",
+					title: "Ruestug",
 					vsync: true,
 					width: 840,
 					x: null,

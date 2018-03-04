@@ -10,7 +10,9 @@ class Globals
       buttonTextCol : Col.WHITE,
       buttonBorderCol : Col.WHITE,
       buttonCol : Col.BLACK,
-      buttonHighlightCol : Col.GRAY,
+      buttonHighlightCol : 0x444444,
+      buttonHighlightCol2 : 0xcccccc,
+      titelFarbe: Col.RED,
   };
 
   public static var GUI = {
@@ -20,6 +22,11 @@ class Globals
       buttonPaddingY : 5,
       linethickness : 5,
       titleTextSize:415,
+
+      subTitleTextSize:215,
+
+      screenPaddingTop:30,
+      
       font:"GermaniaOne-Regular",
   };
 

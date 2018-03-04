@@ -20,6 +20,7 @@
 -D html5
 -D web
 --remap flash:openfl
+--connect 6000
 -js bin/html5/bin/truetypefonts.js
 -cp bin/html5/haxe
 -D html5

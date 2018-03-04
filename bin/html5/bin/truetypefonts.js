@@ -1042,7 +1042,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "truetypefonts";
-	var config = { build : "5", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
+	var config = { build : "6", company : "increpare games", file : "truetypefonts", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -3913,6 +3913,111 @@ DocumentClass.__super__ = haxegon_Load;
 DocumentClass.prototype = $extend(haxegon_Load.prototype,{
 	__class__: DocumentClass
 });
+var CharacterSelect = function() { };
+$hxClasses["CharacterSelect"] = CharacterSelect;
+CharacterSelect.__name__ = ["CharacterSelect"];
+CharacterSelect.prototype = {
+	init: function() {
+		haxegon_Gfx.resizescreen(0,0);
+		haxegon_Text.set_font(Globals.GUI.font);
+	}
+	,drawPairButton: function(x,y,text1,text2,selection) {
+		var oldtextsize = haxegon_Text.get_size();
+		haxegon_Text.set_size(Globals.GUI.buttonTextSize);
+		var textcolor = Globals.PAL.buttonTextCol;
+		var color = Globals.PAL.buttonCol;
+		var colorhover = Globals.PAL.buttonHighlightCol;
+		var borderCol = Globals.PAL.buttonBorderCol;
+		var linethickness = Globals.GUI.linethickness;
+		var xpadding = Globals.GUI.buttonPaddingX;
+		var ypadding = Globals.GUI.buttonPaddingY;
+		haxegon_Gfx.set_linethickness(linethickness);
+		var width = 39;
+		var w1 = Math.round(haxegon_Text.width(text1));
+		var w2 = Math.round(haxegon_Text.width(text1));
+		var w = w1 + w2 + xpadding * 2;
+		if(w + 6 >= width) {
+			width = w + 6;
+		}
+		width += xpadding * 2;
+		var height = Math.round(Math.max(haxegon_Text.height(text1),haxegon_Text.height(text2)));
+		if(x == haxegon_Text.CENTER) {
+			x = Math.round(haxegon_Gfx.screenwidthmid - width / 2);
+		}
+		height += ypadding * 2;
+		var dx = haxegon_Mouse.get_x() - x;
+		var dy = haxegon_Mouse.get_y() - y;
+		var collide = !(dx < 0 || dx >= width || dy < 0 || dy >= height);
+		var click = collide && haxegon_Mouse.leftclick();
+		if(collide && !click) {
+			color = colorhover;
+		}
+		haxegon_Gfx.fillbox(x,y,width,height,color);
+		if(selection == 1) {
+			haxegon_Gfx.fillbox(x,y,w1 + 2 * xpadding,height,Globals.PAL.buttonTextCol);
+		} else {
+			haxegon_Gfx.fillbox(x + w1 + 2 * xpadding,y,x + width - (x + w1 + 2 * xpadding),height,Globals.PAL.buttonTextCol);
+		}
+		haxegon_Gfx.drawbox(x,y,width,height,borderCol);
+		haxegon_Text.display(x + xpadding,y + ypadding,text1,selection == 0 ? textcolor : Globals.PAL.buttonCol);
+		haxegon_Text.display(x + xpadding + w1 + xpadding * 2,y + ypadding,text2,selection == 1 ? textcolor : Globals.PAL.buttonCol);
+		haxegon_Text.set_size(oldtextsize);
+		return click;
+	}
+	,drawButton: function(x,y,text) {
+		var oldtextsize = haxegon_Text.get_size();
+		haxegon_Text.set_size(Globals.GUI.buttonTextSize);
+		var textcolor = Globals.PAL.buttonTextCol;
+		var color = Globals.PAL.buttonCol;
+		var colorhover = Globals.PAL.buttonHighlightCol;
+		var borderCol = Globals.PAL.buttonBorderCol;
+		var linethickness = Globals.GUI.linethickness;
+		var xpadding = Globals.GUI.buttonPaddingX;
+		var ypadding = Globals.GUI.buttonPaddingY;
+		haxegon_Gfx.set_linethickness(linethickness);
+		var width = 39;
+		var w = Math.round(haxegon_Text.width(text));
+		if(w + 6 >= width) {
+			width = w + 6;
+		}
+		width += xpadding * 2;
+		var height = Math.round(haxegon_Text.height(text));
+		if(x == haxegon_Text.CENTER) {
+			x = Math.round(haxegon_Gfx.screenwidthmid - width / 2);
+		}
+		height += ypadding * 2;
+		var dx = haxegon_Mouse.get_x() - x;
+		var dy = haxegon_Mouse.get_y() - y;
+		var collide = !(dx < 0 || dx >= width || dy < 0 || dy >= height);
+		var click = collide && haxegon_Mouse.leftclick();
+		if(collide && !click) {
+			color = colorhover;
+		}
+		haxegon_Gfx.fillbox(x,y,width,height,color);
+		haxegon_Gfx.drawbox(x,y,width,height,borderCol);
+		haxegon_Text.display(x + xpadding,y + ypadding,text,textcolor);
+		haxegon_Text.set_size(oldtextsize);
+		return click;
+	}
+	,update: function() {
+		haxegon_Text.set_size(Globals.GUI.subTitleTextSize);
+		var h = haxegon_Gfx.screenheight;
+		var w = haxegon_Gfx.screenwidth;
+		var s = Globals.S("Heldenauswahl","Hero Selection");
+		var th = haxegon_Text.height(s);
+		haxegon_Text.display(haxegon_Text.CENTER,Globals.GUI.screenPaddingTop,s);
+		var _g = 0;
+		while(_g < 3) {
+			var i = _g++;
+			var m = haxegon_Save.loadvalue("unlocked");
+			++m;
+		}
+		haxegon_Gfx.set_linethickness(Globals.GUI.linethickness);
+		var ty = Globals.GUI.screenPaddingTop + th + Globals.GUI.buttonPaddingY;
+		haxegon_Gfx.drawline(0,ty,w,ty,Globals.PAL.buttonBorderCol);
+	}
+	,__class__: CharacterSelect
+};
 var EReg = function(r,opt) {
 	this.r = new RegExp(r,opt.split("u").join(""));
 };
@@ -4241,7 +4346,9 @@ Main.prototype = {
 		var textcolor = Globals.PAL.buttonTextCol;
 		var color = Globals.PAL.buttonCol;
 		var colorhover = Globals.PAL.buttonHighlightCol;
+		var colorhover2 = Globals.PAL.buttonHighlightCol2;
 		var borderCol = Globals.PAL.buttonBorderCol;
+		var lightbgcol = Globals.PAL.buttonTextCol;
 		var linethickness = Globals.GUI.linethickness;
 		var xpadding = Globals.GUI.buttonPaddingX;
 		var ypadding = Globals.GUI.buttonPaddingY;
@@ -4263,14 +4370,15 @@ Main.prototype = {
 		var dy = haxegon_Mouse.get_y() - y;
 		var collide = !(dx < 0 || dx >= width || dy < 0 || dy >= height);
 		var click = collide && haxegon_Mouse.leftclick();
-		if(collide && !click) {
+		if(collide) {
 			color = colorhover;
+			lightbgcol = colorhover2;
 		}
 		haxegon_Gfx.fillbox(x,y,width,height,color);
 		if(selection == 1) {
-			haxegon_Gfx.fillbox(x,y,w1 + 2 * xpadding,height,Globals.PAL.buttonTextCol);
+			haxegon_Gfx.fillbox(x,y,w1 + 2 * xpadding,height,lightbgcol);
 		} else {
-			haxegon_Gfx.fillbox(x + w1 + 2 * xpadding,y,x + width - (x + w1 + 2 * xpadding),height,Globals.PAL.buttonTextCol);
+			haxegon_Gfx.fillbox(x + w1 + 2 * xpadding,y,x + width - (x + w1 + 2 * xpadding),height,lightbgcol);
 		}
 		haxegon_Gfx.drawbox(x,y,width,height,borderCol);
 		haxegon_Text.display(x + xpadding,y + ypadding,text1,selection == 0 ? textcolor : Globals.PAL.buttonCol);
@@ -4319,11 +4427,14 @@ Main.prototype = {
 		var w = haxegon_Gfx.screenwidth;
 		haxegon_Text.set_wordwrap(w);
 		haxegon_Text.set_size(Globals.GUI.titleTextSize);
-		haxegon_Text.display(haxegon_Text.CENTER,h / 5,Globals.S("Spiel","Game"));
-		this.drawButton(haxegon_Text.CENTER,Math.round(h / 2),Globals.S("Zu einer Reise aufbrechen","Set off on an Adventure"));
-		if(this.drawPairButton(haxegon_Text.CENTER,Math.round(h / 2 + Globals.GUI.buttonTextSize * 1.5),Globals.S("Deutsch","German"),Globals.S("Englisch","English"),1 - Globals.state.language)) {
+		haxegon_Text.display(haxegon_Text.CENTER,h / 5,Globals.S("Rüstung","Rüstung"),Globals.PAL.titelFarbe);
+		if(this.drawButton(haxegon_Text.CENTER,Math.round(h / 2 + 80),Globals.S("Zu einer Reise aufbrechen","Set off on an Adventure"))) {
+			haxegon_Scene.change(CharacterSelect);
+		}
+		if(this.drawPairButton(haxegon_Text.CENTER,Math.round(h / 2 + Globals.GUI.buttonTextSize * 2.0 + 80),Globals.S("Deutsch","German"),Globals.S("Englisch","English"),1 - Globals.state.language)) {
 			Globals.state.language = 1 - Globals.state.language;
 		}
+		haxegon_Text.set_size(1);
 	}
 	,__class__: Main
 };
@@ -18168,6 +18279,95 @@ haxegon_S.isnumber = function(currentstring) {
 		return true;
 	}
 };
+var haxegon_Save = function() { };
+$hxClasses["haxegon.Save"] = haxegon_Save;
+haxegon_Save.__name__ = ["haxegon","Save"];
+haxegon_Save.__properties__ = {set_filename:"set_filename",get_filename:"get_filename",get_keys:"get_keys"};
+haxegon_Save.savevalue = function(key,value) {
+	if(haxegon_Save.so == null) {
+		haxegon_Save.changesavefile("haxegongame");
+	}
+	haxegon_Save.so.data[key] = value;
+	try {
+		haxegon_Save.so.flush();
+	} catch( e ) {
+		haxe_CallStack.lastException = e;
+		haxegon_Debug.log("Error: Unable to save \"" + key + "\".",{ fileName : "Save.hx", lineNumber : 14, className : "haxegon.Save", methodName : "savevalue"});
+	}
+	haxegon_Save.keylistdirty = true;
+};
+haxegon_Save.exists = function(key) {
+	if(haxegon_Save.so == null) {
+		haxegon_Save.changesavefile("haxegongame");
+	}
+	if(Reflect.field(haxegon_Save.so.data,key) == null) {
+		return false;
+	}
+	return true;
+};
+haxegon_Save.fileexists = function(savefile) {
+	var tempso = openfl_net_SharedObject.getLocal(savefile);
+	if(Reflect.fields(tempso.data).length == 0) {
+		return false;
+	}
+	return true;
+};
+haxegon_Save.loadvalue = function(key,defaultVal) {
+	if(defaultVal == null) {
+		defaultVal = 0;
+	}
+	if(haxegon_Save.so == null) {
+		haxegon_Save.changesavefile("haxegongame");
+	}
+	var returnval = Reflect.field(haxegon_Save.so.data,key);
+	if(returnval == null) {
+		return defaultVal;
+	}
+	return returnval;
+};
+haxegon_Save["delete"] = function(name) {
+	if(name == null) {
+		name = "haxegongame";
+	}
+	if(haxegon_Save._filename != name) {
+		var newso = openfl_net_SharedObject.getLocal(name);
+		newso.clear();
+	} else {
+		haxegon_Save.so.clear();
+	}
+	haxegon_Save.keylistdirty = true;
+};
+haxegon_Save.get_keys = function() {
+	if(haxegon_Save.so == null) {
+		haxegon_Save.changesavefile("haxegongame");
+	}
+	if(haxegon_Save.keylistdirty) {
+		var newkeylist = Reflect.fields(haxegon_Save.so.data);
+		haxegon_Save.keylist = [];
+		var _g1 = 0;
+		var _g = newkeylist.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			haxegon_Save.keylist.push(newkeylist[i]);
+		}
+		haxegon_Save.keylistdirty = false;
+	}
+	return haxegon_Save.keylist;
+};
+haxegon_Save.changesavefile = function(name) {
+	haxegon_Save._filename = name;
+	haxegon_Save.so = openfl_net_SharedObject.getLocal(haxegon_Save._filename);
+	haxegon_Save.keylistdirty = true;
+};
+haxegon_Save.get_filename = function() {
+	return haxegon_Save._filename;
+};
+haxegon_Save.set_filename = function(newsavefile) {
+	if(haxegon_Save.get_filename() != newsavefile) {
+		haxegon_Save.changesavefile(newsavefile);
+	}
+	return haxegon_Save._filename;
+};
 var haxegon_Scene = function() { };
 $hxClasses["haxegon.Scene"] = haxegon_Scene;
 haxegon_Scene.__name__ = ["haxegon","Scene"];
@@ -19137,6 +19337,16 @@ js__$Boot_HaxeError.prototype = $extend(Error.prototype,{
 var js_Browser = function() { };
 $hxClasses["js.Browser"] = js_Browser;
 js_Browser.__name__ = ["js","Browser"];
+js_Browser.getLocalStorage = function() {
+	try {
+		var s = window.localStorage;
+		s.getItem("");
+		return s;
+	} catch( e ) {
+		haxe_CallStack.lastException = e;
+		return null;
+	}
+};
 js_Browser.alert = function(v) {
 	window.alert(js_Boot.__string_rec(v,""));
 };
@@ -43617,7 +43827,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 123498;
+	this.version = 145781;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = ["lime","utils","AssetCache"];
@@ -76110,6 +76320,236 @@ openfl_net_NetStream.prototype = $extend(openfl_events_EventDispatcher.prototype
 	,__class__: openfl_net_NetStream
 	,__properties__: {set_speed:"set_speed",get_speed:"get_speed"}
 });
+var openfl_net_SharedObject = function() {
+	openfl_events_EventDispatcher.call(this);
+	this.client = this;
+	this.objectEncoding = 3;
+};
+$hxClasses["openfl.net.SharedObject"] = openfl_net_SharedObject;
+openfl_net_SharedObject.__name__ = ["openfl","net","SharedObject"];
+openfl_net_SharedObject.getLocal = function(name,localPath,secure) {
+	if(secure == null) {
+		secure = false;
+	}
+	var illegalValues = [" ","~","%","&","\\",";",":","\"","'",",","<",">","?","#"];
+	var allowed = true;
+	if(name == null || name == "") {
+		allowed = false;
+	} else {
+		var _g = 0;
+		while(_g < illegalValues.length) {
+			var value = illegalValues[_g];
+			++_g;
+			if(name.indexOf(value) > -1) {
+				allowed = false;
+				break;
+			}
+		}
+	}
+	if(!allowed) {
+		throw new js__$Boot_HaxeError(new openfl_errors_Error("Error #2134: Cannot create SharedObject."));
+	}
+	if(localPath == null) {
+		localPath = window.location.href;
+	}
+	if(openfl_net_SharedObject.__sharedObjects == null) {
+		openfl_net_SharedObject.__sharedObjects = new haxe_ds_StringMap();
+		if(lime_app_Application.current != null) {
+			lime_app_Application.current.onExit.add(openfl_net_SharedObject.application_onExit);
+		}
+	}
+	var id = localPath + "/" + name;
+	var _this = openfl_net_SharedObject.__sharedObjects;
+	if(!(__map_reserved[id] != null ? _this.existsReserved(id) : _this.h.hasOwnProperty(id))) {
+		var sharedObject = new openfl_net_SharedObject();
+		sharedObject.data = { };
+		sharedObject.__localPath = localPath;
+		sharedObject.__name = name;
+		var encodedData = null;
+		try {
+			var storage = js_Browser.getLocalStorage();
+			if(storage != null) {
+				encodedData = storage.getItem(localPath + ":" + name);
+			}
+		} catch( e ) {
+			haxe_CallStack.lastException = e;
+		}
+		if(encodedData != null && encodedData != "") {
+			try {
+				var unserializer = new haxe_Unserializer(encodedData);
+				unserializer.setResolver({ resolveEnum : Type.resolveEnum, resolveClass : openfl_net_SharedObject.__resolveClass});
+				sharedObject.data = unserializer.unserialize();
+			} catch( e1 ) {
+				haxe_CallStack.lastException = e1;
+			}
+		}
+		var _this1 = openfl_net_SharedObject.__sharedObjects;
+		if(__map_reserved[id] != null) {
+			_this1.setReserved(id,sharedObject);
+		} else {
+			_this1.h[id] = sharedObject;
+		}
+	}
+	var _this2 = openfl_net_SharedObject.__sharedObjects;
+	if(__map_reserved[id] != null) {
+		return _this2.getReserved(id);
+	} else {
+		return _this2.h[id];
+	}
+};
+openfl_net_SharedObject.getRemote = function(name,remotePath,persistence,secure) {
+	if(secure == null) {
+		secure = false;
+	}
+	if(persistence == null) {
+		persistence = false;
+	}
+	openfl__$internal_Lib.notImplemented({ fileName : "SharedObject.hx", lineNumber : 275, className : "openfl.net.SharedObject", methodName : "getRemote"});
+	return null;
+};
+openfl_net_SharedObject.__getPath = function(localPath,name) {
+	var path = lime_system_System.get_applicationStorageDirectory() + "/" + localPath + "/";
+	name = StringTools.replace(name,"//","/");
+	name = StringTools.replace(name,"//","/");
+	if(StringTools.startsWith(name,"/")) {
+		name = HxOverrides.substr(name,1,null);
+	}
+	if(StringTools.endsWith(name,"/")) {
+		name = name.substring(0,name.length - 1);
+	}
+	if(name.indexOf("/") > -1) {
+		var split = name.split("/");
+		name = "";
+		var _g1 = 0;
+		var _g = split.length - 1;
+		while(_g1 < _g) {
+			var i = _g1++;
+			name += "#" + split[i] + "/";
+		}
+		name += split[split.length - 1];
+	}
+	return path + name + ".sol";
+};
+openfl_net_SharedObject.__mkdir = function(directory) {
+};
+openfl_net_SharedObject.__resolveClass = function(name) {
+	if(name != null) {
+		if(StringTools.startsWith(name,"neash.")) {
+			name = StringTools.replace(name,"neash.","openfl.");
+		}
+		if(StringTools.startsWith(name,"native.")) {
+			name = StringTools.replace(name,"native.","openfl.");
+		}
+		if(StringTools.startsWith(name,"flash.")) {
+			name = StringTools.replace(name,"flash.","openfl.");
+		}
+		if(StringTools.startsWith(name,"openfl._v2.")) {
+			name = StringTools.replace(name,"openfl._v2.","openfl.");
+		}
+		if(StringTools.startsWith(name,"openfl._legacy.")) {
+			name = StringTools.replace(name,"openfl._legacy.","openfl.");
+		}
+		return Type.resolveClass(name);
+	}
+	return null;
+};
+openfl_net_SharedObject.application_onExit = function(_) {
+	var _this = openfl_net_SharedObject.__sharedObjects;
+	var sharedObject = new haxe_ds__$StringMap_StringMapIterator(_this,_this.arrayKeys());
+	while(sharedObject.hasNext()) {
+		var sharedObject1 = sharedObject.next();
+		sharedObject1.flush();
+	}
+};
+openfl_net_SharedObject.__super__ = openfl_events_EventDispatcher;
+openfl_net_SharedObject.prototype = $extend(openfl_events_EventDispatcher.prototype,{
+	client: null
+	,data: null
+	,fps: null
+	,objectEncoding: null
+	,__localPath: null
+	,__name: null
+	,clear: function() {
+		this.data = { };
+		try {
+			var storage = js_Browser.getLocalStorage();
+			if(storage != null) {
+				storage.removeItem(this.__localPath + ":" + this.__name);
+			}
+		} catch( e ) {
+			haxe_CallStack.lastException = e;
+		}
+	}
+	,close: function() {
+	}
+	,connect: function(myConnection,params) {
+		openfl__$internal_Lib.notImplemented({ fileName : "SharedObject.hx", lineNumber : 106, className : "openfl.net.SharedObject", methodName : "connect"});
+	}
+	,flush: function(minDiskSpace) {
+		if(minDiskSpace == null) {
+			minDiskSpace = 0;
+		}
+		if(Reflect.fields(this.data).length == 0) {
+			return 0;
+		}
+		var encodedData = haxe_Serializer.run(this.data);
+		try {
+			var storage = js_Browser.getLocalStorage();
+			if(storage != null) {
+				storage.removeItem(this.__localPath + ":" + this.__name);
+				storage.setItem(this.__localPath + ":" + this.__name,encodedData);
+			}
+		} catch( e ) {
+			haxe_CallStack.lastException = e;
+			return 1;
+		}
+		return 0;
+	}
+	,send: function(args) {
+		openfl__$internal_Lib.notImplemented({ fileName : "SharedObject.hx", lineNumber : 284, className : "openfl.net.SharedObject", methodName : "send"});
+	}
+	,setDirty: function(propertyName) {
+	}
+	,setProperty: function(propertyName,value) {
+		if(this.data != null) {
+			this.data[propertyName] = value;
+		}
+	}
+	,get_size: function() {
+		try {
+			var d = haxe_Serializer.run(this.data);
+			return haxe_io_Bytes.ofString(d).length;
+		} catch( e ) {
+			haxe_CallStack.lastException = e;
+			return 0;
+		}
+	}
+	,__class__: openfl_net_SharedObject
+	,__properties__: {get_size:"get_size"}
+});
+var openfl_net__$SharedObjectFlushStatus_SharedObjectFlushStatus_$Impl_$ = {};
+$hxClasses["openfl.net._SharedObjectFlushStatus.SharedObjectFlushStatus_Impl_"] = openfl_net__$SharedObjectFlushStatus_SharedObjectFlushStatus_$Impl_$;
+openfl_net__$SharedObjectFlushStatus_SharedObjectFlushStatus_$Impl_$.__name__ = ["openfl","net","_SharedObjectFlushStatus","SharedObjectFlushStatus_Impl_"];
+openfl_net__$SharedObjectFlushStatus_SharedObjectFlushStatus_$Impl_$.fromString = function(value) {
+	switch(value) {
+	case "flushed":
+		return 0;
+	case "pending":
+		return 1;
+	default:
+		return null;
+	}
+};
+openfl_net__$SharedObjectFlushStatus_SharedObjectFlushStatus_$Impl_$.toString = function(value) {
+	switch(value) {
+	case 0:
+		return "flushed";
+	case 1:
+		return "pending";
+	default:
+		return null;
+	}
+};
 var openfl_net_URLLoader = function(request) {
 	openfl_events_EventDispatcher.call(this);
 	this.bytesLoaded = 0;
@@ -94010,8 +94450,8 @@ haxegon_Col.LIGHTBLUE = 11721967;
 haxegon_Col.MAGENTA = 16711935;
 haxegon_Col.TRANSPARENT = 1;
 haxegon_Col.hslval = [0.0,0.0,0.0];
-Globals.PAL = { fg : haxegon_Col.WHITE, bg : haxegon_Col.BLACK, buttonTextCol : haxegon_Col.WHITE, buttonBorderCol : haxegon_Col.WHITE, buttonCol : haxegon_Col.BLACK, buttonHighlightCol : haxegon_Col.GRAY};
-Globals.GUI = { textsize : 40, buttonTextSize : 140, buttonPaddingX : 40, buttonPaddingY : 5, linethickness : 5, titleTextSize : 415, font : "GermaniaOne-Regular"};
+Globals.PAL = { fg : haxegon_Col.WHITE, bg : haxegon_Col.BLACK, buttonTextCol : haxegon_Col.WHITE, buttonBorderCol : haxegon_Col.WHITE, buttonCol : haxegon_Col.BLACK, buttonHighlightCol : 4473924, buttonHighlightCol2 : 13421772, titelFarbe : haxegon_Col.RED};
+Globals.GUI = { textsize : 40, buttonTextSize : 140, buttonPaddingX : 40, buttonPaddingY : 5, linethickness : 5, titleTextSize : 415, subTitleTextSize : 215, screenPaddingTop : 30, font : "GermaniaOne-Regular"};
 Globals.state = { language : 0};
 openfl_text_Font.__fontByName = new haxe_ds_StringMap();
 openfl_text_Font.__registeredFonts = [];
@@ -94210,6 +94650,8 @@ haxegon_Mouse.mousewheel = 0;
 haxegon_Music.crossfade = 0;
 haxegon_Random.INT_MAX = 2147483647;
 haxegon_Random.INT_MAXPLUSONE = 2147483648.0;
+haxegon_Save._filename = "";
+haxegon_Save.keylistdirty = true;
 haxegon_Sound.typingsound = "";
 haxegon_Sound._mastervolume = 1.0;
 haxegon_Text.inputbuffer = "";
@@ -96008,6 +96450,9 @@ openfl_media_SoundMixer.MAX_ACTIVE_CHANNELS = 32;
 openfl_media_SoundMixer.__soundChannels = [];
 openfl_media_SoundMixer.__soundTransform = new openfl_media_SoundTransform();
 openfl_net_NetConnection.CONNECT_SUCCESS = "NetConnection.Connect.Success";
+openfl_net_SharedObject.defaultObjectEncoding = 3;
+openfl_net__$SharedObjectFlushStatus_SharedObjectFlushStatus_$Impl_$.FLUSHED = 0;
+openfl_net__$SharedObjectFlushStatus_SharedObjectFlushStatus_$Impl_$.PENDING = 1;
 openfl_net__$URLLoaderDataFormat_URLLoaderDataFormat_$Impl_$.BINARY = 0;
 openfl_net__$URLLoaderDataFormat_URLLoaderDataFormat_$Impl_$.TEXT = 1;
 openfl_net__$URLLoaderDataFormat_URLLoaderDataFormat_$Impl_$.VARIABLES = 2;

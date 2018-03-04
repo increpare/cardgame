@@ -1,7 +1,7 @@
 import haxegon.*;
 import Globals.*;
 
-class Main {
+class CharacterSelect {
 	// These fonts are located in the data/fonts/ directory.
 	
 	// Haxegon supports both TrueType fonts (which are high resolution and anti aliased)
@@ -22,9 +22,8 @@ class Main {
 	  var textcolor =PAL.buttonTextCol;
 	  var color = PAL.buttonCol;
 	  var colorhover = PAL.buttonHighlightCol;
-	  var colorhover2:Int = PAL.buttonHighlightCol2;
 	  var borderCol = PAL.buttonBorderCol;
-	  var lightbgcol = PAL.buttonTextCol;
+
 	  var linethickness=GUI.linethickness;
 	  var xpadding = GUI.buttonPaddingX;
 	  var ypadding = GUI.buttonPaddingY;
@@ -53,21 +52,22 @@ class Main {
 
 	  var click = collide && Mouse.leftclick();
 
-	  if (collide){
+	  if (collide&& !click){
 	    color=colorhover;
-		lightbgcol = colorhover2;
 	  }
+
 	  Gfx.fillbox(x,y,width,height,color);
 	  if (selection==1){
-		  Gfx.fillbox(x,y,w1+2*xpadding,height,lightbgcol);
+		  Gfx.fillbox(x,y,w1+2*xpadding,height,PAL.buttonTextCol);
 	  } else {
-		  Gfx.fillbox(x+w1+2*xpadding,y,x+width-(x+w1+2*xpadding),height,lightbgcol);
+		  Gfx.fillbox(x+w1+2*xpadding,y,x+width-(x+w1+2*xpadding),height,PAL.buttonTextCol);
 	  }
 
 	  Gfx.drawbox(x,y,width,height,borderCol);
 
 	  Text.display(x+xpadding, y+ypadding, text1, selection==0?textcolor:PAL.buttonCol);
 	  Text.display(x+xpadding+w1+xpadding*2, y+ypadding,text2,selection==1?textcolor:PAL.buttonCol);
+
 
 	  Text.size=oldtextsize;
 
@@ -123,27 +123,25 @@ class Main {
 	}
 
 	function update() {	
-		// Draw a white background
-		Gfx.clearscreen(PAL.bg);
+		Text.size=GUI.subTitleTextSize;
 		var h = Gfx.screenheight;
 		var w = Gfx.screenwidth;
-		Text.wordwrap=w;
 
-		Text.size=GUI.titleTextSize;
-		Text.display(Text.CENTER,h/5,S("Rüstung","Rüstung"), PAL.titelFarbe);
+		var s = S("Heldenauswahl","Hero Selection");
+		var th = Text.height(s);
 
-		if (drawButton( Text.CENTER,Math.round(h/2+80),S("Zu einer Reise aufbrechen","Set off on an Adventure"))){
-			Scene.change(CharacterSelect);
+
+
+		Text.display(Text.CENTER,GUI.screenPaddingTop,s);	
+
+		for (i in 0...3){
+	  			var m = (Save.loadvalue("unlocked")) ;
+				m++;
 		}
 
-		if (drawPairButton( Text.CENTER,Math.round(h/2+GUI.buttonTextSize*2.0+80),
-		S("Deutsch","German"),
-		S("Englisch","English"),
-		1-state.language)){
-			state.language=1-state.language;
-		}
+		Gfx.linethickness=GUI.linethickness;
+		var ty = GUI.screenPaddingTop + th + GUI.buttonPaddingY;
+		Gfx.drawline(0,ty,w,ty,PAL.buttonBorderCol);
 
-		Text.size=1;
-		
 	}
 }
