@@ -112,6 +112,55 @@ class IMGUI {
 	  return click;
 	}
 
+
+	public static function selectedbutton(x,y,text) {
+		var oldtextsize=Text.size;
+		Text.size = GUI.buttonTextSize;
+		
+	  var textcolor =PAL.buttonTextCol;
+	  var color = PAL.buttonCol;
+	  var colorhover = PAL.buttonHighlightCol;
+	  var borderCol = PAL.buttonBorderCol;
+
+	  var linethickness=GUI.linethickness;
+	  var xpadding = GUI.buttonPaddingX;
+	  var ypadding = GUI.buttonPaddingY;
+
+	  Gfx.linethickness=linethickness;
+
+	  var width=39;
+	  var w = Math.round(Text.width(text));
+	  if (w+6>=width){
+	  	width=w+6;
+	  }
+	  width+=xpadding*2;
+
+	  var height=Math.round(Text.height(text));
+	  if (x==Text.CENTER){
+		  x=Math.round(Gfx.screenwidthmid-width/2);
+	  }
+	  height+=ypadding*2;
+
+	  var dx = Mouse.x-x;
+	  var dy = Mouse.y-y;
+
+	  var collide = !(dx<0||dx>=width||dy<0||dy>=height);
+
+	  var click = collide && Mouse.leftclick();
+
+	  if (collide&& !click){
+	    //color=colorhover;
+	  }
+
+	  Gfx.fillbox(x,y,width,height,textcolor);
+	  Gfx.drawbox(x,y,width,height,borderCol);
+
+	  Text.display(x+xpadding, y+ypadding, text, color);
+	  Text.size=oldtextsize;
+
+	  return click;
+	}
+
 	public static function Bildbutton(x:Int,y:Int,bild:String,an:Bool) {
 		var oldtextsize=Text.size;
 		Text.size = GUI.buttonTextSize;

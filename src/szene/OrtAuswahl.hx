@@ -2,12 +2,15 @@ package szene;
 
 import haxegon.*;
 import Globals.*;
+import ort.*;
 import utils.*;
 
-class CharakterAuswahl {
+class OrtAuswahl {
 
+	var orte:Array<Class<Ort> >;
 	function init(){
 		Text.font = GUI.font;
+		orte = Klassemanager.alleOrte();
 	}	
 
 	function update() {	
@@ -23,7 +26,7 @@ class CharakterAuswahl {
 		var klassen = Klassemanager.alleSpielbareKlassen();
 		var klassenZahl = klassen.length;
 
-		var s = S("Heldenauswahl","Hero Selection");
+		var s = S("Zielort","Destination");
 		var th = Text.height(s);
 
 		Text.display(Text.CENTER,GUI.screenPaddingTop,s);	
@@ -36,50 +39,52 @@ class CharakterAuswahl {
 		Gfx.linethickness=GUI.linethickness;
 		var ty = Math.round(GUI.screenPaddingTop + th + GUI.buttonPaddingY);
 		Gfx.drawline(0,ty,w,ty,PAL.buttonBorderCol);
-		var ty2 = ty + cellmarginy*2 + cellh;
-		Gfx.drawline(0,ty2,w,ty2,PAL.buttonBorderCol);
+		
+		var colx = 600;
+		Gfx.drawline(colx,ty,colx,h,PAL.fg);
+		
+		var bp = ty+GUI.buttonPaddingY*3;
+		for (i in 0...orte.length){
+			var o = orte[i];
+			var oi:Ort = Klassemanager.orteklassen[Type.getClassName(o)];			
 
-		var imageselectionwidth = cellw*klassenZahl+cellmarginx*(klassenZahl-1);
-
-		var l = Math.round(w/2-imageselectionwidth/2);
-
-		for (i in 0...klassenZahl){			
-			var m = klassen[i];
-			var t : klasse.Klasse = Klassemanager.klasseBeispiel(m);
-			var bump = 0;
-			if (state.auserwaehlte==i){
-				bump +=cellmarginy*2;
-			}
-			if (IMGUI.Bildbutton(
-				l+(cellw+cellmarginx)*i,
-				ty+cellmarginy+bump,
-				"bilder/"+t.bild,
-				state.auserwaehlte==i
-				)){
-					trace("clicked");
-					state.auserwaehlte=i;
+			if (i==state.ort){
+				if (IMGUI.selectedbutton(cellmarginy*2,bp,oi.name.Eval() ) ) {
+					
 				}
-
+			} else {
+				if (IMGUI.button(0,bp,oi.name.Eval() ) ) {
+					state.ort=i;
+				}
+			}
+			bp+=200;
 		}
 
-		var bs : klasse.Klasse = Klassemanager.klasseBeispiel(klassen[state.auserwaehlte]);
-
-		var ty3 = ty2+4*cellmarginy;
-
-		Text.size=GUI.subSubTitleTextSize;
-		Text.display(Text.CENTER,ty3,bs.name.Eval());
-		var ty4=ty3+Text.size+2*cellmarginy;
-		
-		Text.size = GUI.textsize;
-		Text.display(20,ty4,bs.beschreibung.Eval(),PAL.fg);
-	
 		if (IMGUI.button(
 				0,
 				h-GUI.buttonTextSize-8*GUI.buttonPaddingY,
 				S("Zurück","Back"))
 			) {
-			Scene.change(Main);
+			Scene.change(CharakterAuswahl);
 		}
+
+		var bs : ort.Ort = Klassemanager.ortBeispiel(orte[state.ort]);
+		var ty3 = ty+4*cellmarginy;
+
+		var posl = colx+4*cellmarginy;
+
+		var bildref = "bilder/"+bs.bild;
+		Gfx.drawimage(posl,ty3,bildref);
+
+		ty3+=Gfx.imageheight(bildref)+4*cellmarginy;
+
+		Text.size=GUI.subSubTitleTextSize;
+		Text.display(posl,ty3,bs.name.Eval());
+		var ty4=ty3+Text.size+2*cellmarginy;
+		
+		Text.size = GUI.textsize;
+		Text.display(posl,ty4,bs.beschreibung.Eval(),PAL.fg);
+	
 
 		Text.size=GUI.buttonTextSize;
 		var stext = S("Vormarsch!","Onwards!");
@@ -88,7 +93,7 @@ class CharakterAuswahl {
 				h-GUI.buttonTextSize-8*GUI.buttonPaddingY,
 				stext)
 			) {
-			Scene.change(szene.OrtAuswahl);
+			//Scene.change(szene.OrtAuswahl);
 		}		
 	}
 }

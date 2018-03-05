@@ -34,6 +34,7 @@ class Globals
   public static var state = {
       sprache:0,
       auserwaehlte:0,
+      ort:0,
   };
 
   public static function S(de:String,en:String):String{

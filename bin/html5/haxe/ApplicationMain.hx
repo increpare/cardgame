@@ -20,13 +20,13 @@ import haxe.macro.Expr;
 	
 	public static function main () {
 		
-		var projectName = "truetypefonts";
+		var projectName = "ruestung";
 		
 		var config = {
 			
-			build: "13",
+			build: "14",
 			company: "increpare games",
-			file: "truetypefonts",
+			file: "ruestung",
 			fps: 60,
 			name: "Ruestug",
 			orientation: "landscape",

@@ -7,13 +7,16 @@ class Main {
 
 	function init(){
 		CompileTime.importPackage("klasse");
-		Klassemanager.init();
+		CompileTime.importPackage("ort");
+		CompileTime.importPackage("szene");
+		CompileTime.importPackage("fertigkeit");
 		
+		Klassemanager.init();
+
 		//Truetype fonts look a LOT better when we don't scale the canvas!
 		Gfx.resizescreen(0, 0);
 		Text.font = GUI.font;
 
-		var playableClasses = Klassemanager.AlleSpielbareKlassen();
 		//initial all globals here
 
 		state.sprache = Save.loadvalue("language");

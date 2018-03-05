@@ -14,7 +14,7 @@
 	<app 
       main="haxegon.Load"
       path="bin" 
-      file="truetypefonts" 
+      file="ruestung" 
    />
 
   <window width="${windowwidth}" height="${windowheight}" if="flash || cpp || neko"></window>
