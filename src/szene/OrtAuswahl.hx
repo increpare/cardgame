@@ -93,7 +93,7 @@ class OrtAuswahl {
 				h-GUI.buttonTextSize-8*GUI.buttonPaddingY,
 				stext)
 			) {
-			//Scene.change(szene.OrtAuswahl);
+			Scene.change(szene.Oberwelt);
 		}		
 	}
 }
