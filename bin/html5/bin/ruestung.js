@@ -1042,7 +1042,7 @@ $hxClasses["ApplicationMain"] = ApplicationMain;
 ApplicationMain.__name__ = ["ApplicationMain"];
 ApplicationMain.main = function() {
 	var projectName = "ruestung";
-	var config = { build : "14", company : "increpare games", file : "ruestung", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
+	var config = { build : "16", company : "increpare games", file : "ruestung", fps : 60, name : "Ruestug", orientation : "landscape", packageName : "com.increpare.Ruestung", version : "1.0.0", windows : [{ allowHighDPI : true, alwaysOnTop : false, antialiasing : 0, background : 0, borderless : false, colorDepth : 16, depthBuffer : false, display : 0, fullscreen : false, hardware : true, height : 860, hidden : false, maximized : false, minimized : false, parameters : { }, resizable : true, stencilBuffer : true, title : "Ruestug", vsync : true, width : 840, x : null, y : null}]};
 	lime_system_System.__registerEntryPoint(projectName,ApplicationMain.create,config);
 };
 ApplicationMain.create = function(config) {
@@ -20352,9 +20352,13 @@ klasse_Klasse.prototype = {
 	,name: null
 	,beschreibung: null
 	,fertigkeiten: null
+	,maxHealth: null
+	,health: null
 	,__class__: klasse_Klasse
 };
 var klasse_Bauer = function() {
+	this.health = 40;
+	this.maxHealth = 80;
 	this.fertigkeiten = [];
 	this.beschreibung = new utils_StringPair("Er hat ein armes Leben :(","He has a miserable life :(");
 	this.name = new utils_StringPair("Bauer","Peasant");
@@ -20370,9 +20374,13 @@ klasse_Bauer.prototype = {
 	,name: null
 	,beschreibung: null
 	,fertigkeiten: null
+	,maxHealth: null
+	,health: null
 	,__class__: klasse_Bauer
 };
 var klasse_Pilz = function() {
+	this.health = 40;
+	this.maxHealth = 80;
 	this.fertigkeiten = [];
 	this.beschreibung = new utils_StringPair("Lecker!","Delicious");
 	this.name = new utils_StringPair("Pilz","Mushroom");
@@ -20388,9 +20396,13 @@ klasse_Pilz.prototype = {
 	,name: null
 	,beschreibung: null
 	,fertigkeiten: null
+	,maxHealth: null
+	,health: null
 	,__class__: klasse_Pilz
 };
 var klasse_Ritter = function() {
+	this.health = 30;
+	this.maxHealth = 80;
 	this.fertigkeiten = [];
 	this.beschreibung = new utils_StringPair("Was für ein Held!","What a hero!");
 	this.name = new utils_StringPair("Ritter","Knight");
@@ -20404,9 +20416,13 @@ klasse_Ritter.prototype = {
 	,name: null
 	,beschreibung: null
 	,fertigkeiten: null
+	,maxHealth: null
+	,health: null
 	,__class__: klasse_Ritter
 };
 var klasse_Ungeheuer = function() {
+	this.health = 60;
+	this.maxHealth = 80;
 	this.fertigkeiten = [];
 	this.beschreibung = new utils_StringPair("So einschüchternd groß!","A monstrous being.");
 	this.name = new utils_StringPair("Ungeheuer","Immensity");
@@ -20422,6 +20438,8 @@ klasse_Ungeheuer.prototype = {
 	,name: null
 	,beschreibung: null
 	,fertigkeiten: null
+	,maxHealth: null
+	,health: null
 	,__class__: klasse_Ungeheuer
 };
 var lime__$backend_html5_GameDeviceData = function() {
@@ -94527,6 +94545,42 @@ szene_CharakterAuswahl.prototype = {
 	}
 	,__class__: szene_CharakterAuswahl
 };
+var szene_Oberwelt = function() { };
+$hxClasses["szene.Oberwelt"] = szene_Oberwelt;
+szene_Oberwelt.__name__ = ["szene","Oberwelt"];
+szene_Oberwelt.prototype = {
+	ort: null
+	,spielerklasse: null
+	,init: function() {
+		haxegon_Text.set_font(Globals.GUI.font);
+		var spielerklassetypen = Lambda.array(CompileTimeClassList.get("null,true,klasse.Klasse"));
+		var spielerklassetyp = spielerklassetypen[Globals.state.auserwaehlte];
+		this.spielerklasse = Type.createInstance(spielerklassetyp,[]);
+		var orttypen = Lambda.array(CompileTimeClassList.get("null,true,ort.Ort"));
+		var orttyp = orttypen[Globals.state.ort];
+		this.ort = Type.createInstance(orttyp,[]);
+	}
+	,drawDetailsPanel: function(ox,oy,klasse) {
+		haxegon_Text.set_size(Globals.GUI.smalltextsize);
+		var bild = "bilder/" + klasse.bild;
+		var ih = haxegon_Gfx.imageheight(bild);
+		var iw = haxegon_Gfx.imagewidth(bild);
+		haxegon_Text.display(ox,oy,klasse.name.Eval(),Globals.PAL.fg);
+		oy += Math.round(haxegon_Text.get_size()) + Globals.GUI.vpadding;
+		haxegon_Gfx.drawimage(ox,oy,bild);
+		oy += ih + Globals.GUI.vpadding;
+		var hpc = klasse.health / klasse.maxHealth;
+		var hpstring = klasse.health + "/" + klasse.maxHealth;
+		haxegon_Gfx.fillbox(ox,oy,iw,haxegon_Text.get_size() + 20,Globals.PAL.bg);
+		haxegon_Gfx.fillbox(ox,oy,iw * hpc,haxegon_Text.get_size() + 20,haxegon_Col.RED);
+		haxegon_Gfx.drawbox(ox,oy,iw,haxegon_Text.get_size() + 20,Globals.PAL.fg);
+		haxegon_Text.display(ox + 20,oy + 4,hpstring,Globals.PAL.fg);
+	}
+	,update: function() {
+		this.drawDetailsPanel(10,10,this.spielerklasse);
+	}
+	,__class__: szene_Oberwelt
+};
 var szene_OrtAuswahl = function() { };
 $hxClasses["szene.OrtAuswahl"] = szene_OrtAuswahl;
 szene_OrtAuswahl.__name__ = ["szene","OrtAuswahl"];
@@ -94593,7 +94647,9 @@ szene_OrtAuswahl.prototype = {
 		haxegon_Text.display(posl,ty4,bs.beschreibung.Eval(),Globals.PAL.fg);
 		haxegon_Text.set_size(Globals.GUI.buttonTextSize);
 		var stext = Globals.S("Vormarsch!","Onwards!");
-		var tmp1 = utils_IMGUI.button(w - Math.round(haxegon_Text.width(stext)) - 2 * Globals.GUI.buttonPaddingX - 4,h - Globals.GUI.buttonTextSize - 8 * Globals.GUI.buttonPaddingY,stext);
+		if(utils_IMGUI.button(w - Math.round(haxegon_Text.width(stext)) - 2 * Globals.GUI.buttonPaddingX - 4,h - Globals.GUI.buttonTextSize - 8 * Globals.GUI.buttonPaddingY,stext)) {
+			haxegon_Scene.change(szene_Oberwelt);
+		}
 	}
 	,__class__: szene_OrtAuswahl
 };
@@ -94861,7 +94917,7 @@ haxegon_Col.MAGENTA = 16711935;
 haxegon_Col.TRANSPARENT = 1;
 haxegon_Col.hslval = [0.0,0.0,0.0];
 Globals.PAL = { fg : haxegon_Col.WHITE, bg : haxegon_Col.BLACK, buttonTextCol : haxegon_Col.WHITE, buttonBorderCol : haxegon_Col.WHITE, buttonCol : haxegon_Col.BLACK, buttonHighlightCol : 4473924, buttonHighlightCol2 : 13421772, titelFarbe : haxegon_Col.RED};
-Globals.GUI = { textsize : 60, buttonTextSize : 140, buttonPaddingX : 40, buttonPaddingY : 5, linethickness : 5, titleTextSize : 415, subTitleTextSize : 215, subSubTitleTextSize : 120, screenPaddingTop : 30, font : "GermaniaOne-Regular"};
+Globals.GUI = { smalltextsize : 40, textsize : 60, buttonTextSize : 140, buttonPaddingX : 40, buttonPaddingY : 5, linethickness : 5, titleTextSize : 415, subTitleTextSize : 215, vpadding : 10, healthbarheight : 20, subSubTitleTextSize : 120, screenPaddingTop : 30, font : "GermaniaOne-Regular"};
 Globals.state = { sprache : 0, auserwaehlte : 0, ort : 0};
 openfl_text_Font.__fontByName = new haxe_ds_StringMap();
 openfl_text_Font.__registeredFonts = [];

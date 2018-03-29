@@ -16,6 +16,7 @@ class Globals
   };
 
   public static var GUI = {
+      smalltextsize:40,
       textsize:60,
       buttonTextSize:140,
       buttonPaddingX : 40,
@@ -23,7 +24,8 @@ class Globals
       linethickness : 5,
       titleTextSize:415,
       subTitleTextSize:215,
-
+      vpadding:10,
+      healthbarheight:20,
     subSubTitleTextSize:120,
       
       screenPaddingTop:30,

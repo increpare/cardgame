@@ -23,6 +23,9 @@ class Ritter implements Klasse
 
     public var fertigkeiten:Array<Fertigkeit> = new Array<Fertigkeit>();
 
+    public var maxHealth:Int=80;
+    public var health:Int=30;
+    
     public function new(){
         
     }

@@ -24,7 +24,7 @@ import haxe.macro.Expr;
 		
 		var config = {
 			
-			build: "14",
+			build: "16",
 			company: "increpare games",
 			file: "ruestung",
 			fps: 60,

@@ -25,6 +25,9 @@ class Ungeheuer implements Klasse
 
     public var fertigkeiten:Array<Fertigkeit > = new Array<Fertigkeit >();
 
+    public var maxHealth:Int=80;
+    public var health:Int=60;
+    
     public function new(){
         
     }
