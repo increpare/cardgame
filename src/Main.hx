@@ -6,14 +6,8 @@ import utils.*;
 class Main {
 
 	function init(){
-		CompileTime.importPackage("klasse");
-		CompileTime.importPackage("ort");
-		CompileTime.importPackage("szene");
-		CompileTime.importPackage("fertigkeit");
-		
 		Globals.LoadDat();
-		
-		Klassemanager.init();
+	
 
 		//Truetype fonts look a LOT better when we don't scale the canvas!
 		Gfx.resizescreen(0, 0);

@@ -13,31 +13,29 @@ class Oberwelt {
 	var owd:OberweltData;
 	var ort:Ort;
 	var spielerklasse:Klasse;
+	var spielerklassedynamisch:KlasseDynamisch;
 
 	function init(){
 		owd = new OberweltData();
 		Text.font = GUI.font;
 
-		var spielerklassetypen = Lambda.array(CompileTime.getAllClasses(Klasse));
-		var spielerklassetyp = spielerklassetypen[state.auserwaehlte];
-		spielerklasse = Type.createInstance(spielerklassetyp,[]);
-
-		var orttypen = Lambda.array(CompileTime.getAllClasses(Ort));
-		var orttyp = orttypen[state.ort];
-		ort = Type.createInstance(orttyp,[]);
+		spielerklasse = KreaturenDictionary[KreaturenSpielbar[state.auserwaehlte]];
+		spielerklassedynamisch = new KlasseDynamisch(70,100);
+		
+		ort = Orte[state.ort];
 	}	
 
-	function drawDetailsPanel(ox:Int,oy:Int,klasse:Klasse):Float{
+	function drawDetailsPanel(ox:Int,oy:Int,klasse:Klasse,klasseDynamisch:KlasseDynamisch):Float{
 		Text.size=GUI.smalltextsize;
-		var bild = "bilder/"+klasse.bild;
+		var bild = klasse.bild;
 		var ih = Gfx.imageheight(bild);
 		var iw = Gfx.imagewidth(bild);
-		Text.display(ox,oy,klasse.name.Eval(),PAL.fg);
+		Text.display(ox,oy,klasse.druckname.Eval(),PAL.fg);
 		oy+=Math.round(Text.size)+GUI.vpadding;
 		Gfx.drawimage(ox,oy,bild);
 		oy+=ih+GUI.vpadding;
-		var hpc:Float = klasse.health/klasse.maxHealth;
-		var hpstring = klasse.health+"/"+klasse.maxHealth;
+		var hpc:Float = klasseDynamisch.Gesundheit/klasseDynamisch.MaxGesundheit;
+		var hpstring = klasseDynamisch.Gesundheit+"/"+klasseDynamisch.MaxGesundheit;
 		Gfx.fillbox(ox,oy,iw,Text.size+20,PAL.bg);
 		Gfx.fillbox(ox,oy,iw*hpc,Text.size+20,Col.RED);
 		Gfx.drawbox(ox,oy,iw,Text.size+20,PAL.fg);
@@ -120,12 +118,44 @@ class Oberwelt {
 		};
 	}
 
-	function drawWorldMap(x:Float, y:Float, w:Float, h:Float){
+
+
+	function getBoxBounds(x:Float,y:Float,w:Float,h:Float):Dynamic{
+	
 		var areaAspect = w/h;
 		var gridAspect = CONST.invW/CONST.invH;		
 
 		var xoffset:Float=0;
 		var yoffset:Float=0;
+
+		var cellsize:Float=0;
+		if (areaAspect>gridAspect){//if screen is wider than inventory
+			//need to center horizontally
+			cellsize=h/CONST.invH;
+			var xoffset = w/2-(cellsize*CONST.invW)/2;
+			x += xoffset;
+			w = CONST.invW*cellsize;
+		} else {
+			//need to center vertically
+			cellsize=w/CONST.invW;
+			var yoffset = h/2-cellsize*(CONST.invH)/2;
+			y+=yoffset;
+			h = CONST.invH*cellsize;
+		}
+
+		return [x,y,w,h];
+	}
+
+	function drawWorldMap(x:Float, y:Float, w:Float, h:Float,mc:Dynamic){
+		var areaAspect = w/h;
+		var gridAspect = CONST.invW/CONST.invH;		
+
+		var lightx=-1;
+		var lighty=-1;
+		if (mc!=null){
+			lightx=mc.x;
+			lighty=mc.y;
+		}
 
 		var cellsize:Float=0;
 		if (areaAspect>gridAspect){//if screen is wider than inventory
@@ -150,7 +180,15 @@ class Oberwelt {
 			for (j in 0...CONST.invH){
 				var cx = x+cellsize*i;
 				var cy = y+cellsize*j;
-				Gfx.drawimage(cx,cy,Kreaturen[i+CONST.invH*j].img);
+
+				trace(owd.dat);
+				if (i==lightx && j==lighty){
+					Gfx.imagealpha=0.6;
+					Gfx.drawimage(cx,cy,owd.dat[i][j].bild);
+					Gfx.imagealpha=1.0;
+				} else {
+					Gfx.drawimage(cx,cy,owd.dat[i][j].bild);
+				}
 			}
 		}
 		Gfx.scale();
@@ -177,21 +215,30 @@ class Oberwelt {
 	}
 
 	function update() {	
-		var width = drawDetailsPanel(10,10,spielerklasse);
+		var width = drawDetailsPanel(10,10,spielerklasse,spielerklassedynamisch);
 		var border = 20;
 		var x = 10+width+border;
 		var y = border;
 		var w = Gfx.screenwidth - x - border;
 		var h = Gfx.screenheight - y - border;
 
-		drawWorldMap(x,y,w,h);		
-
-
 		var mc = gridCollision(Mouse.x,Mouse.y,x,y,w,h);
+
+		var bounds = getBoxBounds(x,y,w,h);
+
+		Gfx.drawbox(bounds[0],bounds[1],bounds[2],bounds[3],PAL.fg);
+		x+=GUI.linethickness*2;
+		y+=GUI.linethickness*2;
+		w-=GUI.linethickness*4;
+		h-=GUI.linethickness*4;
+		
+		drawWorldMap(x,y,w,h,mc);		
+
+
 		if (mc!=null){
 			var cell = getGridCoord(mc.x,mc.y,x,y,w,h);
 			Gfx.linethickness=GUI.thicklinethickness;
-			Gfx.drawbox(cell.x,cell.y,cell.size,cell.size,Col.ORANGE);
+			Gfx.drawbox(cell.x,cell.y,cell.size,cell.size,PAL.buttonBorderCol);
 			Gfx.linethickness=GUI.linethickness;
 			trace(cell.x,cell.y);
 		}

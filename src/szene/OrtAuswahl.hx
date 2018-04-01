@@ -7,10 +7,8 @@ import utils.*;
 
 class OrtAuswahl {
 
-	var orte:Array<Class<Ort> >;
 	function init(){
 		Text.font = GUI.font;
-		orte = Klassemanager.alleOrte();
 	}	
 
 	function update() {	
@@ -23,7 +21,7 @@ class OrtAuswahl {
 		var cellmarginx = 30;
 		var cellmarginy = 30;
 		
-		var klassen = Klassemanager.alleSpielbareKlassen();
+		var klassen = KreaturenSpielbar;
 		var klassenZahl = klassen.length;
 
 		var s = S("Zielort","Destination");
@@ -44,16 +42,15 @@ class OrtAuswahl {
 		Gfx.drawline(colx,ty,colx,h,PAL.fg);
 		
 		var bp = ty+GUI.buttonPaddingY*3;
-		for (i in 0...orte.length){
-			var o = orte[i];
-			var oi:Ort = Klassemanager.orteklassen[Type.getClassName(o)];			
+		for (i in 0...Orte.length){
+			var oi = Orte[i];
 
 			if (i==state.ort){
-				if (IMGUI.selectedbutton(cellmarginy*2,bp,oi.name.Eval() ) ) {
+				if (IMGUI.selectedbutton(cellmarginy*2,bp,oi.druckname.Eval() ) ) {
 					
 				}
 			} else {
-				if (IMGUI.button(0,bp,oi.name.Eval() ) ) {
+				if (IMGUI.button(0,bp,oi.druckname.Eval() ) ) {
 					state.ort=i;
 				}
 			}
@@ -68,18 +65,18 @@ class OrtAuswahl {
 			Scene.change(CharakterAuswahl);
 		}
 
-		var bs : ort.Ort = Klassemanager.ortBeispiel(orte[state.ort]);
+		var bs : ort.Ort = Orte[state.ort];
 		var ty3 = ty+4*cellmarginy;
 
 		var posl = colx+4*cellmarginy;
 
-		var bildref = "bilder/"+bs.bild;
+		var bildref = bs.bild;
 		Gfx.drawimage(posl,ty3,bildref);
 
 		ty3+=Gfx.imageheight(bildref)+4*cellmarginy;
 
 		Text.size=GUI.subSubTitleTextSize;
-		Text.display(posl,ty3,bs.name.Eval());
+		Text.display(posl,ty3,bs.druckname.Eval());
 		var ty4=ty3+Text.size+2*cellmarginy;
 		
 		Text.size = GUI.textsize;
@@ -94,6 +91,7 @@ class OrtAuswahl {
 				stext)
 			) {
 			Scene.change(szene.Oberwelt);
-		}		
+		}	
+		
 	}
 }

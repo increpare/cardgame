@@ -1,15 +1,27 @@
 package klasse;
 
 import utils.*;
-import fertigkeit.*;
 
-interface Klasse
+class Klasse
 {
+    public var name:String;
+    public var druckname:StringPair;
     public var bild:String;
-    public var name:StringPair;
+    public var spielbar:Bool;
     public var beschreibung:StringPair;
-    public var fertigkeiten:Array<Fertigkeit>;
 
-    public var maxHealth:Int;
-    public var health:Int;
+    public function new(
+        _name:String,
+        _druckname:StringPair,
+        _bild:String,
+        _spielbar:Bool,
+        _beschreibung:StringPair
+    ){
+        this.name=_name;
+        this.druckname=_druckname;
+        trace(_druckname);
+        this.bild=_bild;
+        this.spielbar=_spielbar;
+        this.beschreibung=_beschreibung;
+    }
 }

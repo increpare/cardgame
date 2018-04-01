@@ -1,5 +1,8 @@
 package;
 import haxegon.*;
+import utils.*;
+import klasse.*;
+import ort.*;
 
 class Globals
 {
@@ -17,7 +20,7 @@ class Globals
 
   public static var CONST = {
       invW : 6,    
-      invH : 3
+      invH : 5
   };
 
   public static var GUI = {
@@ -55,30 +58,74 @@ class Globals
       }
   }
  
-  public static var Kreaturen:Array<Dynamic>;
-    public static function StripQuotes(s:String):String{
-          if (e.charAt(0)=="\""){
-              return e.substr(1,e.length-2);
+  public static var Kreaturen:Array<Klasse>;
+
+  public static var KreaturenDictionary:Map<String,Klasse>;
+
+  public static var KreaturenSpielbar:Array<String>;
+
+
+  public static var Orte:Array<Ort>;
+
+  public static var OrteDictionary:Map<String,Ort>;
+
+  public static function SQ(s:String):String{
+          if (s.charAt(0)=="\""){
+              return s.substr(1,s.length-2);
           }
           else {
-            return e;
+            return s;
           }
     }
 
 
   public static function LoadDat(){
-      Kreaturen = new Array<Dynamic>();
+      Kreaturen = new Array<Klasse>();
+      KreaturenDictionary = new Map<String,Klasse>();
+      KreaturenSpielbar = new Array<String>();
+
       var dat:Array<Array<String>> = Data.load2dcsv("kreaturen");
       for (i in 1...dat[0].length){
-          var e = StripQuotes(dat[0][i]);
-          var spielbar = dat[1][i].toLowerCase()=="y";
+          var e = SQ(dat[0][i]);
+          var spielbar = SQ(dat[1][i].toLowerCase())=="y";
           var en = e.charAt(0).toUpperCase()+e.substring(1);
-          var c = {
-              name:en,
-              img:"sprites/"+e,
-              spielbar:spielbar
-          };
+          var beschreibung = new StringPair(SQ(dat[2][i]),SQ(dat[3][i]));
+
+          var c:Klasse = new Klasse(
+              e,
+              new StringPair(en,en),
+              "sprites/"+e,
+              spielbar,
+              beschreibung);
+          
           Kreaturen.push(c);
+          KreaturenDictionary.set(e,c);
+          if (spielbar){
+              KreaturenSpielbar.push(e);
+          }
+      }
+
+
+
+      Orte = new Array<Ort>();
+      OrteDictionary = new Map<String,Ort>();
+
+      var dat:Array<Array<String>> = Data.load2dcsv("orte");
+      for (i in 1...dat[0].length){
+          var e = SQ(dat[0][i]);
+          var en = e.charAt(0).toUpperCase()+e.substring(1);
+          var e_druckname = new StringPair(SQ(dat[1][i]),SQ(dat[2][i]));
+          var e_beschreibung = new StringPair(SQ(dat[3][i]),SQ(dat[4][i]));
+
+          var c:Ort = new Ort(
+              e,
+              "bilder/"+e,
+              e_druckname,
+              e_beschreibung
+              );
+          
+          Orte.push(c);
+          OrteDictionary.set(e,c);
       }
   }
 }

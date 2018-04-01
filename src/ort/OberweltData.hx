@@ -7,17 +7,24 @@ import utils.*;
 
 class OberweltData
 {
-    var dat : Array<Array<Dynamic>>;
+    public var dat : Array<Array<Dynamic>>;
 
     public function new(){
         dat = new Array<Array<Dynamic>>();
         for (i in 0...CONST.invW){
             var col = new Array<Dynamic>();
-            for (j in 0...CONST.invH){
+            for (j in 0...CONST.invH){              
                 var e = {
                     name : Kreaturen[i*CONST.invH+j].name,
-                    img : Kreaturen[i*CONST.invH+j].img,
+                    bild : Kreaturen[i*CONST.invH+j].bild,
                 };
+                if (i>=2 && i<=3 && j==2){
+                    var e = {
+                        name : "_",
+                        bild : "sprites/_",
+                    };  
+                } 
+
                 col.push(e);
             }
             dat.push(col);

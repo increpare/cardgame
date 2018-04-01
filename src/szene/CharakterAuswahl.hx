@@ -16,11 +16,11 @@ class CharakterAuswahl {
 		var w = Gfx.screenwidth;
 
 		var cellw = 256;
-		var cellh = 384;
+		var cellh = 256;
 		var cellmarginx = 30;
 		var cellmarginy = 30;
 		
-		var klassen = Klassemanager.alleSpielbareKlassen();
+		var klassen = KreaturenSpielbar;
 		var klassenZahl = klassen.length;
 
 		var s = S("Heldenauswahl","Hero Selection");
@@ -44,8 +44,7 @@ class CharakterAuswahl {
 		var l = Math.round(w/2-imageselectionwidth/2);
 
 		for (i in 0...klassenZahl){			
-			var m = klassen[i];
-			var t : klasse.Klasse = Klassemanager.klasseBeispiel(m);
+			var t : klasse.Klasse = KreaturenDictionary[KreaturenSpielbar[i]];
 			var bump = 0;
 			if (state.auserwaehlte==i){
 				bump +=cellmarginy*2;
@@ -53,21 +52,22 @@ class CharakterAuswahl {
 			if (IMGUI.Bildbutton(
 				l+(cellw+cellmarginx)*i,
 				ty+cellmarginy+bump,
-				"bilder/"+t.bild,
+				t.bild,
 				state.auserwaehlte==i
 				)){
-					trace("clicked");
 					state.auserwaehlte=i;
 				}
 
 		}
 
-		var bs : klasse.Klasse = Klassemanager.klasseBeispiel(klassen[state.auserwaehlte]);
+		trace(state.auserwaehlte);
+		trace(KreaturenSpielbar[state.auserwaehlte]);
+		var bs : klasse.Klasse = KreaturenDictionary[KreaturenSpielbar[state.auserwaehlte]];
 
 		var ty3 = ty2+4*cellmarginy;
 
 		Text.size=GUI.subSubTitleTextSize;
-		Text.display(Text.CENTER,ty3,bs.name.Eval());
+		Text.display(Text.CENTER,ty3,bs.druckname.Eval());
 		var ty4=ty3+Text.size+2*cellmarginy;
 		
 		Text.size = GUI.textsize;
@@ -82,6 +82,7 @@ class CharakterAuswahl {
 		}
 
 		Text.size=GUI.buttonTextSize;
+
 		var stext = S("Vormarsch!","Onwards!");
 		if (IMGUI.button(			
 				w-Math.round(Text.width(stext))-2*GUI.buttonPaddingX-4,
