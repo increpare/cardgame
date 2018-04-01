@@ -19,7 +19,7 @@ class OberweltData
                     bild : Kreaturen[i*CONST.invH+j].bild,
                 };
                 if (i>=2 && i<=3 && j==2){
-                    var e = {
+                    e = {
                         name : "_",
                         bild : "sprites/_",
                     };  
