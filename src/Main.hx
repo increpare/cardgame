@@ -11,6 +11,8 @@ class Main {
 		CompileTime.importPackage("szene");
 		CompileTime.importPackage("fertigkeit");
 		
+		Globals.LoadDat();
+		
 		Klassemanager.init();
 
 		//Truetype fonts look a LOT better when we don't scale the canvas!

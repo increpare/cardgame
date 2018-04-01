@@ -33,7 +33,6 @@ class Klassemanager
         var os = CompileTime.getAllClasses(Ort);
         orteklassen=new Map<String,Ort>();
         for (ot in os){
-            trace("OT " +ot);
             var o = Type.createInstance(ot,[]);
             orteklassen[Type.getClassName(ot)]=o;
         }

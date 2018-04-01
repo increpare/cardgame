@@ -62,7 +62,7 @@ class OrtAuswahl {
 
 		if (IMGUI.button(
 				0,
-				h-GUI.buttonTextSize-8*GUI.buttonPaddingY,
+				h-GUI.buttonTextSize-15*GUI.buttonPaddingY,
 				S("Zurück","Back"))
 			) {
 			Scene.change(CharakterAuswahl);
@@ -90,7 +90,7 @@ class OrtAuswahl {
 		var stext = S("Vormarsch!","Onwards!");
 		if (IMGUI.button(			
 				w-Math.round(Text.width(stext))-2*GUI.buttonPaddingX-4,
-				h-GUI.buttonTextSize-8*GUI.buttonPaddingY,
+				h-GUI.buttonTextSize-15*GUI.buttonPaddingY,
 				stext)
 			) {
 			Scene.change(szene.Oberwelt);
