@@ -59,15 +59,15 @@ class Globals
   }
 
     public static var Kreaturen:Array<Klasse>;
-
     public static var KreaturenDictionary:Map<String,Klasse>;
 
     public static var KreaturenSpielbar:Array<String>;
 
-
     public static var Orte:Array<Ort>;
-
     public static var OrteDictionary:Map<String,Ort>;
+
+    public static var Ruestungen:Array<Ruestung>;
+    public static var RuestungenDictionary:Map<String,Ruestung>;
 
     public static function LoadDat(){
         Kreaturen = new Array<Klasse>();
@@ -155,6 +155,56 @@ class Globals
                     );
                 Orte.push(c);
                 OrteDictionary.set(e,c);
+            }
+        }
+
+
+        Ruestungen = new Array<Ruestung>();
+        RuestungenDictionary = new Map<String,Ruestung>();
+
+        {
+            var dat:Array<Array<String>> = Data.load2dcsv("ruestung",";");
+
+            var ruestungenueberschriften:Array<String> = new Array<String>();
+
+            for (i in 0...dat.length){
+                var e = dat[i][0];
+                ruestungenueberschriften.push(e);
+            }
+
+    
+
+            var name_index = ruestungenueberschriften.indexOf("Name");
+            var druckname_de_index = ruestungenueberschriften.indexOf("Druckname_DE");
+            var druckname_en_index = ruestungenueberschriften.indexOf("Druckname_EN");
+            var beschreibung_de_index = ruestungenueberschriften.indexOf("Beschreibung_DE");
+            var beschreibung_en_index = ruestungenueberschriften.indexOf("Beschreibung_EN");
+            var form_index = ruestungenueberschriften.indexOf("Form");
+            var onplay_index = ruestungenueberschriften.indexOf("onPlay");
+            var bleibend_index = ruestungenueberschriften.indexOf("bleibend");
+
+            for (i in 1...dat[0].length){
+                var e = dat[name_index][i];
+                var e_druckname = new StringPair(dat[druckname_de_index][i],dat[druckname_en_index][i]);
+                var e_beschreibung = new StringPair(dat[beschreibung_de_index][i],dat[beschreibung_en_index][i]);
+
+                var e_formstr = dat[form_index][i];
+                var e_onplaystr = dat[onplay_index][i];
+                var e_bleibend = dat[bleibend_index][i];
+                
+                var c:Ruestung = new Ruestung(
+                    e,
+                    "bilder/"+e,
+                    e_druckname,
+                    e_beschreibung,
+                    null,
+                    e_onplaystr,
+                    e_bleibend=="WAHR"
+                    
+                    );
+
+                Ruestungen.push(c);
+                RuestungenDictionary.set(e,c);
             }
         }
     }
