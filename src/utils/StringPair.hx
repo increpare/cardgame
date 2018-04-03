@@ -1,6 +1,4 @@
 package utils;
-import haxegon.*;
-import Globals.*;
 
 class StringPair
 {

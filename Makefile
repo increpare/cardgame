@@ -14,8 +14,8 @@ $(FILES1): test/databank.numbers
 	rm -rf data/text/datenbank
 
 data/graphics/sprites/%: unoptimized/sprites/%
-	pngcrush $< $@
+	pngcrush  $< $@
 
 
 data/graphics/bilder/%: unoptimized/bilder/%
-	pngcrush $< $@
+	pngcrush  $< $@

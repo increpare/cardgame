@@ -1,7 +1,5 @@
 package klasse;
 
-import utils.*;
-
 class Ruestung
 {
     public var name:String;
@@ -18,7 +16,7 @@ class Ruestung
         _bild:String,
         _druckname:StringPair,
         _beschreibung:StringPair,
-        _form:Array<Array<Int>>,
+        _form:String,
         _onplay:String,
         _bleibend:Bool
     ){
@@ -26,7 +24,7 @@ class Ruestung
         this.bild=_bild;
         this.druckname=_druckname;
         this.beschreibung=_beschreibung;
-        this.form=_form;
+        //this.form=_form;
         this.onplay=_onplay;
         this.bleibend=_bleibend;
     }

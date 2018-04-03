@@ -1,6 +1,6 @@
 package szene;
 
-class Oberwelt {
+class Schlacht {
 
 	var owd:OberweltData;
 	var ort:Ort;
@@ -11,8 +11,9 @@ class Oberwelt {
 		ort = Orte[state.ort];
 		owd=state.owd;
 		Text.font = GUI.font;
+
 		spielerklasse = KreaturenDictionary[KreaturenSpielbar[state.auserwaehlte]];
-		spielerklassedynamisch = state.dyn;
+		spielerklassedynamisch = new KlasseDynamisch(spielerklasse,70,100,spielerklasse.ruestung);		
 	}	
 
 
@@ -164,7 +165,7 @@ class Oberwelt {
 		}
 
 
-		var s = cellsize/Gfx.imagewidth("sprites/_");
+		var s = cellsize/Gfx.imagewidth(owd.dat[0][0].bild);
 		Gfx.scale(s,s);
 		//Gfx.drawbox(x,y,w,h,PAL.fg);		
 		for (i in 0...CONST.invW){
@@ -177,16 +178,12 @@ class Oberwelt {
 				
 				//otherwise, monster
 				if (owd.dat[i][j]!=null){
-					if (owd.visibleTile(i,j))
-					{
+					if (owd.visibleTile(i,j)){
 						tile=owd.dat[i][j].bild;
 						if (Mouse.leftclick()){
-							state.tx=i;
-							state.ty=j;
-							Scene.change(Schlacht);
+
 						}
-					}
-					else {
+					} else {
 						tile="sprites/blank2";
 					}
 				}

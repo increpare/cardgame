@@ -1,8 +1,5 @@
 package ort;
 
-import utils.*;
-import fertigkeit.*;
-
 class Ort
 {
     public var name:String;

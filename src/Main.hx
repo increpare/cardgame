@@ -1,8 +1,3 @@
-import haxegon.*;
-import Globals.*;
-import szene.*;
-import utils.*;
-
 class Main {
 
 	function init(){

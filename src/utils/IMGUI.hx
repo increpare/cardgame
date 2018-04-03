@@ -1,8 +1,5 @@
 package utils;
 
-import haxegon.*;
-import Globals.*;
-
 class IMGUI {
 
 	public static function schalter(x,y,text1,text2,selection:Int) {
@@ -119,7 +116,7 @@ class IMGUI {
 		
 	  var textcolor =PAL.buttonTextCol;
 	  var color = PAL.buttonCol;
-	  var colorhover = PAL.buttonHighlightCol;
+	//   var colorhover = PAL.buttonHighlightCol;
 	  var borderCol = PAL.buttonBorderCol;
 
 	  var linethickness=GUI.linethickness;
@@ -165,14 +162,14 @@ class IMGUI {
 		var oldtextsize=Text.size;
 		Text.size = GUI.buttonTextSize;
 		
-	  var textcolor =PAL.buttonTextCol;
+	//   var textcolor =PAL.buttonTextCol;
 	  var color = PAL.buttonCol;
 	  var colorhover = PAL.buttonHighlightCol;
 	  var borderCol = PAL.buttonBorderCol;
 
 	  var linethickness=GUI.linethickness;
-	  var xpadding = GUI.buttonPaddingX;
-	  var ypadding = GUI.buttonPaddingY;
+	//  var xpadding = GUI.buttonPaddingX;
+	//   var ypadding = GUI.buttonPaddingY;
 
 	  Gfx.linethickness=linethickness;
 

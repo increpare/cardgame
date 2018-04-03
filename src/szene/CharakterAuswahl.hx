@@ -1,9 +1,5 @@
 package szene;
 
-import haxegon.*;
-import Globals.*;
-import utils.*;
-
 class CharakterAuswahl {
 
 	function init(){

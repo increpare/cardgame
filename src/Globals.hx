@@ -1,8 +1,12 @@
-package;
-import haxegon.*;
-import utils.*;
-import klasse.*;
-import ort.*;
+typedef Placement = {
+    var sprache : Int;
+    var auserwaehlte : Int;
+    var ort : Int;
+    var owd : OberweltData;
+    var tx : Int;
+    var ty : Int;
+    var dyn : KlasseDynamisch;
+};
 
 class Globals
 {
@@ -44,10 +48,14 @@ class Globals
       font:"GermaniaOne-Regular",
   };
 
-  public static var state = {
+  public static var state : Placement = {
       sprache:0,
       auserwaehlte:0,
       ort:0,
+      owd:null,
+      tx:-1,
+      ty:-1,
+      dyn:null
   };
 
   public static function S(de:String,en:String):String{
@@ -100,18 +108,51 @@ class Globals
             
             for (i in 1...dat[0].length){
                 var e = dat[name_index][i];
+                var ort = dat[ort_index][i];
                 var spielbar = dat[spielbar_index][i]=="WAHR";
+                var lagerplatz:String = dat[lagerplatz_index][i];
+                var stufe:Int = Std.parseInt(dat[stufe_index][i]);            
                 var en = e.charAt(0).toUpperCase()+e.substring(1);
                 var beschreibung = new StringPair(dat[beschreibung_de_index][i],dat[beschreibung_en_index][i]);
+                var ruestung:Array<String> = new Array<String>();
 
+                var s:String;
+                
+                s=dat[ruestung1_index][i];
+                if (s!=""){
+                    ruestung.push(s);
+                }
+                s=dat[ruestung2_index][i];
+                if (s!=""){
+                    ruestung.push(s);
+                }
+                s=dat[ruestung3_index][i];
+                if (s!=""){
+                    ruestung.push(s);
+                }
+                s=dat[ruestung4_index][i];
+                if (s!=""){
+                    ruestung.push(s);
+                }
+                s=dat[ruestung5_index][i];
+                if (s!=""){
+                    ruestung.push(s);
+                }
+                s=dat[ruestung6_index][i];
+                if (s!=""){
+                    ruestung.push(s);
+                }
+                
                 var c:Klasse = new Klasse(
                 e,
+                ort,
                 new StringPair(en,en),
                 "sprites/"+e,
                 spielbar,
-                beschreibung);
-
-                trace(c);
+                stufe,
+                lagerplatz,
+                beschreibung,
+                ruestung);
 
                 Kreaturen.push(c);
                 KreaturenDictionary.set(e,c);
@@ -188,16 +229,16 @@ class Globals
                 var e_druckname = new StringPair(dat[druckname_de_index][i],dat[druckname_en_index][i]);
                 var e_beschreibung = new StringPair(dat[beschreibung_de_index][i],dat[beschreibung_en_index][i]);
 
-                var e_formstr = dat[form_index][i];
+                // var e_formstr = dat[form_index][i];
                 var e_onplaystr = dat[onplay_index][i];
                 var e_bleibend = dat[bleibend_index][i];
-                
+                var e_form = dat[form_index][i];
                 var c:Ruestung = new Ruestung(
                     e,
                     "bilder/"+e,
                     e_druckname,
                     e_beschreibung,
-                    null,
+                    e_form,
                     e_onplaystr,
                     e_bleibend=="WAHR"
                     

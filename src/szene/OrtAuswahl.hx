@@ -1,10 +1,5 @@
 package szene;
 
-import haxegon.*;
-import Globals.*;
-import ort.*;
-import utils.*;
-
 class OrtAuswahl {
 
 	function init(){
@@ -17,13 +12,13 @@ class OrtAuswahl {
 		var h = Gfx.screenheight;
 		var w = Gfx.screenwidth;
 
-		var cellw = 128;
-		var cellh = 129;
-		var cellmarginx = 15;
+		// var cellw = 128;
+		// var cellh = 129;
+		// var cellmarginx = 15;
 		var cellmarginy = 15;
 		
-		var klassen = KreaturenSpielbar;
-		var klassenZahl = klassen.length;
+		// var klassen = KreaturenSpielbar;
+		// var klassenZahl = klassen.length;
 
 		var s = S("Zielort","Destination");
 		var th = Text.height(s);
@@ -93,8 +88,25 @@ class OrtAuswahl {
 				h-GUI.buttonTextSize-7*GUI.buttonPaddingY,
 				stext)
 			) {
+
+			SetupNewGame();
 			Scene.change(szene.Oberwelt);
 		}	
 		
+	}
+
+	public function SetupNewGame(){
+		state.owd = new OberweltData(Orte[state.ort]);
+		var spielerklasse = KreaturenDictionary[ KreaturenSpielbar[state.auserwaehlte]];
+		state.dyn = new KlasseDynamisch(spielerklasse,70,100,spielerklasse.ruestung);	
+
+		for (i in 0...CONST.invW){
+			for (j in 0...CONST.invH){
+				if (state.dyn.platz[i][j]){
+					state.owd.dat[i][j]=null;
+				}
+			}
+		}
+			
 	}
 }

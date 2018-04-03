@@ -1,6 +1,6 @@
 Icon;Name;Ort;Beschreibung_DE;Beschreibung_EN;spielbar;Stufe;Lagerplatz;Rüstung1;Rüstung2;Rüstung3;Rüstung4;Rüstung5;Rüstung6
 ;jowler;forst;;;FALSCH;1;Rechteck 1 2;dolch;;;;;
-;exey;forst;;;FALSCH;1;Kreis 2 3;schwert;;;;;
+;exey;forst;;;FALSCH;1;Kreis 2;schwert;;;;;
 ;toady;forst;;;FALSCH;1;Rechteck 3 2;dolch;;;;;
 ;argpig;forst;;;FALSCH;2;Kreis 4;schwert;schwert;schwert;schwert;;
 ;nosehead;forst;;;FALSCH;2;Rechteck 3 3;schwert;schwert;;;;
@@ -78,6 +78,6 @@ Icon;Name;Ort;Beschreibung_DE;Beschreibung_EN;spielbar;Stufe;Lagerplatz;Rüstung
 ;terra;steppen;;;FALSCH;4;Rechteck 4 3;dreizack;dreizack;;;;
 ;earsy;steppen;;;FALSCH;5;Rechteck 5 4;axt;axt;heilung;heilung;;
 ;sitking;;So einschüchternd groß!;A monstrous being.;WAHR;0;Rechteck 2 2;axt;schwert;axt;;;
-;tripove;;Er hat ein armes Leben :(;He has a miserable life :(;WAHR;0;Rechteck 2 2;axt;schwert;;;;
-;unimout;;Lecker!;Delicious!;WAHR;0;Rechteck 2 2;dolch;;;;;
-;wiking;;Was für einen Held!;What a hero!;WAHR;0;Rechteck 2 2;dreizack;heilung;;;;
+;tripove;;Er hat ein armes Leben :(;He has a miserable life :(;WAHR;0;Rechteck 1 4;axt;schwert;;;;
+;unimout;;Lecker!;Delicious!;WAHR;0;Kreis 1;dolch;;;;;
+;wiking;;Was für einen Held!;What a hero!;WAHR;0;Kreis 2;dreizack;heilung;;;;

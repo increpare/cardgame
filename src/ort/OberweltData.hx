@@ -1,30 +1,42 @@
 package ort;
 
-import haxegon.*;
-import Globals.*;
-import szene.*;
-import utils.*;
-
 class OberweltData
 {
     public var dat : Array<Array<Dynamic>>;
 
-    public function new(){
+    private function KlassenFuerOrt(ort:Ort) : Array<Klasse> {        
+        return Kreaturen.filter( function(k:Klasse) { return k.ort == ort.name; } );       
+    }
+
+
+	public function visibleTile(i:Int,j:Int):Bool {
+		if (i>0 && dat[i-1][j]==null){
+			return true;
+		}
+		if (i<dat.length-1 && dat[i+1][j]==null){
+			return true;
+		}
+		if (j>0 && dat[i][j-1]==null){
+			return true;
+		}
+		if (j<dat[0].length-1 && dat[i][j+1]==null){
+			return true;
+		}
+		return false;
+	}
+
+    public function new(ort:Ort){
+        var moeglichKreaturen:Array<Klasse> = KlassenFuerOrt(ort);
+        
         dat = new Array<Array<Dynamic>>();
         for (i in 0...CONST.invW){
             var col = new Array<Dynamic>();
-            for (j in 0...CONST.invH){              
+            for (j in 0...CONST.invH){   
+                var rk:Klasse = Random.pick(moeglichKreaturen);
                 var e = {
-                    name : Kreaturen[i*CONST.invH+j].name,
-                    bild : Kreaturen[i*CONST.invH+j].bild,
+                    name : rk.name,
+                    bild : rk.bild,
                 };
-                if (i>=2 && i<=3 && j==2){
-                    e = {
-                        name : "_",
-                        bild : "sprites/_",
-                    };  
-                } 
-
                 col.push(e);
             }
             dat.push(col);
