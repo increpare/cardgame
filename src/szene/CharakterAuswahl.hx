@@ -11,14 +11,16 @@ class CharakterAuswahl {
 	}	
 
 	function update() {	
+		Gfx.clearscreen(PAL.bg);
+
 		Text.size=GUI.subSubTitleTextSize;
 		var h = Gfx.screenheight;
 		var w = Gfx.screenwidth;
 
-		var cellw = 256;
-		var cellh = 256;
-		var cellmarginx = 30;
-		var cellmarginy = 30;
+		var cellw = 128;
+		var cellh = 128;
+		var cellmarginx = 15;
+		var cellmarginy = 15;
 		
 		var klassen = KreaturenSpielbar;
 		var klassenZahl = klassen.length;
@@ -38,6 +40,7 @@ class CharakterAuswahl {
 		Gfx.drawline(0,ty,w,ty,PAL.buttonBorderCol);
 		var ty2 = ty + cellmarginy*2 + cellh;
 		Gfx.drawline(0,ty2,w,ty2,PAL.buttonBorderCol);
+		
 
 		var imageselectionwidth = cellw*klassenZahl+cellmarginx*(klassenZahl-1);
 
@@ -53,18 +56,17 @@ class CharakterAuswahl {
 				l+(cellw+cellmarginx)*i,
 				ty+cellmarginy+bump,
 				t.bild,
-				state.auserwaehlte==i
+				state.auserwaehlte==i,
+				0.5
 				)){
 					state.auserwaehlte=i;
 				}
 
 		}
 
-		trace(state.auserwaehlte);
-		trace(KreaturenSpielbar[state.auserwaehlte]);
 		var bs : klasse.Klasse = KreaturenDictionary[KreaturenSpielbar[state.auserwaehlte]];
 
-		var ty3 = ty2+4*cellmarginy;
+		var ty3 = ty2+2*cellmarginy;
 
 		Text.size=GUI.subSubTitleTextSize;
 		Text.display(Text.CENTER,ty3,bs.druckname.Eval());
@@ -75,7 +77,7 @@ class CharakterAuswahl {
 	
 		if (IMGUI.button(
 				0,
-				h-GUI.buttonTextSize-15*GUI.buttonPaddingY,
+				h-GUI.buttonTextSize-7*GUI.buttonPaddingY,
 				S("Zurück","Back"))
 			) {
 			Scene.change(Main);
@@ -86,7 +88,7 @@ class CharakterAuswahl {
 		var stext = S("Vormarsch!","Onwards!");
 		if (IMGUI.button(			
 				w-Math.round(Text.width(stext))-2*GUI.buttonPaddingX-4,
-				h-GUI.buttonTextSize-15*GUI.buttonPaddingY,
+				h-GUI.buttonTextSize-7*GUI.buttonPaddingY,
 				stext)
 			) {
 			Scene.change(szene.OrtAuswahl);

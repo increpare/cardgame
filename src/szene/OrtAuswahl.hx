@@ -12,14 +12,15 @@ class OrtAuswahl {
 	}	
 
 	function update() {	
+		Gfx.clearscreen(PAL.bg);
 		Text.size=GUI.subSubTitleTextSize;
 		var h = Gfx.screenheight;
 		var w = Gfx.screenwidth;
 
-		var cellw = 256;
-		var cellh = 384;
-		var cellmarginx = 30;
-		var cellmarginy = 30;
+		var cellw = 128;
+		var cellh = 129;
+		var cellmarginx = 15;
+		var cellmarginy = 15;
 		
 		var klassen = KreaturenSpielbar;
 		var klassenZahl = klassen.length;
@@ -38,7 +39,7 @@ class OrtAuswahl {
 		var ty = Math.round(GUI.screenPaddingTop + th + GUI.buttonPaddingY);
 		Gfx.drawline(0,ty,w,ty,PAL.buttonBorderCol);
 		
-		var colx = 600;
+		var colx = 300;
 		Gfx.drawline(colx,ty,colx,h,PAL.fg);
 		
 		var bp = ty+GUI.buttonPaddingY*3;
@@ -54,26 +55,28 @@ class OrtAuswahl {
 					state.ort=i;
 				}
 			}
-			bp+=200;
+			bp+=100;
 		}
 
 		if (IMGUI.button(
 				0,
-				h-GUI.buttonTextSize-15*GUI.buttonPaddingY,
+				h-GUI.buttonTextSize-7*GUI.buttonPaddingY,
 				S("Zurück","Back"))
 			) {
 			Scene.change(CharakterAuswahl);
 		}
 
 		var bs : ort.Ort = Orte[state.ort];
-		var ty3 = ty+4*cellmarginy;
+		var ty3:Float = ty+4*cellmarginy;
 
 		var posl = colx+4*cellmarginy;
 
 		var bildref = bs.bild;
+		Gfx.scale(0.5,0.5);
 		Gfx.drawimage(posl,ty3,bildref);
+		Gfx.scale();
 
-		ty3+=Gfx.imageheight(bildref)+4*cellmarginy;
+		ty3+=Gfx.imageheight(bildref)*0.5+4*cellmarginy;
 
 		Text.size=GUI.subSubTitleTextSize;
 		Text.display(posl,ty3,bs.druckname.Eval());
@@ -87,7 +90,7 @@ class OrtAuswahl {
 		var stext = S("Vormarsch!","Onwards!");
 		if (IMGUI.button(			
 				w-Math.round(Text.width(stext))-2*GUI.buttonPaddingX-4,
-				h-GUI.buttonTextSize-15*GUI.buttonPaddingY,
+				h-GUI.buttonTextSize-7*GUI.buttonPaddingY,
 				stext)
 			) {
 			Scene.change(szene.Oberwelt);

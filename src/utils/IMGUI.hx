@@ -161,7 +161,7 @@ class IMGUI {
 	  return click;
 	}
 
-	public static function Bildbutton(x:Int,y:Int,bild:String,an:Bool) {
+	public static function Bildbutton(x:Int,y:Int,bild:String,an:Bool,scale:Float) {
 		var oldtextsize=Text.size;
 		Text.size = GUI.buttonTextSize;
 		
@@ -176,9 +176,11 @@ class IMGUI {
 
 	  Gfx.linethickness=linethickness;
 
-	  var width = Gfx.imagewidth(bild);
+	  var width = Gfx.imagewidth(bild)*scale;
 
-	  var height=Gfx.imageheight(bild);
+	  var height=Gfx.imageheight(bild)*scale;
+
+	  Gfx.scale(scale,scale);
 	  if (x==Text.CENTER){
 		  x=Math.round(Gfx.screenwidthmid-width/2);
 	  }
@@ -206,6 +208,7 @@ class IMGUI {
 	  Gfx.imagealpha=1.0;
 	  Text.size=oldtextsize;
 
+	  Gfx.scale();
 	  return click;
 	}
 }

@@ -24,20 +24,20 @@ class Globals
   };
 
   public static var GUI = {
-      smalltextsize:40,
-      textsize:60,
-      buttonTextSize:140,
+      smalltextsize:20,
+      textsize:30,
+      buttonTextSize:70,
       buttonPaddingX : 40,
       buttonPaddingY : 5,
       linethickness : 5,
       thicklinethickness : 10,
-      titleTextSize:415,
-      subTitleTextSize:215,
+      titleTextSize:207,
+      subTitleTextSize:107,
       vpadding:10,
       healthbarheight:20,
-    subSubTitleTextSize:120,
+    subSubTitleTextSize:60,
 
-    portraitsize:180,
+    portraitsize:80,
       
       screenPaddingTop:30,
       
@@ -57,75 +57,105 @@ class Globals
         return en;
       }
   }
- 
-  public static var Kreaturen:Array<Klasse>;
 
-  public static var KreaturenDictionary:Map<String,Klasse>;
+    public static var Kreaturen:Array<Klasse>;
 
-  public static var KreaturenSpielbar:Array<String>;
+    public static var KreaturenDictionary:Map<String,Klasse>;
+
+    public static var KreaturenSpielbar:Array<String>;
 
 
-  public static var Orte:Array<Ort>;
+    public static var Orte:Array<Ort>;
 
-  public static var OrteDictionary:Map<String,Ort>;
+    public static var OrteDictionary:Map<String,Ort>;
 
-  public static function SQ(s:String):String{
-          if (s.charAt(0)=="\""){
-              return s.substr(1,s.length-2);
-          }
-          else {
-            return s;
-          }
+    public static function LoadDat(){
+        Kreaturen = new Array<Klasse>();
+        KreaturenDictionary = new Map<String,Klasse>();
+        KreaturenSpielbar = new Array<String>();
+
+        {
+            var dat:Array<Array<String>> = Data.load2dcsv("kreaturen",";");
+
+            var kreaturenueberschriften:Array<String> = new Array<String>();
+            
+            for (i in 0...dat.length){
+                var e = dat[i][0];
+                kreaturenueberschriften.push(e);
+            }
+
+            var name_index = kreaturenueberschriften.indexOf("Name");
+            var ort_index = kreaturenueberschriften.indexOf("Ort");
+            var beschreibung_de_index = kreaturenueberschriften.indexOf("Beschreibung_DE");
+            var beschreibung_en_index = kreaturenueberschriften.indexOf("Beschreibung_EN");
+            var spielbar_index = kreaturenueberschriften.indexOf("spielbar");
+            var stufe_index = kreaturenueberschriften.indexOf("Stufe");
+            var lagerplatz_index = kreaturenueberschriften.indexOf("Lagerplatz");
+            var ruestung1_index = kreaturenueberschriften.indexOf("Rüstung1");
+            var ruestung2_index = kreaturenueberschriften.indexOf("Rüstung2");
+            var ruestung3_index = kreaturenueberschriften.indexOf("Rüstung3");
+            var ruestung4_index = kreaturenueberschriften.indexOf("Rüstung4");
+            var ruestung5_index = kreaturenueberschriften.indexOf("Rüstung5");
+            var ruestung6_index = kreaturenueberschriften.indexOf("Rüstung6");
+            
+            for (i in 1...dat[0].length){
+                var e = dat[name_index][i];
+                var spielbar = dat[spielbar_index][i]=="WAHR";
+                var en = e.charAt(0).toUpperCase()+e.substring(1);
+                var beschreibung = new StringPair(dat[beschreibung_de_index][i],dat[beschreibung_en_index][i]);
+
+                var c:Klasse = new Klasse(
+                e,
+                new StringPair(en,en),
+                "sprites/"+e,
+                spielbar,
+                beschreibung);
+
+                trace(c);
+
+                Kreaturen.push(c);
+                KreaturenDictionary.set(e,c);
+                if (spielbar){
+                    KreaturenSpielbar.push(e);
+                }
+            }
+        }
+
+
+
+        Orte = new Array<Ort>();
+        OrteDictionary = new Map<String,Ort>();
+
+        {
+            var dat:Array<Array<String>> = Data.load2dcsv("orte",";");
+
+            var orteueberschriften:Array<String> = new Array<String>();
+
+            for (i in 0...dat.length){
+                var e = dat[i][0];
+                orteueberschriften.push(e);
+            }
+
+            var name_index = orteueberschriften.indexOf("Name");
+            var druckname_de_index = orteueberschriften.indexOf("Druckname_DE");
+            var druckname_en_index = orteueberschriften.indexOf("Druckname_EN");
+            var beschreibung_de_index = orteueberschriften.indexOf("Beschreibung_DE");
+            var beschreibung_en_index = orteueberschriften.indexOf("Beschreibung_EN");
+
+            for (i in 1...dat[0].length){
+                var e = dat[name_index][i];
+                var e_druckname = new StringPair(dat[druckname_de_index][i],dat[druckname_en_index][i]);
+                var e_beschreibung = new StringPair(dat[beschreibung_de_index][i],dat[beschreibung_en_index][i]);
+
+                var c:Ort = new Ort(
+                    e,
+                    "bilder/"+e,
+                    e_druckname,
+                    e_beschreibung
+                    );
+                Orte.push(c);
+                OrteDictionary.set(e,c);
+            }
+        }
     }
-
-
-  public static function LoadDat(){
-      Kreaturen = new Array<Klasse>();
-      KreaturenDictionary = new Map<String,Klasse>();
-      KreaturenSpielbar = new Array<String>();
-
-      var dat:Array<Array<String>> = Data.load2dcsv("kreaturen");
-      for (i in 1...dat[0].length){
-          var e = SQ(dat[0][i]);
-          var spielbar = SQ(dat[1][i].toLowerCase())=="y";
-          var en = e.charAt(0).toUpperCase()+e.substring(1);
-          var beschreibung = new StringPair(SQ(dat[2][i]),SQ(dat[3][i]));
-
-          var c:Klasse = new Klasse(
-              e,
-              new StringPair(en,en),
-              "sprites/"+e,
-              spielbar,
-              beschreibung);
-          
-          Kreaturen.push(c);
-          KreaturenDictionary.set(e,c);
-          if (spielbar){
-              KreaturenSpielbar.push(e);
-          }
-      }
-
-
-
-      Orte = new Array<Ort>();
-      OrteDictionary = new Map<String,Ort>();
-
-      var dat:Array<Array<String>> = Data.load2dcsv("orte");
-      for (i in 1...dat[0].length){
-          var e = SQ(dat[0][i]);
-          var en = e.charAt(0).toUpperCase()+e.substring(1);
-          var e_druckname = new StringPair(SQ(dat[1][i]),SQ(dat[2][i]));
-          var e_beschreibung = new StringPair(SQ(dat[3][i]),SQ(dat[4][i]));
-
-          var c:Ort = new Ort(
-              e,
-              "bilder/"+e,
-              e_druckname,
-              e_beschreibung
-              );
-          
-          Orte.push(c);
-          OrteDictionary.set(e,c);
-      }
-  }
 }

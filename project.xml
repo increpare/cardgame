@@ -17,6 +17,7 @@
       file="ruestung" 
    />
 
+  <prebuild command="make" />
   <window width="${windowwidth}" height="${windowheight}" if="flash || cpp || neko"></window>
   <window width="${windowwidth}" height="${windowheight}" if="html5 || mobile"></window>
 	 

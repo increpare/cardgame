@@ -173,15 +173,14 @@ class Oberwelt {
 		}
 
 
-		var s = cellsize/GUI.portraitsize;
-		Gfx.scale(s,s,Gfx.LEFT,Gfx.TOP);
+		var s = cellsize/Gfx.imagewidth(owd.dat[0][0].bild);
+		Gfx.scale(s,s);
 		//Gfx.drawbox(x,y,w,h,PAL.fg);		
 		for (i in 0...CONST.invW){
 			for (j in 0...CONST.invH){
 				var cx = x+cellsize*i;
 				var cy = y+cellsize*j;
 
-				trace(owd.dat);
 				if (i==lightx && j==lighty){
 					Gfx.imagealpha=0.6;
 					Gfx.drawimage(cx,cy,owd.dat[i][j].bild);
@@ -215,6 +214,7 @@ class Oberwelt {
 	}
 
 	function update() {	
+		Gfx.clearscreen(PAL.bg);
 		var width = drawDetailsPanel(10,10,spielerklasse,spielerklassedynamisch);
 		var border = 20;
 		var x = 10+width+border;
@@ -237,10 +237,9 @@ class Oberwelt {
 
 		if (mc!=null){
 			var cell = getGridCoord(mc.x,mc.y,x,y,w,h);
-			Gfx.linethickness=GUI.thicklinethickness;
+			Gfx.linethickness=GUI.linethickness;
 			Gfx.drawbox(cell.x,cell.y,cell.size,cell.size,PAL.buttonBorderCol);
 			Gfx.linethickness=GUI.linethickness;
-			trace(cell.x,cell.y);
 		}
 	}
 }

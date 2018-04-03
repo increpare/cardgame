@@ -10,7 +10,6 @@ class Main {
 	
 
 		//Truetype fonts look a LOT better when we don't scale the canvas!
-		Gfx.resizescreen(0, 0);
 		Text.font = GUI.font;
 
 		//initial all globals here

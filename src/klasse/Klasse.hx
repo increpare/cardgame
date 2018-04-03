@@ -19,7 +19,6 @@ class Klasse
     ){
         this.name=_name;
         this.druckname=_druckname;
-        trace(_druckname);
         this.bild=_bild;
         this.spielbar=_spielbar;
         this.beschreibung=_beschreibung;

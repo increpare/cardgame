@@ -1,0 +1,15 @@
+name;druckname_de;druckname_en;beschreibung_de;beschreibung_en;form;onplay;bleibend
+schwert;Schwert;Sword;scharf!;sharp!;111;damage 2;FALSCH
+axt;Axt;Axe;schwer!;schwer!;"11
+01";damage 2;FALSCH
+dolch;Dolch;Dagger;zierlich!;tiny!;11;damage 1;FALSCH
+ring;Ring;Ring;rund!;round!;"111
+101
+111";damage 4;FALSCH
+dreizack;Dreizack;Trident;spitz!;pointy!;"111
+111
+010
+010";damage 3;FALSCH
+heilung;Heilung;Healthpack;heilend!;healing!;"010
+111
+010";heal 3;FALSCH

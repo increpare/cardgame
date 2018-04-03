@@ -1,83 +1,83 @@
-Name,spielbar,Beschreibung,Description,Min Stufe
-argpig,,,,
-baldy,,,,
-ban,,,,
-banangry,,,,
-betti,,,,
-bidrag,,,,
-bifur,,,,
-blol,,,,
-bosip,,,,
-boxy,,,,
-butt,,,,
-catzy,,,,
-clava,,,,
-cover,,,,
-crab,,,,
-dancen,,,,
-dryeye,,,,
-dwage,,,,
-earsy,,,,
-emm,,,,
-evileye,,,,
-exey,,,,
-eyeman,,,,
-flaj,,,,
-flobble,,,,
-frogflower,,,,
-froggy,,,,
-fuschia,,,,
-fussee,,,,
-futsheen,,,,
-goner,,,,
-hairdy,,,,
-hairman,,,,
-handerfly,,,,
-happs,,,,
-hedgey,,,,
-hgost,,,,
-hond,,,,
-jaggy,,,,
-jallo,,,,
-jotwolk,,,,
-jowler,,,,
-krown,,,,
-lashes,,,,
-mehi,,,,
-mindin,,,,
-nasen,,,,
-nash,,,,
-nosehead,,,,
-nosema,,,,
-octi,,,,
-outraged,,,,
-panto,,,,
-pi,,,,
-pizzo,,,,
-prikkel,,,,
-ruube,,,,
-shelly,,,,
-shrage,,,,
-sitking,y,So einschüchternd groß!,A monstrous being.,
-spake,,,,
-spokey,,,,
-squiddy,,,,
-stair,,,,
-tendril,,,,
-terra,,,,
-timond,,,,
-toady,,,,
-token,,,,
-toofs,,,,
-tripletoad,,,,
-tripove,y,Was für einen Held!,What a hero!,
-trobo,,,,
-trotz,,,,
-tworl,,,,
-unimout,y,Lecker!,Delicious!,
-upside,,,,
-walker,,,,
-wave,,,,
-wiking,y,Er hat ein armes Leben :(,He has a miserable life :(,
-wop,,,,
-worm,,,,
+Icon;Name;Ort;Beschreibung_DE;Beschreibung_EN;spielbar;Stufe;Lagerplatz;Rüstung1;Rüstung2;Rüstung3;Rüstung4;Rüstung5;Rüstung6
+;jowler;forst;;;FALSCH;1;Rechteck 1 2;dolch;;;;;
+;exey;forst;;;FALSCH;1;Kreis 2 3;schwert;;;;;
+;toady;forst;;;FALSCH;1;Rechteck 3 2;dolch;;;;;
+;argpig;forst;;;FALSCH;2;Kreis 4;schwert;schwert;schwert;schwert;;
+;nosehead;forst;;;FALSCH;2;Rechteck 3 3;schwert;schwert;;;;
+;spake;forst;;;FALSCH;2;Rechteck 3 3;dolch;dolch;dolch;;;
+;frogflower;forst;;;FALSCH;3;Rechteck 4 3;schwert;;;;;
+;hairdy;forst;;;FALSCH;3;Rechteck 4 3;schwert;;;;;
+;mindin;forst;;;FALSCH;3;Rechteck 4 3;schwert;;;;;
+;outraged;forst;;;FALSCH;3;Rechteck 4 3;schwert;;;;;
+;tripletoad;forst;;;FALSCH;4;Rechteck 5 3;schwert;;;;;
+;worm;forst;;;FALSCH;4;Rechteck 4 3;schwert;;;;;
+;nash;forst;;;FALSCH;4;Rechteck 4 3;schwert;ring;;;;
+;tendril;forst;;;FALSCH;4;Rechteck 4 3;schwert;dolch;;;;
+;bosip;forst;;;FALSCH;5;Rechteck 5 4;schwert;dolch;dolch;dreizack;;
+;emm;hoehle;;;FALSCH;1;Rechteck 2 2;;;;;;
+;happs;hoehle;;;FALSCH;1;Rechteck 2 2;;;;;;
+;jotwolk;hoehle;;;FALSCH;1;Rechteck 2 2;;;;;;
+;futsheen;hoehle;;;FALSCH;2;Rechteck 3 3;;;;;;
+;flobble;hoehle;;;FALSCH;2;Rechteck 3 3;;;;;;
+;lashes;hoehle;;;FALSCH;2;Rechteck 3 3;;;;;;
+;dryeye;hoehle;;;FALSCH;2;Rechteck 3 3;;;;;;
+;blol;hoehle;;;FALSCH;3;Rechteck 4 3;;;;;;
+;dwage;hoehle;;;FALSCH;3;Rechteck 4 3;;;;;;
+;evileye;hoehle;;;FALSCH;3;Rechteck 4 3;;;;;;
+;bidrag;hoehle;;;FALSCH;4;Rechteck 4 3;;;;;;
+;bifur;hoehle;;;FALSCH;4;Rechteck 4 3;;;;;;
+;timond;hoehle;;;FALSCH;4;Rechteck 4 3;;;;;;
+;token;hoehle;;;FALSCH;4;Rechteck 4 3;;;;;;
+;baldy;hoehle;;;FALSCH;5;Rechteck 5 4;;;;;;
+;ban;insel;;;FALSCH;1;Kreis 2;;;;;;
+;fuschia;insel;;;FALSCH;1;Rechteck 2 2;;;;;;
+;jallo;insel;;;FALSCH;1;Rechteck 2 2;;;;;;
+;trotz;insel;;;FALSCH;1;Rechteck 2 2;;;;;;
+;banangry;insel;;;FALSCH;2;Rechteck 3 3;;;;;;
+;dancen;insel;;;FALSCH;2;Rechteck 3 3;;;;;;
+;squiddy;insel;;;FALSCH;2;Rechteck 3 3;;;;;;
+;crab;insel;;;FALSCH;3;Rechteck 4 3;;;;;;
+;mehi;insel;;;FALSCH;3;Rechteck 4 3;;;;;;
+;toofs;insel;;;FALSCH;3;Rechteck 4 3;;;;;;
+;wop;insel;;;FALSCH;3;Rechteck 4 3;;;;;;
+;octi;insel;;;FALSCH;4;Rechteck 4 3;;;;;;
+;pizzo;insel;;;FALSCH;4;Rechteck 4 3;;;;;;
+;shelly;insel;;;FALSCH;4;Rechteck 4 3;;;;;;
+;handerfly;insel;;;FALSCH;5;Rechteck 5 3;;;;;;
+;cover;polar;;;FALSCH;1;Rechteck 2 2;;;;;;
+;panto;polar;;;FALSCH;1;Rechteck 2 2;;;;;;
+;butt;polar;;;FALSCH;1;Rechteck 2 2;;;;;;
+;betti;polar;;;FALSCH;2;Rechteck 3 4;;;;;;
+;flaj;polar;;;FALSCH;2;Rechteck 3 3;;;;;;
+;hgost;polar;;;FALSCH;2;Rechteck 3 3;;;;;;
+;tworl;polar;;;FALSCH;2;Rechteck 3 3;;;;;;
+;clava;polar;;;FALSCH;3;Rechteck 4 3;;;;;;
+;goner;polar;;;FALSCH;3;Rechteck 4 3;;;;;;
+;jaggy;polar;;;FALSCH;3;Rechteck 4 3;;;;;;
+;spokey;polar;;;FALSCH;3;Rechteck 4 3;;;;;;
+;wave;polar;;;FALSCH;3;Rechteck 4 3;;;;;;
+;fussee;polar;;;FALSCH;4;Rechteck 3 4;;;;;;
+;pi;polar;;;FALSCH;4;Rechteck 2 3;dreizack;;;;;
+;shrage;polar;;;FALSCH;4;Rechteck 4 3;;;;;;
+;trobo;polar;;;FALSCH;5;Rechteck 5 4;;;;;;
+;catzy;steppen;;;FALSCH;1;Rechteck 2 2;dolch;;;;;
+;froggy;steppen;;;FALSCH;1;Rechteck 2 2;dolch;;;;;
+;ruube;steppen;;;FALSCH;1;Rechteck 2 2;dolch;;;;;
+;eyeman;steppen;;;FALSCH;2;Rechteck 3 3;dolch;;;;;
+;krown;steppen;;;FALSCH;2;Rechteck 3 3;dolch;;;;;
+;stair;steppen;;;FALSCH;2;Rechteck 3 3;dolch;;;;;
+;upside;steppen;;;FALSCH;2;Rechteck 3 3;dolch;;;;;
+;hairman;steppen;;;FALSCH;2;Rechteck 4 3;schwert;;;;;
+;boxy;steppen;;;FALSCH;3;Rechteck 4 3;dolch;;;;;
+;hedgey;steppen;;;FALSCH;3;Rechteck 4 3;schwert;;;;;
+;nosema;steppen;;;FALSCH;3;Rechteck 4 3;schwert;;;;;
+;prikkel;steppen;;;FALSCH;3;Rechteck 4 3;schwert;;;;;
+;nasen;steppen;;;FALSCH;4;Rechteck 4 3;schwert;schwert;;;;
+;walker;steppen;;;FALSCH;4;Rechteck 4 3;dolch;dolch;heilung;;;
+;hond;steppen;;;FALSCH;4;Rechteck 4 3;schwert;ring;;;;
+;terra;steppen;;;FALSCH;4;Rechteck 4 3;dreizack;dreizack;;;;
+;earsy;steppen;;;FALSCH;5;Rechteck 5 4;axt;axt;heilung;heilung;;
+;sitking;;So einschüchternd groß!;A monstrous being.;WAHR;0;Rechteck 2 2;axt;schwert;axt;;;
+;tripove;;Er hat ein armes Leben :(;He has a miserable life :(;WAHR;0;Rechteck 2 2;axt;schwert;;;;
+;unimout;;Lecker!;Delicious!;WAHR;0;Rechteck 2 2;dolch;;;;;
+;wiking;;Was für einen Held!;What a hero!;WAHR;0;Rechteck 2 2;dreizack;heilung;;;;
