@@ -1,9 +1,5 @@
 package szene;
 
-typedef IntPair = {
-	var x:Int;
-	var y:Int;
-}
 
 class Oberwelt {
 

@@ -77,7 +77,7 @@ Icon;Name;Ort;Beschreibung_DE;Beschreibung_EN;spielbar;Stufe;Lagerplatz;Gesundhe
 ;hond;steppen;;;FALSCH;4;Rechteck 4 3;80;1;schwert;ring;;;;
 ;terra;steppen;;;FALSCH;4;Rechteck 4 3;80;1;dreizack;dreizack;;;;
 ;earsy;steppen;;;FALSCH;5;Rechteck 5 4;100;1;axt;axt;heilung;heilung;;
-;sitking;;So einschüchternd groß!;A monstrous being.;WAHR;0;Rechteck 3 2;20;2;axt;schwert;axt;;;
+;sitking;;So einschüchternd groß!;A monstrous being.;WAHR;0;Rechteck 3 3;20;2;axt;schwert;axt;;;
 ;tripove;;Er hat ein armes Leben :(;He has a miserable life :(;WAHR;0;Rechteck 1 4;20;3;axt;schwert;;;;
-;unimout;;Lecker!;Delicious!;WAHR;0;Kreis 1;20;1;dolch;;;;;
+;unimout;;Lecker!;Delicious!;WAHR;0;Rechteck 5 4;20;1;dolch;dolch;dolch;;;
 ;wiking;;Was für einen Held!;What a hero!;WAHR;0;Kreis 2;20;1;dreizack;heilung;;;;

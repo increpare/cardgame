@@ -95,8 +95,10 @@ class Schlacht {
 
 				var bild = "sprites/fragezeichen";
 				if (invindex<klasseDynamisch.sichbareSlot){
-					var ruestungname = inv.schlange[invindex];
-					bild = RuestungenDictionary[ruestungname].bild;
+					var ruestungDyn = inv.schlange[invindex];
+					var ruestungName = ruestungDyn.ruestung.name;
+					
+					bild = RuestungenDictionary[ruestungName].bild[ruestungDyn.rotation];
 
 					if (zustand.zug == inv.spieler)
 					{
@@ -135,6 +137,7 @@ class Schlacht {
 				var innerdiameter = Math.max(iw,ih);
 				var outerdiameter = Math.min(bwidth,bheight);
 				var scale = outerdiameter/innerdiameter;
+
 				scale*=0.7;
 				iw*=scale;
 				ih*=scale;
@@ -165,7 +168,7 @@ class Schlacht {
 		Gfx.drawbox(ox,oy,w,h,PAL.fg);
 	}
 
-	function gridCollision(mx:Float,my:Float,x:Float,y:Float,w:Float,h:Float):Dynamic{
+	function gridCollision(mx:Float,my:Float,x:Float,y:Float,w:Float,h:Float):IntPair{
 	
 		var areaAspect = w/h;
 		var gridAspect = CONST.invW/CONST.invH;		
@@ -193,16 +196,14 @@ class Schlacht {
 
 		mx/=cellsize;
 		my/=cellsize;
-
-		mx = Math.floor(mx);
-		my = Math.floor(my);
 		
 		if (mx<0||mx>=CONST.invW || my<0||my>=CONST.invH){
 			return null;
 		}
+
 		return {
-			x:mx,
-			y:my
+			x:Math.floor(mx),
+			y:Math.floor(my)
 		};
 
 	}
@@ -268,7 +269,7 @@ class Schlacht {
 		return [x,y,w,h];
 	}
 
-	function zeichnInventar(x:Float, y:Float, w:Float, h:Float,mc:Dynamic,dyn:KlasseDynamisch,inv:Inventar){
+	function zeichnInventar(x:Float, y:Float, w:Float, h:Float,mc:IntPair,dyn:KlasseDynamisch,inv:Inventar){
 		var areaAspect = w/h;
 		var gridAspect = CONST.invW/CONST.invH;		
 
@@ -346,19 +347,102 @@ class Schlacht {
 
 		for (i in 0...inv.placed.length){
 			var p = inv.placed[i];
-			var ruestung = RuestungenDictionary[p.name];
-			var width = Gfx.imagewidth(ruestung.bild);
+			var ruestungDyn = p.ruestung;
+			var ruestung = ruestungDyn.ruestung;
+			var rot = ruestungDyn.rotation;
+			var width = Gfx.imagewidth(ruestung.bild[p.ruestung.rotation]);
 
 			var cell = getGridCoord(p.x,p.y,x,y,w,h);
 
-			var scale = ruestung.w*cell.size/width;
+			var scale = ruestung.w[rot]*cell.size/width;
 			Gfx.scale(scale);
-			Gfx.drawimage(cell.x,cell.y,ruestung.bild);
+			Gfx.drawimage(cell.x,cell.y,ruestung.bild[p.ruestung.rotation]);
 			Gfx.scale(1);
 
 		}
 	}
 
+	function beschraenkPosition(mc:IntPair,inv:Inventar):Dynamic{
+		var iw = CONST.invW;
+		var ih = CONST.invH;
+
+		var result:IntPair = {
+			x:mc.x,
+			y:mc.y
+		};
+
+		//step 
+
+		var r_dyn = inv.schlange[zustand.ausgewaehltesabteil];
+		var r = r_dyn.ruestung;
+		var r_rot = r_dyn.rotation;
+
+		var r_w = r.w[r_rot];
+		var r_h = r.h[r_rot];
+
+		//first center box on mouse coords
+		result.x=Math.round(result.x-r_w/2+0.5);
+		result.y=Math.round(result.y-r_h/2+0.5);
+
+		if (result.x<0){
+			result.x=0;
+		}
+		if (result.y<0){
+			result.y=0;
+		}
+		if (result.x+r_w>iw){
+			result.x = iw-r_w;
+		}
+		if (result.y+r_h>ih){
+			result.y = ih-r_h;
+		}
+
+		return result;
+
+	}
+
+	function pointCollidesPlacement(i:Int,j:Int,p:Placement):Bool{
+		var rot = p.ruestung.rotation;
+		var r = p.ruestung.ruestung;
+		var f = r.form[rot];
+		var px = p.x;
+		var py = p.y;
+
+		var rw = r.w[rot];
+		var rh = r.h[rot];
+
+		var tx = -px+i;
+		var ty = -py+j;
+
+		if (tx<0 || tx>=rw || ty<0 || ty>=rh){
+			return false;
+		}
+		
+		return f[tx][ty]==1;
+	}
+
+	function platzFrei(i:Int,j:Int,dyn:KlasseDynamisch,inv:Inventar):Bool {
+		if (i<0 || j<0 || i>=CONST.invW || j>=CONST.invH){
+			return false;
+		}
+		if (dyn.platz[i][j]==false){
+			return false;
+		}		
+		var r_dyn = inv.schlange[zustand.ausgewaehltesabteil];
+		var ruestung = r_dyn.ruestung;
+		var rot = r_dyn.rotation;
+		var r_w = ruestung.w[rot];
+		var r_h = ruestung.h[rot];
+		
+		for (r_index in 0...inv.placed.length){
+			var r = inv.placed[r_index];	
+			if (pointCollidesPlacement(i,j,r)){
+				return false;
+			}					
+		}
+		return true;
+	}
+	
 	function zeichnMarkierung(mc:Dynamic,x:Float,y:Float,w:Float,h:Float):Bool {
 		if (zustand.zug!=0 || zustand.ausgewaehltesabteil==-1){
 			return false;			
@@ -367,29 +451,29 @@ class Schlacht {
 		
 		//first, item should be centered on cursor if possible
 
-	
-		var ruestungname = zustand.inv1.schlange[zustand.ausgewaehltesabteil];
-		var ruestung = RuestungenDictionary[ruestungname];
+		var ruestungDyn = zustand.inv1.schlange[zustand.ausgewaehltesabteil];
+		var ruestung = ruestungDyn.ruestung;
+		var rot = ruestungDyn.rotation;
 
 		var cell = getGridCoord(mc.x,mc.y,x,y,w,h);
 
 		//draw alphaed item
 		Gfx.imagealpha=0.6;
-		var width = Gfx.imagewidth(ruestung.bild);
-		var scale = ruestung.w*cell.size/width;
+		var width = Gfx.imagewidth(ruestung.bild[ruestungDyn.rotation]);
+		var scale = ruestung.w[rot]*cell.size/width;
 		Gfx.scale(scale);
-		Gfx.drawimage(cell.x,cell.y,ruestung.bild);
+		Gfx.drawimage(cell.x,cell.y,ruestung.bild[ruestungDyn.rotation]);
 		Gfx.scale(1);
 		Gfx.imagealpha=1.0;
 
 		var result=true;
 		Gfx.linethickness = GUI.slimlinethickness;
-		for (i in 0...ruestung.w){
-			for (j in 0...ruestung.h){
-				if (ruestung.form[i][j]==1){
+		for (i in 0...ruestung.w[rot]){
+			for (j in 0...ruestung.h[rot]){
+				if (ruestung.form[rot][i][j]==1){
 					var cx = cell.x+cell.size/2+i*cell.size;
 					var cy = cell.y+cell.size/2+j*cell.size;
-					if (zustand.dyn1.platz[mc.x+i][mc.y+j]){
+					if (zustand.dyn1.platz[mc.x+i][mc.y+j] && platzFrei(mc.x+i,mc.y+j,zustand.dyn1,zustand.inv1)){
 						Gfx.drawcircle(cx,cy,cell.size/3,PAL.giltFarb);
 					} else {
 						Gfx.drawcircle(cx,cy,cell.size/3,PAL.schlechtFarb);
@@ -403,18 +487,20 @@ class Schlacht {
 		return result;
 	}
 
+	function canPlace(r:Ruestung,i:Int,j:Int,rot:Int,inv:Inventar):Bool{
+		return true;
+	}
+	
 	function placePiece(mc:Dynamic){
 		var inv:Inventar = zustand.zug==0?zustand.inv1:zustand.inv2;
 		var ruestungIndex = zustand.ausgewaehltesabteil;
-		var ruestungName = inv.schlange[ruestungIndex];
-		trace("removing "+ruestungName);
+		var ruesetungdyn = inv.schlange[ruestungIndex];
 		inv.schlange.splice(ruestungIndex,1);
 		zustand.ausgewaehltesabteil=-1;
 		inv.placed.push({
-							name:ruestungName, 
+							ruestung: ruesetungdyn,
 							x:mc.x,
-							y:mc.y,
-							rot:0
+							y:mc.y
 							});
 	}
 
@@ -455,7 +541,7 @@ class Schlacht {
 			w-=schlangewidth+10;
 
 			var mc = gridCollision(Mouse.x,Mouse.y,x,y,w,h);
-
+			
 			var bounds = getBoxBounds(x,y,w,h);
 
 			Gfx.drawbox(bounds[0],bounds[1],bounds[2],bounds[3],PAL.fg);
@@ -466,7 +552,8 @@ class Schlacht {
 		
 			zeichnInventar(x,y,w,h,mc,spielerklassedynamisch,zustand.inv1);		
 
-			if (mc!=null){
+			if (mc!=null && zustand.zug==0 && zustand.ausgewaehltesabteil>=0){
+				mc = beschraenkPosition(mc,zustand.inv1);
 				var cell = getGridCoord(mc.x,mc.y,x,y,w,h);
 				//Gfx.linethickness=GUI.linethickness;
 				//Gfx.drawbox(cell.x,cell.y,cell.size,cell.size,PAL.buttonBorderCol);

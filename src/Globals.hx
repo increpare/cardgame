@@ -1,4 +1,4 @@
-typedef Placement = {
+typedef SpielState = {
     var sprache : Int;
     var auserwaehlte : Int;
     var ort : Int;
@@ -10,6 +10,11 @@ typedef Placement = {
 
 class Globals
 {
+
+  public static function kollidieren(p1:Placement,p2:Placement):Bool {
+      return true;
+  }
+
   public static var PAL = {
       fg : Col.WHITE,   
       bg : Col.BLACK,
@@ -54,7 +59,7 @@ class Globals
       font:"GermaniaOne-Regular",
   };
 
-  public static var state : Placement = {
+  public static var state : SpielState = {
       sprache:0,
       auserwaehlte:0,
       ort:0,
@@ -214,7 +219,6 @@ class Globals
 
         Ruestungen = new Array<Ruestung>();
         RuestungenDictionary = new Map<String,Ruestung>();
-
         {
             var dat:Array<Array<String>> = Data.load2dcsv("ruestung",";");
 

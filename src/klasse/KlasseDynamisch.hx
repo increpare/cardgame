@@ -50,17 +50,15 @@ class KlasseDynamisch
         var oy = Math.floor((CONST.invH-h)/2);
         for (i in 0...w){
             var x = ox+i;
-            trace("x = " +x);
             if (x<0 || x>=CONST.invW){
                 continue;
             }
             for (j in 0...h){
                 var y = oy+j;
-                trace("y = " +y);
                 if (y<0 || y>=CONST.invH){
                     continue;
                 }
-                trace(i+","+j);
+
                 platz[x][y]=true;
             }
         }
