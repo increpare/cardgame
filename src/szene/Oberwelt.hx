@@ -1,10 +1,15 @@
 package szene;
 
+typedef IntPair = {
+	var x:Int;
+	var y:Int;
+}
+
 class Oberwelt {
 
 	var owd:OberweltData;
 	var ort:Ort;
-	var spielerklasse:Klasse;
+	var spielerklasse:Kreatur;
 	var spielerklassedynamisch:KlasseDynamisch;
 
 	function init(){		
@@ -16,7 +21,7 @@ class Oberwelt {
 	}	
 
 
-	function drawDetailsPanel(ox:Int,oy:Int,klasse:Klasse,klasseDynamisch:KlasseDynamisch):Float{
+	function drawDetailsPanel(ox:Int,oy:Int,klasse:Kreatur,klasseDynamisch:KlasseDynamisch):Float{
 		Text.size=GUI.smalltextsize;
 		var bild = klasse.bild;
 		var ih = Gfx.imageheight(bild);
@@ -34,7 +39,7 @@ class Oberwelt {
 		return iw;
 	}
 
-	function gridCollision(mx:Float,my:Float,x:Float,y:Float,w:Float,h:Float):Dynamic{
+	function gridCollision(mx:Float,my:Float,x:Float,y:Float,w:Float,h:Float):IntPair{
 	
 		var areaAspect = w/h;
 		var gridAspect = CONST.invW/CONST.invH;		
@@ -70,8 +75,8 @@ class Oberwelt {
 			return null;
 		}
 		return {
-			x:mx,
-			y:my
+			x:Math.floor(mx),
+			y:Math.floor(my)
 		};
 
 	}
@@ -180,11 +185,6 @@ class Oberwelt {
 					if (owd.visibleTile(i,j))
 					{
 						tile=owd.dat[i][j].bild;
-						if (Mouse.leftclick()){
-							state.tx=i;
-							state.ty=j;
-							Scene.change(Schlacht);
-						}
 					}
 					else {
 						tile="sprites/blank2";
@@ -246,12 +246,21 @@ class Oberwelt {
 		
 		drawWorldMap(x,y,w,h,mc);		
 
-
 		if (mc!=null){
 			var cell = getGridCoord(mc.x,mc.y,x,y,w,h);
 			Gfx.linethickness=GUI.linethickness;
 			Gfx.drawbox(cell.x,cell.y,cell.size,cell.size,PAL.buttonBorderCol);
 			Gfx.linethickness=GUI.linethickness;
+			
+			if (owd.dat[mc.x][mc.y]!=null){
+				if (owd.visibleTile(mc.x,mc.y)) {
+					if (Mouse.leftclick()){
+						state.tx=mc.x;
+						state.ty=mc.y;
+						Scene.change(Schlacht);
+					}
+				}
+			}
 		}
 	}
 }

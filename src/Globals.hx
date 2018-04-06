@@ -13,6 +13,7 @@ class Globals
   public static var PAL = {
       fg : Col.WHITE,   
       bg : Col.BLACK,
+      bghighlight : 0x999999,
 
       buttonTextCol : Col.WHITE,
       buttonBorderCol : Col.WHITE,
@@ -20,11 +21,15 @@ class Globals
       buttonHighlightCol : 0x444444,
       buttonHighlightCol2 : 0xcccccc,
       titelFarbe: Col.RED,
+
+      giltFarb: Col.GREEN,
+      schlechtFarb: Col.RED,
   };
 
   public static var CONST = {
       invW : 6,    
-      invH : 5
+      invH : 5,
+      schlangelaenge : 4,
   };
 
   public static var GUI = {
@@ -34,6 +39,7 @@ class Globals
       buttonPaddingX : 40,
       buttonPaddingY : 5,
       linethickness : 5,
+      slimlinethickness : 2,
       thicklinethickness : 10,
       titleTextSize:207,
       subTitleTextSize:107,
@@ -66,8 +72,8 @@ class Globals
       }
   }
 
-    public static var Kreaturen:Array<Klasse>;
-    public static var KreaturenDictionary:Map<String,Klasse>;
+    public static var Kreaturen:Array<Kreatur>;
+    public static var KreaturenDictionary:Map<String,Kreatur>;
 
     public static var KreaturenSpielbar:Array<String>;
 
@@ -78,8 +84,8 @@ class Globals
     public static var RuestungenDictionary:Map<String,Ruestung>;
 
     public static function LoadDat(){
-        Kreaturen = new Array<Klasse>();
-        KreaturenDictionary = new Map<String,Klasse>();
+        Kreaturen = new Array<Kreatur>();
+        KreaturenDictionary = new Map<String,Kreatur>();
         KreaturenSpielbar = new Array<String>();
 
         {
@@ -99,6 +105,8 @@ class Globals
             var spielbar_index = kreaturenueberschriften.indexOf("spielbar");
             var stufe_index = kreaturenueberschriften.indexOf("Stufe");
             var lagerplatz_index = kreaturenueberschriften.indexOf("Lagerplatz");
+            var gesundheitplatz_index = kreaturenueberschriften.indexOf("Gesundheit");
+            var sichtbareslot_index = kreaturenueberschriften.indexOf("Sichtbareslot");
             var ruestung1_index = kreaturenueberschriften.indexOf("Rüstung1");
             var ruestung2_index = kreaturenueberschriften.indexOf("Rüstung2");
             var ruestung3_index = kreaturenueberschriften.indexOf("Rüstung3");
@@ -114,6 +122,8 @@ class Globals
                 var stufe:Int = Std.parseInt(dat[stufe_index][i]);            
                 var en = e.charAt(0).toUpperCase()+e.substring(1);
                 var beschreibung = new StringPair(dat[beschreibung_de_index][i],dat[beschreibung_en_index][i]);
+                var gesundheit:Int = Std.parseInt(dat[gesundheitplatz_index][i]);            
+                var sichtbareslot:Int = Std.parseInt(dat[sichtbareslot_index][i]);            
                 var ruestung:Array<String> = new Array<String>();
 
                 var s:String;
@@ -143,7 +153,7 @@ class Globals
                     ruestung.push(s);
                 }
                 
-                var c:Klasse = new Klasse(
+                var c:Kreatur = new Kreatur(
                 e,
                 ort,
                 new StringPair(en,en),
@@ -152,6 +162,8 @@ class Globals
                 stufe,
                 lagerplatz,
                 beschreibung,
+                gesundheit,
+                sichtbareslot,
                 ruestung);
 
                 Kreaturen.push(c);
@@ -235,7 +247,7 @@ class Globals
                 var e_form = dat[form_index][i];
                 var c:Ruestung = new Ruestung(
                     e,
-                    "bilder/"+e,
+                    "ruestung/"+e,
                     e_druckname,
                     e_beschreibung,
                     e_form,

@@ -4,7 +4,9 @@ FILES2 = $(shell find unoptimized/sprites -maxdepth 1 -type f -iname "*.png" | s
 
 FILES3 = $(shell find unoptimized/bilder -maxdepth 1 -type f -iname "*.png" | sed 's/unoptimized/\data\/graphics/g')
 
-all: $(FILES1) $(FILES2) $(FILES3)
+FILES4 = $(shell find unoptimized/ruestung -maxdepth 1 -type f -iname "*.png" | sed 's/unoptimized/\data\/graphics/g')
+
+all: $(FILES1) $(FILES2) $(FILES3) $(FILES4)
 
 $(FILES1): test/databank.numbers
 	./SpreadsheetExportToCSV test/databank.numbers ~/Documents/cardgame/data/text/datenbank
@@ -19,3 +21,6 @@ data/graphics/sprites/%: unoptimized/sprites/%
 
 data/graphics/bilder/%: unoptimized/bilder/%
 	pngcrush  $< $@
+
+data/graphics/ruestung/%: unoptimized/ruestung/%
+	pngcrush $< $@

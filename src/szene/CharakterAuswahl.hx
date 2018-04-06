@@ -43,7 +43,7 @@ class CharakterAuswahl {
 		var l = Math.round(w/2-imageselectionwidth/2);
 
 		for (i in 0...klassenZahl){			
-			var t : klasse.Klasse = KreaturenDictionary[KreaturenSpielbar[i]];
+			var t : klasse.Kreatur = KreaturenDictionary[KreaturenSpielbar[i]];
 			var bump = 0;
 			if (state.auserwaehlte==i){
 				bump +=cellmarginy*2;
@@ -60,7 +60,7 @@ class CharakterAuswahl {
 
 		}
 
-		var bs : klasse.Klasse = KreaturenDictionary[KreaturenSpielbar[state.auserwaehlte]];
+		var bs : klasse.Kreatur = KreaturenDictionary[KreaturenSpielbar[state.auserwaehlte]];
 
 		var ty3 = ty2+2*cellmarginy;
 

@@ -98,7 +98,7 @@ class OrtAuswahl {
 	public function SetupNewGame(){
 		state.owd = new OberweltData(Orte[state.ort]);
 		var spielerklasse = KreaturenDictionary[ KreaturenSpielbar[state.auserwaehlte]];
-		state.dyn = new KlasseDynamisch(spielerklasse,70,100,spielerklasse.ruestung);	
+		state.dyn = new KlasseDynamisch(spielerklasse,spielerklasse.ruestung);	
 
 		for (i in 0...CONST.invW){
 			for (j in 0...CONST.invH){
@@ -106,7 +106,6 @@ class OrtAuswahl {
 					state.owd.dat[i][j]=null;
 				}
 			}
-		}
-			
+		}			
 	}
 }

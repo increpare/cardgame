@@ -2,10 +2,10 @@ package ort;
 
 class OberweltData
 {
-    public var dat : Array<Array<Dynamic>>;
+    public var dat : Array<Array<Kreatur>>;
 
-    private function KlassenFuerOrt(ort:Ort) : Array<Klasse> {        
-        return Kreaturen.filter( function(k:Klasse) { return k.ort == ort.name; } );       
+    private function KreaturenFuerOrt(ort:Ort) : Array<Kreatur> {        
+        return Kreaturen.filter( function(k:Kreatur) { return k.ort == ort.name; } );       
     }
 
 
@@ -26,18 +26,14 @@ class OberweltData
 	}
 
     public function new(ort:Ort){
-        var moeglichKreaturen:Array<Klasse> = KlassenFuerOrt(ort);
+        var moeglichKreaturen:Array<Kreatur> = KreaturenFuerOrt(ort);
         
-        dat = new Array<Array<Dynamic>>();
+        dat = new Array<Array<Kreatur>>();
         for (i in 0...CONST.invW){
-            var col = new Array<Dynamic>();
+            var col = new Array<Kreatur>();
             for (j in 0...CONST.invH){   
-                var rk:Klasse = Random.pick(moeglichKreaturen);
-                var e = {
-                    name : rk.name,
-                    bild : rk.bild,
-                };
-                col.push(e);
+                var rk:Kreatur = Random.pick(moeglichKreaturen);
+                col.push(rk);
             }
             dat.push(col);
         }

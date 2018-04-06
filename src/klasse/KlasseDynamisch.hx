@@ -2,7 +2,7 @@ package klasse;
 
 class KlasseDynamisch
 {
-    public var klasse:Klasse;
+    public var klasse:Kreatur;
     public var gesundheit:Int;
     public var maxGesundheit:Int;
 
@@ -10,10 +10,13 @@ class KlasseDynamisch
 
     public var platz:Array<Array<Bool>>;
 
-    public function new(klasse:Klasse,gesundheit:Int,maxGesundheit:Int,ruestung:Array<String>){
+    public var sichbareSlot:Int;
+
+    public function new(klasse:Kreatur,ruestung:Array<String>){
         this.klasse=klasse;
-        this.gesundheit=gesundheit;
-        this.maxGesundheit=maxGesundheit;
+        this.sichbareSlot=klasse.sichtbareslot;
+        this.gesundheit=klasse.gesundheit;
+        this.maxGesundheit=klasse.gesundheit;
         this.ruestung=ruestung;
 
         platz = new Array<Array<Bool>>();
@@ -28,6 +31,7 @@ class KlasseDynamisch
     }
 
     public function MakeHole(){
+        trace(klasse);
         var holedesc = klasse.lagerplatz;
         var h = holedesc.split(" ");
         
