@@ -18,6 +18,9 @@ class Globals
   public static var PAL = {
       fg : Col.WHITE,   
       bg : Col.BLACK,
+      
+      fgDisabled : Col.GRAY,
+
       bghighlight : 0x999999,
 
       buttonTextCol : Col.WHITE,
@@ -237,7 +240,7 @@ class Globals
             var beschreibung_de_index = ruestungenueberschriften.indexOf("Beschreibung_DE");
             var beschreibung_en_index = ruestungenueberschriften.indexOf("Beschreibung_EN");
             var form_index = ruestungenueberschriften.indexOf("Form");
-            var onplay_index = ruestungenueberschriften.indexOf("onPlay");
+            var onplay_index = ruestungenueberschriften.indexOf("scripts");
             var bleibend_index = ruestungenueberschriften.indexOf("bleibend");
 
             for (i in 1...dat[0].length){

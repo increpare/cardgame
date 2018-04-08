@@ -61,6 +61,48 @@ class IMGUI {
 	  return click;
 	}
 
+
+	public static function kleineSchaltflaeche(x:Float,y:Float,w:Float,h:Float,text:String,disabled:Bool) {
+		var oldtextsize=Text.size;
+		Text.size = GUI.smalltextsize;
+		
+		var textcolor =PAL.buttonTextCol;
+		var color = PAL.buttonCol;
+		var colorhover = PAL.buttonHighlightCol;
+		var borderCol = PAL.buttonBorderCol;
+
+		var linethickness=GUI.slimlinethickness;
+		var xpadding = GUI.buttonPaddingX;
+		var ypadding = GUI.buttonPaddingY;
+
+		Gfx.linethickness=linethickness;
+		
+		var dx = Mouse.x-x;
+		var dy = Mouse.y-y;
+
+		var collide = !(dx<0||dx>=w||dy<0||dy>=w);
+
+		var click = collide && Mouse.leftclick();
+
+		if (disabled){
+			click=false;
+			borderCol=PAL.fgDisabled;
+			textcolor=PAL.fgDisabled;
+		}		
+
+		if (collide&& !click){
+			color=colorhover;
+		}
+
+		Gfx.fillbox(x,y,w,h,color);
+		Gfx.drawbox(x,y,w,h,borderCol);
+
+		Text.display(x+3, y+3, text, textcolor);
+		Text.size=oldtextsize;
+
+		return click;
+	}
+
 	public static function button(x,y,text) {
 		var oldtextsize=Text.size;
 		Text.size = GUI.buttonTextSize;

@@ -25,7 +25,7 @@ class Schlacht {
 		ort = Orte[state.ort];
 		owd=state.owd;
 		Text.font = GUI.font;
-
+		
 		spielerklasse = KreaturenDictionary[KreaturenSpielbar[state.auserwaehlte]];
 		spielerklassedynamisch = state.dyn;	
 
@@ -491,19 +491,6 @@ class Schlacht {
 		return true;
 	}
 	
-	function placePiece(mc:Dynamic){
-		var inv:Inventar = zustand.zug==0?zustand.inv1:zustand.inv2;
-		var ruestungIndex = zustand.ausgewaehltesabteil;
-		var ruesetungdyn = inv.schlange[ruestungIndex];
-		inv.schlange.splice(ruestungIndex,1);
-		zustand.ausgewaehltesabteil=-1;
-		inv.placed.push({
-							ruestung: ruesetungdyn,
-							x:mc.x,
-							y:mc.y
-							});
-	}
-
 	function update() {	
 		Gfx.clearscreen(PAL.bg);
 
@@ -512,6 +499,7 @@ class Schlacht {
 		var sw = Gfx.screenwidth;
 		var sh = Gfx.screenheight;
 
+		
 		Gfx.drawline(0,my,sw,my,PAL.fg);
 
 
@@ -537,7 +525,20 @@ class Schlacht {
 			x+=schlangewidth+10;
 			w-=schlangewidth+10;
 
-			zeichnHaufen(sw-10-schlangewidth,my+10,schlangewidth,h, spielerklasse,spielerklassedynamisch,zustand.inv1);
+			var buttonheight=30;		
+			zeichnHaufen(sw-10-schlangewidth,my+10,schlangewidth,h-buttonheight, spielerklasse,spielerklassedynamisch,zustand.inv1);
+
+			var zugfertigAktiviert : Bool = zustand.zug == 0;
+			if (IMGUI.kleineSchaltflaeche(
+				sw-schlangewidth-10,
+				sh-buttonheight-10,
+				schlangewidth,
+				buttonheight,
+				S("Zug fertig","End Turn"),
+				!zugfertigAktiviert)){
+
+			}
+
 			w-=schlangewidth+10;
 
 			var mc = gridCollision(Mouse.x,Mouse.y,x,y,w,h);
@@ -561,7 +562,7 @@ class Schlacht {
 
 				if (zeichnMarkierung(mc,x,y,w,h)){
 					if (Mouse.leftclick()){
-						placePiece(mc);
+						zustand.placePiece(mc);
 					}
 				}
 			}
