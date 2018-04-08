@@ -1,8 +1,12 @@
 class Main {
 
 	function init(){
+		Particle.enable();
+
 		Globals.LoadDat();
 	
+		CompileTime.importPackage("faehigkeit");
+
 
 		//Truetype fonts look a LOT better when we don't scale the canvas!
 		Text.font = GUI.font;
@@ -13,6 +17,8 @@ class Main {
 		if (state.sprache==0){
 			state.sprache=0;//ok does't do much			
 		}
+
+		
 	}	
 
 	function update() {	
@@ -38,6 +44,47 @@ class Main {
 		}
 
 		Text.size=1;
+
+		if (Mouse.leftheld()){
+			Particle.GenerateParticles(
+				{
+					min:Mouse.x-10,
+					max:Mouse.x+10,
+				},
+				{
+					min:Mouse.y-10,
+					max:Mouse.y+10,
+				},
+				"part",
+				1,
+				0,
+				-10,
+				{
+					min:1,
+					max:1
+				},
+				{
+					min:0,
+					max:360
+				},
+				{
+					min:-50, max:50
+				},
+				{
+					min:-100, max:-100
+				},
+				{
+					min:20,
+					max:20
+				},
+				{
+					min:1,max:1
+				},
+				{
+					min:0,max:0
+				}
+			);
+		}
 		
 	}
 }

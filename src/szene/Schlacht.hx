@@ -37,10 +37,13 @@ class Schlacht {
 			spielerklassedynamisch,
 			gegnerklassedynamisch
 			);
+
+        zustand.beginnZug();
 	}	
 
 
-	function drawDetailsPanel(ox:Int,oy:Int,klasse:Kreatur,klasseDynamisch:KlasseDynamisch):Int{
+	function drawDetailsPanel(ox:Int,oy:Int,klasse:Kreatur,klasseDynamisch:KlasseDynamisch,schaden:Float):Int{
+		Gfx.linethickness = GUI.slimlinethickness;		
 		Text.size=GUI.smalltextsize;
 		var bild = klasse.bild;
 		var ih = Gfx.imageheight(bild);
@@ -53,12 +56,18 @@ class Schlacht {
 		var hpstring = klasseDynamisch.gesundheit+"/"+klasseDynamisch.maxGesundheit;
 		Gfx.fillbox(ox,oy,iw,Text.size+20,PAL.bg);
 		Gfx.fillbox(ox,oy,iw*hpc,Text.size+20,Col.RED);
+		if (schaden>=0){
+			var ds = (schaden+klasseDynamisch.gesundheit)/2;
+			bloodAt(ox+iw*ds/klasseDynamisch.maxGesundheit,(oy+Text.size+20/2));
+		}
+		
 		Gfx.drawbox(ox,oy,iw,Text.size+20,PAL.fg);
 		Text.display(ox+20,oy+4,hpstring,PAL.fg);
 		return iw;
 	}
 
 	function zeichnSchlange(ox:Int,oy:Int,w:Int,h:Int,klasse:Kreatur,klasseDynamisch:KlasseDynamisch,inv:Inventar){
+		Gfx.linethickness = GUI.linethickness;
 		var r:Int=Math.round(w/3);
 		Gfx.drawcircle(ox+w/2,oy+r,r,PAL.fg);
 
@@ -270,6 +279,7 @@ class Schlacht {
 	}
 
 	function zeichnInventar(x:Float, y:Float, w:Float, h:Float,mc:IntPair,dyn:KlasseDynamisch,inv:Inventar){
+		Gfx.linethickness = GUI.slimlinethickness;
 		var areaAspect = w/h;
 		var gridAspect = CONST.invW/CONST.invH;		
 
@@ -491,6 +501,47 @@ class Schlacht {
 		return true;
 	}
 	
+	function bloodAt(x:Float,y:Float){
+		Particle.GenerateParticles(
+			{
+				min:x-10,
+				max:x+10,
+			},
+			{
+				min:y-10,
+				max:y+10,
+			},
+			"part",
+			10,
+			0,
+			300,
+			{
+				min:1,
+				max:1
+			},
+			{
+				min:0,
+				max:360
+			},
+			{
+				min:-100, max:100
+			},
+			{
+				min:50, max:150
+			},
+			{
+				min:500,
+				max:720
+			},
+			{
+				min:1,max:1
+			},
+			{
+				min:0,max:0
+			}
+		);			
+
+	}
 	function update() {	
 		Gfx.clearscreen(PAL.bg);
 
@@ -502,14 +553,14 @@ class Schlacht {
 		
 		Gfx.drawline(0,my,sw,my,PAL.fg);
 
-
 	
 		var infopanelwidth:Float;
 		var schlangewidth:Float;
 
 		//you at front
 		{
-			var width = drawDetailsPanel(10,my+10,spielerklasse,spielerklassedynamisch);
+			var width = drawDetailsPanel(10,my+10,spielerklasse,spielerklassedynamisch,zustand.schadenp1);
+			zustand.schadenp1=-1;
 			infopanelwidth=width;
 
 
@@ -536,7 +587,7 @@ class Schlacht {
 				buttonheight,
 				S("Zug fertig","End Turn"),
 				!zugfertigAktiviert)){
-
+				zustand.endZug();
 			}
 
 			w-=schlangewidth+10;
@@ -570,7 +621,9 @@ class Schlacht {
 
 		//enemy at top
 		{	
-			var width = drawDetailsPanel(Math.floor(sw-10-infopanelwidth),10,gegnerklasse,gegnerklassedynamisch);
+			var width = drawDetailsPanel(Math.floor(sw-10-infopanelwidth),10,gegnerklasse,gegnerklassedynamisch,zustand.schadenp2);
+			zustand.schadenp2=-1;
+
 			var border = 20;
 			var x = border;
 			var y = border;
@@ -616,5 +669,6 @@ class Schlacht {
 			zeichnInventar(x,y,w,h,mc,gegnerklassedynamisch,zustand.inv2);		
 	
 		}
+
 	}
 }

@@ -37,15 +37,12 @@ class KlasseDynamisch
         
         var fnname = h[0];
         var params = h.slice(1).map( function(s:String) { return Std.parseFloat(s); } );
-        trace("calling "+h);
-        trace("calling "+fnname +" : " + params);
         var fn = Reflect.field(this, h[0]);
         Reflect.callMethod(this, fn, params);
     }
 
     @:keep
     public function Rechteck(w:Int, h:Int){
-        trace("RECHTECK "+w+" "+h);
         var ox = Math.floor((CONST.invW-w)/2);
         var oy = Math.floor((CONST.invH-h)/2);
         for (i in 0...w){

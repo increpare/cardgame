@@ -1,4 +1,4 @@
-package faehigkeiten;
+package faehigkeit;
 
 class Schaeden extends Faehigkeit {
     public var schaedenmenge:Int;

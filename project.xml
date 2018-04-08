@@ -38,9 +38,10 @@
 	
   <haxedef name="windowwidth" value="${windowwidth}" />
   <haxedef name="windowheight" value="${windowheight}" />
+
   
   <haxeflag name="--connect" value="6000"/>
-  <haxeflag name="--macro" value="keep('faehigkeiten',true)" />
+  <haxeflag name="--macro" value="keep('faehigkeit.*',true)" />
 
 	<assets path="data" exclude="*.mp3" if="cpp || neko"/>
 	<assets path="data" exclude="*.ogg" if="flash"/>

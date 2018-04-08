@@ -1,5 +1,6 @@
-package faehigkeiten;
+package faehigkeit;
 
+@:keepSub
 class Faehigkeit {
     public var immortal:Bool=false;
     public var beschaeftigt:Float=0;

@@ -240,7 +240,7 @@ class Globals
             var beschreibung_de_index = ruestungenueberschriften.indexOf("Beschreibung_DE");
             var beschreibung_en_index = ruestungenueberschriften.indexOf("Beschreibung_EN");
             var form_index = ruestungenueberschriften.indexOf("Form");
-            var onplay_index = ruestungenueberschriften.indexOf("scripts");
+            var skript_index = ruestungenueberschriften.indexOf("Skript");
             var bleibend_index = ruestungenueberschriften.indexOf("bleibend");
 
             for (i in 1...dat[0].length){
@@ -249,7 +249,7 @@ class Globals
                 var e_beschreibung = new StringPair(dat[beschreibung_de_index][i],dat[beschreibung_en_index][i]);
 
                 // var e_formstr = dat[form_index][i];
-                var e_onplaystr = dat[onplay_index][i];
+                var e_skript = dat[skript_index][i];
                 var e_bleibend = dat[bleibend_index][i];
                 var e_form = dat[form_index][i];
                 var c:Ruestung = new Ruestung(
@@ -258,7 +258,7 @@ class Globals
                     e_druckname,
                     e_beschreibung,
                     e_form,
-                    e_onplaystr,
+                    e_skript,
                     e_bleibend=="WAHR"
                     
                     );

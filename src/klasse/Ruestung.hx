@@ -9,13 +9,13 @@ class Ruestung
     public var bild:Array<String>;
     public var form:Array<Array<Array<Int>>>;
 
-    public var onplay:String;
+    public var skript:String;
     public var bleibend:Bool;
     public var w:Array<Int>;
     public var h:Array<Int>;
     
     public function copy():Ruestung{
-        var r = new Ruestung(name,bild[0],druckname,beschreibung,"",onplay,bleibend);
+        var r = new Ruestung(name,bild[0],druckname,beschreibung,"",skript,bleibend);
         r.form=this.form;//doesn't deep copy the form, but this should normally be ok.
         return r;
     }
@@ -49,7 +49,7 @@ class Ruestung
         _druckname:StringPair,
         _beschreibung:StringPair,
         _form:String,
-        _onplay:String,
+        _skript:String,
         _bleibend:Bool
     ){
         this.name=_name;
@@ -117,7 +117,7 @@ class Ruestung
         }
 
         
-        this.onplay=_onplay;
+        this.skript=_skript;
         this.bleibend=_bleibend;
     }
 }

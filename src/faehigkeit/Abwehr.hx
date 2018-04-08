@@ -1,4 +1,4 @@
-package faehigkeiten;
+package faehigkeit;
 
 class Abwehr extends Faehigkeit {
     public var heilungmenge:Int;
