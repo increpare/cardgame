@@ -19,6 +19,8 @@ class KampfZustand
 
     public var schadenp1:Float;
     public var schadenp2:Float;
+    public var toHaufen1:Array<SpriteManager.Sprite>;
+    public var toHaufen2:Array<SpriteManager.Sprite>;
 
     public function new(klasse1:Kreatur,klasse2:Kreatur,dyn1:KlasseDynamisch,dyn2:KlasseDynamisch){
         
@@ -36,6 +38,10 @@ class KampfZustand
 
         schadenp1=-1;
         schadenp2=-1;
+
+        toHaufen1 = new Array<SpriteManager.Sprite>();
+        toHaufen2 = new Array<SpriteManager.Sprite>();
+        
 
     }
 
@@ -155,14 +161,21 @@ class KampfZustand
         for (i in 0...inv.placed.length) {
             var p = inv.placed[i];
             if (dyn==p.ruestung){    
-                p.sprite.destroy();            
+                if (p.sprite!=null){
+                    if (spieler==0){
+                        toHaufen1.push(p.sprite);
+                    } else {
+                        toHaufen2.push(p.sprite);
+                    }  
+                }
                 inv.placed.splice(i,1);
                 inv.haufen.push(dyn);
                 break;
             }
         }
 
-        for (i in 0...faehigkeiten.length) {
+        var i = faehigkeiten.length;
+        while (--i>=0) {
             var f = faehigkeiten[i];
             if (f.dyn == dyn){
                 faehigkeiten.splice(i,1);

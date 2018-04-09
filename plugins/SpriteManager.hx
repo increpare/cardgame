@@ -8,6 +8,9 @@ class Sprite {
     public var scale:Float;
     public var visible:Bool;
 
+    public var pivotx:Float;
+    public var pivoty:Float;
+
     public function destroy(){
         SpriteManager.RemoveSprite(this);
     }
@@ -19,6 +22,8 @@ class Sprite {
         this.angle=0;
         this.scale=1;
         this.visible=true;
+        this.pivotx = Gfx.imagewidth(name)/2;
+        this.pivoty = Gfx.imageheight(name)/2;
     }
 }
 
@@ -31,7 +36,7 @@ class SpriteManager {
     public static function enable(){
         sprites = [];
         Core.registerplugin("spritemanager", "0.1.0");
-        Core.extend_endframe(render);
+       // Core.extend_endframe(render);
     }
     
     public static function clear() {
@@ -49,9 +54,9 @@ class SpriteManager {
         sprites.remove(s);
     }
 
-    private static function render(){
+    public static function render(){
         for (s in sprites){
-            Gfx.rotation(s.angle);
+            Gfx.rotation(s.angle,s.pivotx,s.pivoty);
             Gfx.scale(s.scale);
             Gfx.drawimage(s.x,s.y,s.name);            
         }

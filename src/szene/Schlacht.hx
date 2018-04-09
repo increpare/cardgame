@@ -12,6 +12,16 @@ class Schlacht {
 	var gegnerklasse:Kreatur;
 	var gegnerklassedynamisch:KlasseDynamisch;
 
+	//animation stuff
+	var cursorrot:Float=0;
+	var portraitscale1:Float=1;
+	var portraitscale2:Float=1;
+	var extraschaden1:Float=0;
+	var extraschaden2:Float=0;
+
+	var haufenAnimation1:Bool=false;
+	var haufenAnimation2:Bool=false;
+
 	function mausInRechteck(bx:Float,by:Float,bw:Float,bh:Float):Bool{
 		var mx = Mouse.x;
 		var my = Mouse.y;
@@ -43,7 +53,7 @@ class Schlacht {
 	}	
 
 
-	function drawDetailsPanel(ox:Int,oy:Int,klasse:Kreatur,klasseDynamisch:KlasseDynamisch,schaden:Float):Int{
+	function drawDetailsPanel(ox:Int,oy:Int,klasse:Kreatur,klasseDynamisch:KlasseDynamisch,schaden:Float,portraitscale:Float,extraschaden:Float):Int{
 		Gfx.linethickness = GUI.slimlinethickness;		
 		Text.size=GUI.smalltextsize;
 		var bild = klasse.bild;
@@ -51,10 +61,13 @@ class Schlacht {
 		var iw = Gfx.imagewidth(bild);
 		Text.display(ox,oy,klasse.druckname.Eval(),PAL.fg);
 		oy+=Math.round(Text.size)+GUI.vpadding;
+		Gfx.scale(portraitscale,portraitscale,iw/2,ih/2);
 		Gfx.drawimage(ox,oy,bild);
+		Gfx.scale(1);
 		oy+=ih+GUI.vpadding;
-		var hpc:Float = klasseDynamisch.gesundheit/klasseDynamisch.maxGesundheit;
-		var hpstring = klasseDynamisch.gesundheit+"/"+klasseDynamisch.maxGesundheit;
+		var gesundheit = klasseDynamisch.gesundheit+extraschaden;
+		var hpc:Float = gesundheit/klasseDynamisch.maxGesundheit;
+		var hpstring = Math.round(gesundheit)+"/"+klasseDynamisch.maxGesundheit;
 		Gfx.fillbox(ox,oy,iw,Text.size+20,PAL.bg);
 		Gfx.fillbox(ox,oy,iw*hpc,Text.size+20,Col.RED);
 		if (schaden>=0){
@@ -369,8 +382,9 @@ class Schlacht {
 				var scale = ruestung.w[rot]*cell.size/width;
 				var spritename = ruestung.bild[p.ruestung.rotation];
 				var s = SpriteManager.AddSprite(spritename,cell.x,cell.y);
-				s.y-=5;
-				Actuate.tween(s,0.1,{y:s.y+5});
+				Actuate.tween(s,0.05,{angle:-5});
+				Actuate.tween(s,0.10,{angle:5},false).delay(0.05);
+				Actuate.tween(s,0.05,{angle:0},false).delay(0.15);
 				
 				s.scale=scale;
 				p.sprite=s;
@@ -476,10 +490,14 @@ class Schlacht {
 
 		//draw alphaed item
 		Gfx.imagealpha=0.6;
-		var width = Gfx.imagewidth(ruestung.bild[ruestungDyn.rotation]);
+		var name = ruestung.bild[ruestungDyn.rotation];
+		var width = Gfx.imagewidth(name);
+		var height = Gfx.imageheight(name);
 		var scale = ruestung.w[rot]*cell.size/width;
 		Gfx.scale(scale);
+		Gfx.rotation(cursorrot,width/2,height/2);
 		Gfx.drawimage(cell.x,cell.y,ruestung.bild[ruestungDyn.rotation]);
+		Gfx.rotation(0);
 		Gfx.scale(1);
 		Gfx.imagealpha=1.0;
 
@@ -491,9 +509,13 @@ class Schlacht {
 					var cx = cell.x+cell.size/2+i*cell.size;
 					var cy = cell.y+cell.size/2+j*cell.size;
 					if (zustand.dyn1.platz[mc.x+i][mc.y+j] && platzFrei(mc.x+i,mc.y+j,zustand.dyn1,zustand.inv1)){
-						Gfx.drawcircle(cx,cy,cell.size/3,PAL.giltFarb);
+						//Gfx.drawcircle(cx,cy,cell.size/3,PAL.giltFarb);
 					} else {
-						Gfx.drawcircle(cx,cy,cell.size/3,PAL.schlechtFarb);
+						Gfx.linethickness = GUI.linethickness;
+						var d = cell.size/4;
+						Gfx.drawline(cx-d,cy-d,cx+d,cy+d,PAL.schlechtFarb);
+						Gfx.drawline(cx+d,cy-d,cx-d,cy+d,PAL.schlechtFarb);
+						Gfx.linethickness = GUI.slimlinethickness;					
 						result=false;
 					}
 				}
@@ -566,7 +588,15 @@ class Schlacht {
 
 		//you at front
 		{
-			var width = drawDetailsPanel(10,my+10,spielerklasse,spielerklassedynamisch,zustand.schadenp1);
+
+			if (zustand.schadenp1>=0){				
+				extraschaden1=zustand.schadenp1-zustand.dyn1.gesundheit;
+				Actuate.tween(this,0.1,{extraschaden1:0});
+				Actuate.tween(this,0.1,{portraitscale1:1.05});
+				Actuate.tween(this,0.1,{portraitscale1:1},false).delay(0.1);
+			}
+
+			var width = drawDetailsPanel(10,my+10,spielerklasse,spielerklassedynamisch,zustand.schadenp1,portraitscale1,extraschaden1);			
 			zustand.schadenp1=-1;
 			infopanelwidth=width;
 
@@ -583,8 +613,14 @@ class Schlacht {
 			x+=schlangewidth+10;
 			w-=schlangewidth+10;
 
-			var buttonheight=30;		
+			var buttonheight=30;				
+				
 			zeichnHaufen(sw-10-schlangewidth,my+10,schlangewidth,h-buttonheight, spielerklasse,spielerklassedynamisch,zustand.inv1);
+
+			if (zustand.toHaufen1.length>0){
+				haufenAnimation1=true;
+				//Actuate.
+			} 
 
 			var zugfertigAktiviert : Bool = zustand.zug == 0;
 			if (IMGUI.kleineSchaltflaeche(
@@ -611,6 +647,7 @@ class Schlacht {
 		
 			zeichnInventar(x,y,w,h,mc,spielerklassedynamisch,zustand.inv1);		
 
+			SpriteManager.render();
 			if (mc!=null && zustand.zug==0 && zustand.ausgewaehltesabteil>=0){
 				mc = beschraenkPosition(mc,zustand.inv1);
 				var cell = getGridCoord(mc.x,mc.y,x,y,w,h);
@@ -622,13 +659,26 @@ class Schlacht {
 					if (Mouse.leftclick()){
 						zustand.placePiece(mc);
 					}
+				} else {
+					if (Mouse.leftclick()){
+						Actuate.tween(this,0.01,{cursorrot:-5});
+						Actuate.tween(this,0.02,{cursorrot:5},false).delay(0.01);
+						Actuate.tween(this,0.01,{cursorrot:0},false).delay(0.03);
+					}
 				}
 			}
 		}
 
 		//enemy at top
 		{	
-			var width = drawDetailsPanel(Math.floor(sw-10-infopanelwidth),10,gegnerklasse,gegnerklassedynamisch,zustand.schadenp2);
+
+			if (zustand.schadenp2>=0){				
+				extraschaden2=zustand.schadenp2-zustand.dyn2.gesundheit;
+				Actuate.tween(this,0.1,{extraschaden2:0});
+				Actuate.tween(this,0.1,{portraitscale2:1.05});
+				Actuate.tween(this,0.1,{portraitscale2:1},false).delay(0.1);
+			}
+			var width = drawDetailsPanel(Math.floor(sw-10-infopanelwidth),10,gegnerklasse,gegnerklassedynamisch,zustand.schadenp2,portraitscale2,extraschaden2);
 			zustand.schadenp2=-1;
 
 			var border = 20;
