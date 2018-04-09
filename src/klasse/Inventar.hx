@@ -7,7 +7,7 @@ class Inventar
     public var dyn:KlasseDynamisch;
 
     public var schlange:Array<RuestungDynamisch>;
-    public var haufen:Array<RuestungDynamisch>;
+    public var haufen:Array<HaufenPlacement>;
     public var placed:Array<Placement>;
 
     public var spieler:Int;
@@ -26,7 +26,7 @@ class Inventar
             schlange.push(rd);
         }
 
-        haufen = new Array<RuestungDynamisch>();
+        haufen = new Array<HaufenPlacement>();
         placed = new Array<Placement>();
     }
 }

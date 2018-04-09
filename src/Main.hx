@@ -2,6 +2,7 @@ class Main {
 
 	function init(){
 		SpriteManager.enable();
+		Traenen.enable();
 		Particle.enable();
 
 

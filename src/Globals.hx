@@ -107,6 +107,7 @@ class Globals
             }
 
             var name_index = kreaturenueberschriften.indexOf("Name");
+            var augen_index = kreaturenueberschriften.indexOf("Augen");
             var ort_index = kreaturenueberschriften.indexOf("Ort");
             var beschreibung_de_index = kreaturenueberschriften.indexOf("Beschreibung_DE");
             var beschreibung_en_index = kreaturenueberschriften.indexOf("Beschreibung_EN");
@@ -124,6 +125,19 @@ class Globals
             
             for (i in 1...dat[0].length){
                 var e = dat[name_index][i];
+                var augenstr = dat[augen_index][i];
+                var augennums = augenstr.split(",");
+
+                var augen:Array<IntPair> = new Array<IntPair>();
+                var j = 0;
+                while (j<augennums.length){
+                    augen.push({
+                        x:Std.parseInt(augennums[j]),
+                        y:Std.parseInt(augennums[j+1])
+                    });
+                    j+=2;
+                }
+
                 var ort = dat[ort_index][i];
                 var spielbar = dat[spielbar_index][i]=="WAHR";
                 var lagerplatz:String = dat[lagerplatz_index][i];
@@ -163,6 +177,7 @@ class Globals
                 
                 var c:Kreatur = new Kreatur(
                 e,
+                augen,
                 ort,
                 new StringPair(en,en),
                 "sprites/"+e,

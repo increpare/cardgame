@@ -1,6 +1,12 @@
 package klasse;
 
 
+typedef Sammlung = {
+    klasse:Kreatur,
+    dyn:KlasseDynamisch,
+    inv:Inventar
+}
+
 class KampfZustand
 {
 
@@ -8,19 +14,22 @@ class KampfZustand
     public var klasse2:Kreatur;    
     public var dyn1:KlasseDynamisch; 
     public var dyn2:KlasseDynamisch;  
-    
-    public var zug:Int;
-    public var ausgewaehltesabteil:Int;
-
     public var inv1:Inventar;
     public var inv2:Inventar;
 
+    public var sammlung:Array<Sammlung>;
+
+    public var zug:Int;
+    public var ausgewaehltesabteil:Int;
+    
     public var faehigkeiten:Array<Faehigkeit>;
 
     public var schadenp1:Float;
     public var schadenp2:Float;
-    public var toHaufen1:Array<SpriteManager.Sprite>;
-    public var toHaufen2:Array<SpriteManager.Sprite>;
+    public var zuHaufen1:Array<HaufenPlacement>;
+    public var zuHaufen2:Array<HaufenPlacement>;
+    public var wein1:Bool=false;
+    public var wein2:Bool=false;
 
     public function new(klasse1:Kreatur,klasse2:Kreatur,dyn1:KlasseDynamisch,dyn2:KlasseDynamisch){
         
@@ -39,9 +48,21 @@ class KampfZustand
         schadenp1=-1;
         schadenp2=-1;
 
-        toHaufen1 = new Array<SpriteManager.Sprite>();
-        toHaufen2 = new Array<SpriteManager.Sprite>();
+        zuHaufen1 = new Array<HaufenPlacement>();
+        zuHaufen2 = new Array<HaufenPlacement>();
         
+        sammlung = [
+            {
+                klasse:klasse1,
+                dyn:dyn1,
+                inv:inv1
+            },
+            {
+                klasse:klasse2,
+                dyn:dyn2,
+                inv:inv2
+            },
+        ];
 
     }
 
@@ -51,7 +72,9 @@ class KampfZustand
             return;
         }
         Random.shuffle(inv.haufen);
-        inv.schlange = inv.schlange.concat(inv.haufen);
+        for (item in inv.haufen){
+            inv.schlange.push(item.dyn);
+        }
         inv.haufen.splice(0,inv.haufen.length);
     }
     
@@ -63,7 +86,7 @@ class KampfZustand
                 return p.ruestung;
                 }
             );
-
+            
         for (r in gestellteRuestung){
             wegwerf(zug,r);
         }
@@ -136,8 +159,14 @@ class KampfZustand
     public function heilen(spieler:Int,amount:Int){
         if(spieler==0){            
             dyn1.gesundheit+=amount;
+            if (dyn1.gesundheit>dyn1.maxGesundheit){
+                dyn1.gesundheit=dyn1.maxGesundheit;
+            }
         } else {
             dyn2.gesundheit+=amount;
+            if (dyn2.gesundheit>dyn2.maxGesundheit){
+                dyn2.gesundheit=dyn2.maxGesundheit;
+            }
         }
     }
 
@@ -150,9 +179,17 @@ class KampfZustand
         if(spieler==0){
             schadenp1 = dyn1.gesundheit;
             dyn1.gesundheit-=amount;
+            if (dyn1.gesundheit<=0){
+                wein1=true;
+                dyn1.gesundheit=0;
+            }
         } else {
             schadenp2 = dyn2.gesundheit;
             dyn2.gesundheit-=amount;
+            if (dyn2.gesundheit<=0){
+                wein2=true;
+                dyn2.gesundheit=0;
+            }
         }
     }
 
@@ -163,13 +200,14 @@ class KampfZustand
             if (dyn==p.ruestung){    
                 if (p.sprite!=null){
                     if (spieler==0){
-                        toHaufen1.push(p.sprite);
+                        zuHaufen1.push(new HaufenPlacement(p.ruestung,p.sprite));
                     } else {
-                        toHaufen2.push(p.sprite);
+                        zuHaufen2.push(new HaufenPlacement(p.ruestung,p.sprite));
+
                     }  
                 }
                 inv.placed.splice(i,1);
-                inv.haufen.push(dyn);
+                inv.haufen.push(new HaufenPlacement(p.ruestung,p.sprite));
                 break;
             }
         }

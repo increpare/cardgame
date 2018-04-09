@@ -22,6 +22,10 @@ class Schlacht {
 	var haufenAnimation1:Bool=false;
 	var haufenAnimation2:Bool=false;
 
+	function cutscene():Bool{
+		return haufenAnimation1||haufenAnimation2;
+	}
+	
 	function mausInRechteck(bx:Float,by:Float,bw:Float,bh:Float):Bool{
 		var mx = Mouse.x;
 		var my = Mouse.y;
@@ -53,7 +57,7 @@ class Schlacht {
 	}	
 
 
-	function drawDetailsPanel(ox:Int,oy:Int,klasse:Kreatur,klasseDynamisch:KlasseDynamisch,schaden:Float,portraitscale:Float,extraschaden:Float):Int{
+	function drawDetailsPanel(ox:Int,oy:Int,klasse:Kreatur,klasseDynamisch:KlasseDynamisch,schaden:Float,portraitscale:Float,extraschaden:Float,wein:Bool):Int{
 		Gfx.linethickness = GUI.slimlinethickness;		
 		Text.size=GUI.smalltextsize;
 		var bild = klasse.bild;
@@ -64,6 +68,15 @@ class Schlacht {
 		Gfx.scale(portraitscale,portraitscale,iw/2,ih/2);
 		Gfx.drawimage(ox,oy,bild);
 		Gfx.scale(1);
+
+		if (wein){
+			Traenen.bild = "traene";
+			//trasformieren
+			for (p in klasse.augen) {
+				Traenen.AddPoint(ox+p.x,oy+p.y,0.5);
+			}
+		}
+
 		oy+=ih+GUI.vpadding;
 		var gesundheit = klasseDynamisch.gesundheit+extraschaden;
 		var hpc:Float = gesundheit/klasseDynamisch.maxGesundheit;
@@ -515,6 +528,7 @@ class Schlacht {
 						var d = cell.size/4;
 						Gfx.drawline(cx-d,cy-d,cx+d,cy+d,PAL.schlechtFarb);
 						Gfx.drawline(cx+d,cy-d,cx-d,cy+d,PAL.schlechtFarb);
+						//Gfx.drawcircle(cx,cy,cell.size/3,PAL.schlechtFarb);
 						Gfx.linethickness = GUI.slimlinethickness;					
 						result=false;
 					}
@@ -571,6 +585,56 @@ class Schlacht {
 		);			
 
 	}
+
+	function haufenUebergangAnimation(
+		haufen_x:Float,
+		haufen_y:Float,
+		haufen_w:Float,
+		haufen_h:Float,
+		haufen:Array<HaufenPlacement>,
+		zuHaufen:Array<HaufenPlacement>){
+		if (zuHaufen.length==0){
+			return;
+		}
+
+		var border=10;
+		haufen_x+=border;
+		haufen_y+=border;
+		haufen_w-=2*border;
+		haufen_h-=2*border;
+
+		var zelle_w=haufen_w;
+		var zelle_h=haufen_h/haufen.length;
+
+		for (i in 0...haufen.length){
+			var hp = haufen[i];
+			var bild = hp.dyn.ruestung.bild[hp.dyn.rotation];
+			var iw = Gfx.imagewidth(bild);
+			var ih = Gfx.imageheight(bild);
+
+			var r_h = zelle_w/iw;
+			var r_w = zelle_h/ih;
+
+			var ts=r_w;
+			if (r_h<r_w){
+				ts=r_h;
+			} 
+
+			var tx = haufen_x + haufen_w/2 - ts*iw/2;
+			var ty = haufen_y + i*haufen_h/haufen.length + zelle_h/2 - ts*ih/2;
+			
+			Actuate.tween(hp.sprite,0.3,{
+				x:tx,
+				y:ty,
+				scale:ts});
+				
+		}
+		//1 determine target scales
+		//1 determine new positions
+
+		//2 twee everything
+	}
+
 	function update() {	
 		Gfx.clearscreen(PAL.bg);
 
@@ -596,7 +660,8 @@ class Schlacht {
 				Actuate.tween(this,0.1,{portraitscale1:1},false).delay(0.1);
 			}
 
-			var width = drawDetailsPanel(10,my+10,spielerklasse,spielerklassedynamisch,zustand.schadenp1,portraitscale1,extraschaden1);			
+			var width = drawDetailsPanel(10,my+10,spielerklasse,spielerklassedynamisch,zustand.schadenp1,portraitscale1,extraschaden1,zustand.wein1);			
+			zustand.wein1=false;
 			zustand.schadenp1=-1;
 			infopanelwidth=width;
 
@@ -615,10 +680,16 @@ class Schlacht {
 
 			var buttonheight=30;				
 				
-			zeichnHaufen(sw-10-schlangewidth,my+10,schlangewidth,h-buttonheight, spielerklasse,spielerklassedynamisch,zustand.inv1);
+			var haufen_x=sw-10-schlangewidth;
+			var haufen_y=my+10;
+			var haufen_w=schlangewidth;
+			var haufen_h=h-buttonheight;
+			zeichnHaufen(haufen_x,my+10,schlangewidth,h-buttonheight, spielerklasse,spielerklassedynamisch,zustand.inv1);
 
-			if (zustand.toHaufen1.length>0){
+			if (zustand.zuHaufen1.length>0){
 				haufenAnimation1=true;
+				haufenUebergangAnimation(haufen_x,haufen_y,haufen_w,haufen_h,zustand.inv1.haufen,zustand.zuHaufen1);
+				//zustand.inv1.haufen
 				//Actuate.
 			} 
 
@@ -678,7 +749,8 @@ class Schlacht {
 				Actuate.tween(this,0.1,{portraitscale2:1.05});
 				Actuate.tween(this,0.1,{portraitscale2:1},false).delay(0.1);
 			}
-			var width = drawDetailsPanel(Math.floor(sw-10-infopanelwidth),10,gegnerklasse,gegnerklassedynamisch,zustand.schadenp2,portraitscale2,extraschaden2);
+			var width = drawDetailsPanel(Math.floor(sw-10-infopanelwidth),10,gegnerklasse,gegnerklassedynamisch,zustand.schadenp2,portraitscale2,extraschaden2,zustand.wein2);
+			zustand.wein2=false;
 			zustand.schadenp2=-1;
 
 			var border = 20;

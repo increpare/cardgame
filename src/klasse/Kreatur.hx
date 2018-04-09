@@ -3,6 +3,7 @@ package klasse;
 class Kreatur
 {
     public var name:String;
+    public var augen:Array<IntPair>;
     public var ort:String;
     public var druckname:StringPair;
     public var bild:String;
@@ -16,6 +17,7 @@ class Kreatur
     
     public function new(
         _name:String,
+        _augen:Array<IntPair>,
         _ort:String,
         _druckname:StringPair,
         _bild:String,
@@ -28,6 +30,7 @@ class Kreatur
         _ruestung:Array<String>
     ){
         name=_name;
+        augen=_augen;
         ort=_ort;
         druckname=_druckname;
         bild=_bild;
