@@ -32,10 +32,12 @@
    
 	<source path="src" />
 	<source path="plugins" />
+  
 	<haxelib name="openfl" />
 	<haxelib name="haxegon" />
 	<haxelib name="compiletime" />
-	
+	<haxelib name="actuate" />
+
   <haxedef name="windowwidth" value="${windowwidth}" />
   <haxedef name="windowheight" value="${windowheight}" />
 

@@ -1,4 +1,5 @@
 package szene;
+import motion.*;
 
 class Schlacht {
 
@@ -357,17 +358,23 @@ class Schlacht {
 
 		for (i in 0...inv.placed.length){
 			var p = inv.placed[i];
-			var ruestungDyn = p.ruestung;
-			var ruestung = ruestungDyn.ruestung;
-			var rot = ruestungDyn.rotation;
-			var width = Gfx.imagewidth(ruestung.bild[p.ruestung.rotation]);
+			if (p.sprite==null){
+				var ruestungDyn = p.ruestung;
+				var ruestung = ruestungDyn.ruestung;
+				var rot = ruestungDyn.rotation;
+				var width = Gfx.imagewidth(ruestung.bild[p.ruestung.rotation]);
 
-			var cell = getGridCoord(p.x,p.y,x,y,w,h);
+				var cell = getGridCoord(p.x,p.y,x,y,w,h);
 
-			var scale = ruestung.w[rot]*cell.size/width;
-			Gfx.scale(scale);
-			Gfx.drawimage(cell.x,cell.y,ruestung.bild[p.ruestung.rotation]);
-			Gfx.scale(1);
+				var scale = ruestung.w[rot]*cell.size/width;
+				var spritename = ruestung.bild[p.ruestung.rotation];
+				var s = SpriteManager.AddSprite(spritename,cell.x,cell.y);
+				s.y-=5;
+				Actuate.tween(s,0.1,{y:s.y+5});
+				
+				s.scale=scale;
+				p.sprite=s;
+			}
 
 		}
 	}

@@ -1,7 +1,9 @@
 class Main {
 
 	function init(){
+		SpriteManager.enable();
 		Particle.enable();
+
 
 		Globals.LoadDat();
 	

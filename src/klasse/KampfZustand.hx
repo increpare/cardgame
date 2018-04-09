@@ -100,7 +100,8 @@ class KampfZustand
         var p:Placement = {
 							ruestung: ruesetungdyn,
 							x:mc.x,
-							y:mc.y
+							y:mc.y,
+                            sprite:null
 							};
 		inv.placed.push(p);
 
@@ -153,7 +154,8 @@ class KampfZustand
         var inv = spieler==0?inv1:inv2;
         for (i in 0...inv.placed.length) {
             var p = inv.placed[i];
-            if (dyn==p.ruestung){                
+            if (dyn==p.ruestung){    
+                p.sprite.destroy();            
                 inv.placed.splice(i,1);
                 inv.haufen.push(dyn);
                 break;
@@ -163,7 +165,7 @@ class KampfZustand
         for (i in 0...faehigkeiten.length) {
             var f = faehigkeiten[i];
             if (f.dyn == dyn){
-                inv.placed.splice(i,1);
+                faehigkeiten.splice(i,1);
             }
         }
 

@@ -126,7 +126,7 @@ class Particle {
 
         }
 
-        Gfx.scale(0);
+        Gfx.scale(1);
         Gfx.rotation(0);     
     }
 }
