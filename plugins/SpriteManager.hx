@@ -7,6 +7,7 @@ class Sprite {
     public var angle:Float;
     public var scale:Float;
     public var visible:Bool;
+    public var alpha:Float;
 
     public var pivotx:Float;
     public var pivoty:Float;
@@ -21,6 +22,7 @@ class Sprite {
         this.y=y;
         this.angle=0;
         this.scale=1;
+        this.alpha=1;
         this.visible=true;
         this.pivotx = Gfx.imagewidth(name)/2;
         this.pivoty = Gfx.imageheight(name)/2;
@@ -56,11 +58,13 @@ class SpriteManager {
 
     public static function render(){
         for (s in sprites){
+            Gfx.imagealpha=s.alpha;
             Gfx.rotation(s.angle,s.pivotx,s.pivoty);
             Gfx.scale(s.scale);
             Gfx.drawimage(s.x,s.y,s.name);            
         }
         Gfx.rotation(0);
         Gfx.scale(1);
+        Gfx.imagealpha=1;
     }
 }

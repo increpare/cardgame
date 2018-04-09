@@ -253,7 +253,7 @@ class Oberwelt {
 					if (Mouse.leftclick()){
 						state.tx=mc.x;
 						state.ty=mc.y;
-						Scene.change(Schlacht);
+						Scene.change(OberweltUebergang);
 					}
 				}
 			}

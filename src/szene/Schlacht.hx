@@ -36,11 +36,26 @@ class Schlacht {
 			my < by+bh; 
 	}
 
+	var iconScale:Float;
 	function init(){		
 		ort = Orte[state.ort];
 		owd=state.owd;
 		Text.font = GUI.font;
-		
+
+		var introblend = SpriteManager.AddSprite("sshot",0,0);
+	
+		Actuate.tween(
+			introblend,
+			0.3,
+				{alpha:0});
+
+		Core.delaycall(
+			function() {
+				introblend.destroy();						
+			},
+			0.3
+		);
+
 		spielerklasse = KreaturenDictionary[KreaturenSpielbar[state.auserwaehlte]];
 		spielerklassedynamisch = state.dyn;	
 
@@ -710,6 +725,7 @@ class Schlacht {
 			
 			var bounds = getBoxBounds(x,y,w,h);
 
+			Gfx.linethickness=GUI.linethickness;
 			Gfx.drawbox(bounds[0],bounds[1],bounds[2],bounds[3],PAL.fg);
 			x+=GUI.linethickness*2;
 			y+=GUI.linethickness*2;

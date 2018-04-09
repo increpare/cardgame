@@ -1,6 +1,7 @@
 class Main {
 
 	function init(){
+		Gfx.createimage("sshot",Gfx.screenwidth,Gfx.screenheight);
 		SpriteManager.enable();
 		Traenen.enable();
 		Particle.enable();
