@@ -149,7 +149,7 @@ class KampfZustand
         
       //  var a =  faehigkeit.Schaeden;
       //  var a = new faehigkeit.Schaeden(9,null,null,0);
-
+        trace(class_type,classname);
         var class_instance:Faehigkeit = Type.createInstance(class_type,args);
         faehigkeiten.push(class_instance);  
 

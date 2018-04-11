@@ -1,6 +1,6 @@
 package faehigkeit;
 
-class Heilen extends Faehigkeit {
+class Heil extends Faehigkeit {
     public var heilungmenge:Int;
 
     public function new(spieler:Int,dyn:RuestungDynamisch,zustand:KampfZustand,heilungmenge:Int){

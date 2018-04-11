@@ -53,7 +53,7 @@ class Schlacht {
 			function() {
 				introblend.destroy();						
 			},
-			0.3
+			0.4
 		);
 
 		spielerklasse = KreaturenDictionary[KreaturenSpielbar[state.auserwaehlte]];

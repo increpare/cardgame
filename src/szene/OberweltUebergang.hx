@@ -353,7 +353,7 @@ function zeichnInventar(x:Float, y:Float, w:Float, h:Float,dyn:KlasseDynamisch){
 		var tx = ox+w/2-tw/2;
 		var ty = oy+r-th;
 
-		Text.display(tx,ty,s,PAL.fg);
+		//Text.display(tx,ty,s,PAL.fg);
 
 		oy+=r;
 		h-=r;

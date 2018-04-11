@@ -36,6 +36,7 @@ class Main {
 		Text.display(Text.CENTER,h/5,S("Ruestung","Ruestung"), PAL.titelFarbe);
 
 		if (IMGUI.button( Text.CENTER,Math.round(h/2+80),S("Zu einer Reise aufbrechen","Set off on an Adventure"))){
+			Gfx.grabimagefromscreen("sshot",0,0);
 			Scene.change(szene.CharakterAuswahl);
 		}
 
