@@ -10,11 +10,11 @@ class KlasseDynamisch
 
     public var platz:Array<Array<Bool>>;
 
-    public var sichbareSlot:Int;
+    public var spielbarerSlot:Int;
 
     public function new(klasse:Kreatur,ruestung:Array<String>){
         this.klasse=klasse;
-        this.sichbareSlot=klasse.sichtbareslot;
+        this.spielbarerSlot=klasse.sichtbareslot;
         this.gesundheit=klasse.gesundheit;
         this.maxGesundheit=klasse.gesundheit;
         this.ruestung=ruestung;

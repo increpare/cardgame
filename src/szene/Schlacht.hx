@@ -145,13 +145,13 @@ class Schlacht {
 			if (invindex<inv.schlange.length){
 
 				var bild = "sprites/fragezeichen";
-				if (invindex<klasseDynamisch.sichbareSlot){
+				if (invindex<klasseDynamisch.spielbarerSlot){
 					var ruestungDyn = inv.schlange[invindex];
 					var ruestungName = ruestungDyn.ruestung.name;
 					
 					bild = RuestungenDictionary[ruestungName].bild[ruestungDyn.rotation];
 
-					if (zustand.zug == inv.spieler)
+					if (zustand.zug == inv.spieler && zustand.zug==0)
 					{
 
 						if (zustand.ausgewaehltesabteil == invindex) {
@@ -407,8 +407,10 @@ class Schlacht {
 
 				var cell = getGridCoord(p.x,p.y,x,y,w,h);
 
+
 				var scale = ruestung.w[rot]*cell.size/width;
 				var spritename = ruestung.bild[p.ruestung.rotation];
+				trace("placing sprite", spritename,cell.x,cell.y,scale);
 				var s = SpriteManager.AddSprite(spritename,cell.x,cell.y);
 				Actuate.tween(s,0.05,{angle:-5});
 				Actuate.tween(s,0.10,{angle:5},false).delay(0.05);
@@ -487,11 +489,6 @@ class Schlacht {
 		if (dyn.platz[i][j]==false){
 			return false;
 		}		
-		var r_dyn = inv.schlange[zustand.ausgewaehltesabteil];
-		var ruestung = r_dyn.ruestung;
-		var rot = r_dyn.rotation;
-		var r_w = ruestung.w[rot];
-		var r_h = ruestung.h[rot];
 		
 		for (r_index in 0...inv.placed.length){
 			var r = inv.placed[r_index];	
@@ -555,7 +552,19 @@ class Schlacht {
 		return result;
 	}
 
-	function canPlace(r:Ruestung,i:Int,j:Int,rot:Int,inv:Inventar):Bool{
+	function canPlace(ruestung:Ruestung,pi:Int,pj:Int,rot:Int,inv:Inventar):Bool{
+		//first, item should be centered on cursor if possible
+		Gfx.linethickness = GUI.slimlinethickness;
+		for (i in 0...ruestung.w[rot]){
+			for (j in 0...ruestung.h[rot]){
+				if (ruestung.form[rot][i][j]==1){
+					if (zustand.dyn1.platz[pi+i][pj+j] && platzFrei(pi+i,pj+j,inv.dyn,inv)){
+					} else {				
+						return false;
+					}
+				}
+			}
+		}
 		return true;
 	}
 	
@@ -600,14 +609,15 @@ class Schlacht {
 		);			
 
 	}
-
+	var haufenAnimTime:Float=0.3;
 	function haufenUebergangAnimation(
 		haufen_x:Float,
 		haufen_y:Float,
 		haufen_w:Float,
 		haufen_h:Float,
 		haufen:Array<HaufenPlacement>,
-		zuHaufen:Array<HaufenPlacement>){
+		zuHaufen:Array<HaufenPlacement> )
+	{
 		if (zuHaufen.length==0){
 			return;
 		}
@@ -638,7 +648,7 @@ class Schlacht {
 			var tx = haufen_x + haufen_w/2 - ts*iw/2;
 			var ty = haufen_y + i*haufen_h/haufen.length + zelle_h/2 - ts*ih/2;
 			
-			Actuate.tween(hp.sprite,0.3,{
+			Actuate.tween(hp.sprite,haufenAnimTime,{
 				x:tx,
 				y:ty,
 				scale:ts});
@@ -650,7 +660,87 @@ class Schlacht {
 		//2 twee everything
 	}
 
+	var aiPeriode=1;
+
+	function AILoop(){
+		if (zustand.zug==0){
+			return;
+		}	
+
+		if (zustand.aitrigger==true){
+			Core.delaycall(EntscheidungTicken,aiPeriode);
+			zustand.aitrigger=false;
+		}
+	}
+
+	function rechnPlatzierungenAus(dyn:RuestungDynamisch,inv:Inventar,schlangeIndex:Int,ergebnis:Array<Dynamic>){
+		var ruestung = dyn.ruestung;
+		var rot = dyn.rotation;
+		var space : Array<Array<Bool>> = inv.dyn.platz;
+		var form : Array<Array<Int>> = dyn.ruestung.form[dyn.rotation];		
+		var imax = CONST.invW-form.length;
+		var jmax = CONST.invH-form[0].length;
+
+		for (i in 0...imax) {
+			for (j in 0...jmax){
+				if (canPlace(ruestung,i,j,rot,inv)){
+					var p = {
+						x:i,
+						y:j,
+						index:schlangeIndex
+					};
+					ergebnis.push(p);
+				}
+			}
+		}
+	}
+
+	//Ergebnis = true wenn es etwas gemacht hat
+	function Unternehmenversuch():Bool{
+		var dyn = zustand.dyn2;
+		var inv = zustand.inv2;
+		var schlange = inv.schlange;
+		var s_max_i = dyn.spielbarerSlot<schlange.length?dyn.spielbarerSlot:schlange.length;
+		if (s_max_i==0){
+			return false;
+		}
+		var platzierungen : Array<Dynamic> = new Array<Dynamic>();
+		for (i in 0...s_max_i){
+			var dyn = schlange[i];
+			rechnPlatzierungenAus(dyn,inv,i,platzierungen);			
+		}
+
+		if (platzierungen.length==0){
+			return false;
+		}
+
+		var p = Random.pick(platzierungen);
+		zustand.ausgewaehltesabteil = p.index;
+		zustand.placePiece(p);
+		return true;
+	}
+
+	function EntscheidungTicken(){
+		var gibtsMehr=Unternehmenversuch();
+
+		if (gibtsMehr){
+			Core.delaycall(EntscheidungTicken,aiPeriode);
+		} else{
+			AIEndZugDruecken();
+		}
+	}
+	
+	function AIEndZugDruecken(){
+		zustand.endZug();
+		zustand.aitrigger=true;
+	}
+	
 	function update() {	
+
+		AILoop();
+
+		var einflussbar : Bool = zustand.zug == 0;
+
 		Gfx.clearscreen(PAL.bg);
 
 		var my = Gfx.screenheightmid;
@@ -662,99 +752,9 @@ class Schlacht {
 		Gfx.drawline(0,my,sw,my,PAL.fg);
 
 	
-		var infopanelwidth:Float;
-		var schlangewidth:Float;
+		var infopanelwidth:Int = drawDetailsPanel(10,my+10,spielerklasse,spielerklassedynamisch,zustand.schadenp1,portraitscale1,extraschaden1,zustand.wein1);
+		var schlangewidth:Int = 100;
 
-		//you at front
-		{
-
-			if (zustand.schadenp1>=0){				
-				extraschaden1=zustand.schadenp1-zustand.dyn1.gesundheit;
-				Actuate.tween(this,0.1,{extraschaden1:0});
-				Actuate.tween(this,0.1,{portraitscale1:1.05});
-				Actuate.tween(this,0.1,{portraitscale1:1},false).delay(0.1);
-			}
-
-			var width = drawDetailsPanel(10,my+10,spielerklasse,spielerklassedynamisch,zustand.schadenp1,portraitscale1,extraschaden1,zustand.wein1);			
-			zustand.wein1=false;
-			zustand.schadenp1=-1;
-			infopanelwidth=width;
-
-
-			var border = 20;
-			var x = 10+width+border;
-			var y = my+border;
-			var w = Gfx.screenwidth - x - border;
-			var h = Gfx.screenheight - y - border;
-
-			var schlangewidth=100;
-			zeichnSchlange(10 + width + 10,my+10,schlangewidth,h, spielerklasse,spielerklassedynamisch,zustand.inv1);
-
-			x+=schlangewidth+10;
-			w-=schlangewidth+10;
-
-			var buttonheight=30;				
-				
-			var haufen_x=sw-10-schlangewidth;
-			var haufen_y=my+10;
-			var haufen_w=schlangewidth;
-			var haufen_h=h-buttonheight;
-			zeichnHaufen(haufen_x,my+10,schlangewidth,h-buttonheight, spielerklasse,spielerklassedynamisch,zustand.inv1);
-
-			if (zustand.zuHaufen1.length>0){
-				haufenAnimation1=true;
-				haufenUebergangAnimation(haufen_x,haufen_y,haufen_w,haufen_h,zustand.inv1.haufen,zustand.zuHaufen1);
-				//zustand.inv1.haufen
-				//Actuate.
-			} 
-
-			var zugfertigAktiviert : Bool = zustand.zug == 0;
-			if (IMGUI.kleineSchaltflaeche(
-				sw-schlangewidth-10,
-				sh-buttonheight-10,
-				schlangewidth,
-				buttonheight,
-				S("Zug fertig","End Turn"),
-				!zugfertigAktiviert)){
-				zustand.endZug();
-			}
-
-			w-=schlangewidth+10;
-
-			var mc = gridCollision(Mouse.x,Mouse.y,x,y,w,h);
-			
-			var bounds = getBoxBounds(x,y,w,h);
-
-			Gfx.linethickness=GUI.linethickness;
-			Gfx.drawbox(bounds[0],bounds[1],bounds[2],bounds[3],PAL.fg);
-			x+=GUI.linethickness*2;
-			y+=GUI.linethickness*2;
-			w-=GUI.linethickness*4;
-			h-=GUI.linethickness*4;
-		
-			zeichnInventar(x,y,w,h,mc,spielerklassedynamisch,zustand.inv1);		
-
-			SpriteManager.render();
-			if (mc!=null && zustand.zug==0 && zustand.ausgewaehltesabteil>=0){
-				mc = beschraenkPosition(mc,zustand.inv1);
-				var cell = getGridCoord(mc.x,mc.y,x,y,w,h);
-				//Gfx.linethickness=GUI.linethickness;
-				//Gfx.drawbox(cell.x,cell.y,cell.size,cell.size,PAL.buttonBorderCol);
-				//Gfx.linethickness=GUI.linethickness;
-
-				if (zeichnMarkierung(mc,x,y,w,h)){
-					if (Mouse.leftclick()){
-						zustand.placePiece(mc);
-					}
-				} else {
-					if (Mouse.leftclick()){
-						Actuate.tween(this,0.01,{cursorrot:-5});
-						Actuate.tween(this,0.02,{cursorrot:5},false).delay(0.01);
-						Actuate.tween(this,0.01,{cursorrot:0},false).delay(0.03);
-					}
-				}
-			}
-		}
 
 		//enemy at top
 		{	
@@ -776,7 +776,6 @@ class Schlacht {
 			var h = my - y - border;
 
 
-			var schlangewidth=100;
 			zeichnSchlange(
 				Math.floor(sw-10-infopanelwidth-schlangewidth-10),
 				10,
@@ -789,15 +788,28 @@ class Schlacht {
 
 			w-=schlangewidth+10;
 
+			var haufen_x=10;
+			var haufen_y=10;
+			var haufen_w=schlangewidth;
+			var haufen_h=h;
 			zeichnHaufen(
-				10,
-				10,
-				schlangewidth,
-				h, 
+				haufen_x,
+				haufen_y,
+				haufen_w,
+				haufen_h, 
 				spielerklasse,
 				spielerklassedynamisch,
 				zustand.inv1
 				);
+
+
+			if (zustand.zuHaufen2.length>0){
+				haufenAnimation2=true;
+				haufenUebergangAnimation(haufen_x,haufen_y,haufen_w,haufen_h,zustand.inv2.haufen,zustand.zuHaufen2);
+				//zustand.inv1.haufen
+				//Actuate.
+			} 
+
 			x+=schlangewidth+10;
 			w-=schlangewidth+10;
 
@@ -814,6 +826,97 @@ class Schlacht {
 			zeichnInventar(x,y,w,h,mc,gegnerklassedynamisch,zustand.inv2);		
 	
 		}
+
+		//you at front
+		{
+
+			if (zustand.schadenp1>=0){				
+				extraschaden1=zustand.schadenp1-zustand.dyn1.gesundheit;
+				Actuate.tween(this,0.1,{extraschaden1:0});
+				Actuate.tween(this,0.1,{portraitscale1:1.05});
+				Actuate.tween(this,0.1,{portraitscale1:1},false).delay(0.1);
+			}
+
+			var width = infopanelwidth;			
+			zustand.wein1=false;
+			zustand.schadenp1=-1;
+
+
+			var border = 20;
+			var x = 10+width+border;
+			var y = my+border;
+			var w = Gfx.screenwidth - x - border;
+			var h = Gfx.screenheight - y - border;
+
+			zeichnSchlange(10 + width + 10,my+10,schlangewidth,h, spielerklasse,spielerklassedynamisch,zustand.inv1);
+
+			x+=schlangewidth+10;
+			w-=schlangewidth+10;
+
+			var buttonheight=30;				
+				
+			var haufen_x=sw-10-schlangewidth;
+			var haufen_y=my+10;
+			var haufen_w=schlangewidth;
+			var haufen_h=h-buttonheight;
+			zeichnHaufen(haufen_x,haufen_y,haufen_w,haufen_h, spielerklasse,spielerklassedynamisch,zustand.inv1);
+
+			if (zustand.zuHaufen1.length>0){
+				haufenAnimation1=true;
+				haufenUebergangAnimation(haufen_x,haufen_y,haufen_w,haufen_h,zustand.inv1.haufen,zustand.zuHaufen1);
+				//zustand.inv1.haufen
+				//Actuate.
+			} 
+
+			if (IMGUI.kleineSchaltflaeche(
+				sw-schlangewidth-10,
+				sh-buttonheight-10,
+				schlangewidth,
+				buttonheight,
+				S("Zug fertig","End Turn"),
+				einflussbar==false)) {
+				zustand.endZug();
+			}
+
+			w-=schlangewidth+10;
+
+			var mc = gridCollision(Mouse.x,Mouse.y,x,y,w,h);
+			
+			var bounds = getBoxBounds(x,y,w,h);
+
+			Gfx.linethickness=GUI.linethickness;
+			Gfx.drawbox(bounds[0],bounds[1],bounds[2],bounds[3],PAL.fg);
+			x+=GUI.linethickness*2;
+			y+=GUI.linethickness*2;
+			w-=GUI.linethickness*4;
+			h-=GUI.linethickness*4;
+		
+			zeichnInventar(x,y,w,h,mc,spielerklassedynamisch,zustand.inv1);		
+
+			SpriteManager.render();
+
+			if (mc!=null && einflussbar && zustand.ausgewaehltesabteil>=0){
+				mc = beschraenkPosition(mc,zustand.inv1);
+				var cell = getGridCoord(mc.x,mc.y,x,y,w,h);
+				//Gfx.linethickness=GUI.linethickness;
+				//Gfx.drawbox(cell.x,cell.y,cell.size,cell.size,PAL.buttonBorderCol);
+				//Gfx.linethickness=GUI.linethickness;
+
+				if (zeichnMarkierung(mc,x,y,w,h)){
+					if (Mouse.leftclick()){
+						zustand.placePiece(mc);
+					}
+				} else {
+					if (Mouse.leftclick()){
+						Actuate.tween(this,0.01,{cursorrot:-5});
+						Actuate.tween(this,0.02,{cursorrot:5},false).delay(0.01);
+						Actuate.tween(this,0.01,{cursorrot:0},false).delay(0.03);
+					}
+				}
+			}
+		}
+
+
 
 	}
 }

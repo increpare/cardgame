@@ -26,6 +26,7 @@ class Main {
 	}	
 
 	function update() {	
+
 		// Draw a white background
 		Gfx.clearscreen(PAL.bg);
 		var h = Gfx.screenheight;

@@ -31,6 +31,8 @@ class KampfZustand
     public var wein1:Bool=false;
     public var wein2:Bool=false;
 
+    public var aitrigger:Bool=true;
+
     public function new(klasse1:Kreatur,klasse2:Kreatur,dyn1:KlasseDynamisch,dyn2:KlasseDynamisch){
         
         this.klasse1=klasse1;
@@ -120,8 +122,11 @@ class KampfZustand
         beginnZug();
     }
 
-    public function placePiece(mc:Dynamic){
+    public function placePiece(mc:Dynamic){       
 		var inv:Inventar = zug==0?inv1:inv2;
+        trace("HMM " + (inv1==inv2));
+        trace("HMM " + (inv1.dyn.platz==inv2.dyn.platz));
+        
 		var ruestungIndex = ausgewaehltesabteil;
 		var ruesetungdyn = inv.schlange[ruestungIndex];
 		inv.schlange.splice(ruestungIndex,1);
@@ -149,7 +154,6 @@ class KampfZustand
         
       //  var a =  faehigkeit.Schaeden;
       //  var a = new faehigkeit.Schaeden(9,null,null,0);
-        trace(class_type,classname);
         var class_instance:Faehigkeit = Type.createInstance(class_type,args);
         faehigkeiten.push(class_instance);  
 
@@ -172,7 +176,6 @@ class KampfZustand
 
     public function schaeden(spieler:Int,amount:Int) {
         for (f in faehigkeiten){
-            trace(Type.getClass(f));
             amount = f.vorSchaedenErleiden(spieler,amount);  
         }
 

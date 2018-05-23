@@ -36,7 +36,7 @@
 					"Bild": "e963e0eb70e3a434223f9239976baadd"
 				},
 				{
-					"Name": "baldy",
+					"Name": "d",
 					"Beschreibung_DE": "fasdf",
 					"Beschreibung_EN": "asdf",
 					"Spielbar": false,
@@ -50,11 +50,11 @@
 					"Bild": ""
 				},
 				{
-					"Name": "banangry",
+					"Name": "asdfasdf",
 					"Beschreibung_DE": "a",
 					"Beschreibung_EN": "asdf",
 					"Spielbar": false,
-					"Bild": ""
+					"Bild": "edbf22a8f6db008d43070c61323dd553"
 				},
 				{
 					"Name": "betti",
@@ -117,7 +117,7 @@
 							"123": "argpig"
 						},
 						{
-							"123": "baldy"
+							"123": "d"
 						}
 					]
 				},
@@ -127,10 +127,10 @@
 					"Beschreibung_DE": "s",
 					"Beschreibung_EN": "asd",
 					"Name": "hoehle",
-					"Boss": "baldy",
+					"Boss": "d",
 					"Kreaturen": [
 						{
-							"123": "banangry"
+							"123": "asdfasdf"
 						},
 						{
 							"123": "ban"
@@ -159,7 +159,7 @@
 					"Beschreibung_DE": "aasf",
 					"Beschreibung_EN": "asd",
 					"Name": "steppen",
-					"Boss": "banangry",
+					"Boss": "asdfasdf",
 					"Kreaturen": [
 						{
 							"123": "argpig"
@@ -168,7 +168,7 @@
 							"123": "ban"
 						},
 						{
-							"123": "banangry"
+							"123": "asdfasdf"
 						}
 					]
 				},
@@ -181,7 +181,7 @@
 					"Boss": "argpig",
 					"Kreaturen": [
 						{
-							"123": "baldy"
+							"123": "d"
 						}
 					]
 				}
