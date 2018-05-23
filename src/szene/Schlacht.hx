@@ -643,17 +643,32 @@ class Schlacht {
 
 		for (i in 0...haufen.length){
 			var hp = haufen[i];
-			var bild = hp.dyn.ruestung.bild[hp.dyn.rotation];
+			var dyn = hp.dyn;
+			var ruestung = dyn.ruestung;
+			var bild = ruestung.bild[dyn.rotation];
 			var iw = Gfx.imagewidth(bild);
 			var ih = Gfx.imageheight(bild);
 
-			var r_h = zelle_w/iw;
-			var r_w = zelle_h/ih;
+			var iw_eingeschraenkt:Float = iw;
+			var ih_eingeschraenkt:Float = ih;
+
+			var inv_zelle_w:Float = ruestung.w[dyn.rotation];
+			var inv_zelle_h:Float = ruestung.h[dyn.rotation];
+			if (inv_zelle_w<3){
+				iw_eingeschraenkt*=3.0/inv_zelle_w;
+			}
+			if (inv_zelle_h<3){
+				ih_eingeschraenkt*=3.0/inv_zelle_h;
+			}
+
+			var r_h = zelle_w/ih_eingeschraenkt;
+			var r_w = zelle_h/iw_eingeschraenkt;
 
 			var ts=r_w;
 			if (r_h<r_w){
 				ts=r_h;
 			} 
+
 
 			var tx = haufen_x + haufen_w/2 - ts*iw/2;
 			var ty = haufen_y + i*haufen_h/haufen.length + zelle_h/2 - ts*ih/2;
