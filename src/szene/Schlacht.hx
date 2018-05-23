@@ -2,7 +2,7 @@ package szene;
 import motion.*;
 
 class Schlacht {
-
+	
 	var owd:OberweltData;
 	var ort:Ort;
 	var spielerklasse:Kreatur;
@@ -145,12 +145,22 @@ class Schlacht {
 			if (invindex<inv.schlange.length){
 
 				var bild = "sprites/fragezeichen";
+				var dmodifier:Float = 1;
+
 				if (invindex<klasseDynamisch.spielbarerSlot){
 					var ruestungDyn = inv.schlange[invindex];
 					var ruestungName = ruestungDyn.ruestung.name;
-					
-					bild = RuestungenDictionary[ruestungName].bild[ruestungDyn.rotation];
+					var ruestung = RuestungenDictionary[ruestungName];
+										
+					bild = ruestung.bild[ruestungDyn.rotation];
 
+					var w = ruestung.w[ruestungDyn.rotation];
+					var h = ruestung.h[ruestungDyn.rotation];
+					var d = Math.max(w,h);
+					if (d<3){
+						dmodifier = d/3;
+					}
+					
 					if (zustand.zug == inv.spieler && zustand.zug==0)
 					{
 
@@ -184,10 +194,10 @@ class Schlacht {
 				}
 
 				var iw:Float = Gfx.imagewidth(bild);
-				var ih:Float = Gfx.imageheight(bild);
-				var innerdiameter = Math.max(iw,ih);
+				var ih:Float = Gfx.imageheight(bild);				
+				var innerdiameter = Math.max(iw,ih);				
 				var outerdiameter = Math.min(bwidth,bheight);
-				var scale = outerdiameter/innerdiameter;
+				var scale = (outerdiameter/innerdiameter)*dmodifier;
 
 				scale*=0.7;
 				iw*=scale;
