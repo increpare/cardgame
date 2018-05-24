@@ -76,7 +76,9 @@ class KampfZustand
         Random.shuffle(inv.haufen);
         for (item in inv.haufen){
             inv.schlange.push(item.dyn);
-        }
+            item.sprite.destroy();
+            //TODO:EINRAEUMEN ANIMATION
+        }        
         inv.haufen.splice(0,inv.haufen.length);
     }
     
@@ -124,8 +126,6 @@ class KampfZustand
 
     public function placePiece(mc:Dynamic){       
 		var inv:Inventar = zug==0?inv1:inv2;
-        trace("HMM " + (inv1==inv2));
-        trace("HMM " + (inv1.dyn.platz==inv2.dyn.platz));
         
 		var ruestungIndex = ausgewaehltesabteil;
 		var ruesetungdyn = inv.schlange[ruestungIndex];

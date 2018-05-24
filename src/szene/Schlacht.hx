@@ -420,7 +420,6 @@ class Schlacht {
 
 				var scale = ruestung.w[rot]*cell.size/width;
 				var spritename = ruestung.bild[p.ruestung.rotation];
-				trace("placing sprite", spritename,cell.x,cell.y,scale);
 				var s = SpriteManager.AddSprite(spritename,cell.x,cell.y);
 				Actuate.tween(s,0.05,{angle:-5});
 				Actuate.tween(s,0.10,{angle:5},false).delay(0.05);
@@ -503,6 +502,7 @@ class Schlacht {
 		for (r_index in 0...inv.placed.length){
 			var r = inv.placed[r_index];	
 			if (pointCollidesPlacement(i,j,r)){
+				trace(i+","+j+"kollidiert mit "+r.ruestung.ruestung.name+" bei "+r.x+","+r.y);
 				return false;
 			}					
 		}
@@ -543,7 +543,7 @@ class Schlacht {
 				if (ruestung.form[rot][i][j]==1){
 					var cx = cell.x+cell.size/2+i*cell.size;
 					var cy = cell.y+cell.size/2+j*cell.size;
-					if (zustand.dyn1.platz[mc.x+i][mc.y+j] && platzFrei(mc.x+i,mc.y+j,zustand.dyn1,zustand.inv1)){
+					if (platzFrei(mc.x+i,mc.y+j,zustand.dyn1,zustand.inv1)){
 						//Gfx.drawcircle(cx,cy,cell.size/3,PAL.giltFarb);
 					} else {
 						Gfx.linethickness = GUI.linethickness;
@@ -568,10 +568,12 @@ class Schlacht {
 		for (i in 0...ruestung.w[rot]){
 			for (j in 0...ruestung.h[rot]){
 				if (ruestung.form[rot][i][j]==1){
-					if (zustand.dyn1.platz[pi+i][pj+j] && platzFrei(pi+i,pj+j,inv.dyn,inv)){
-					} else {				
+					if (platzFrei(pi+i,pj+j,inv.dyn,inv)){
+
+					} else {		
 						return false;
 					}
+
 				}
 			}
 		}
@@ -703,8 +705,8 @@ class Schlacht {
 		var rot = dyn.rotation;
 		var space : Array<Array<Bool>> = inv.dyn.platz;
 		var form : Array<Array<Int>> = dyn.ruestung.form[dyn.rotation];		
-		var imax = CONST.invW-form.length;
-		var jmax = CONST.invH-form[0].length;
+		var imax = CONST.invW;
+		var jmax = CONST.invH;
 
 		for (i in 0...imax) {
 			for (j in 0...jmax){
@@ -717,11 +719,13 @@ class Schlacht {
 					ergebnis.push(p);
 				}
 			}
-		}
+		}		
+		trace("habe "+ergebnis.length +" Platzmöglichkeiten für " + dyn.ruestung.name+" gefunden.");
 	}
 
 	//Ergebnis = true wenn es etwas gemacht hat
 	function Unternehmenversuch():Bool{
+		trace("Unternehmenversuch");
 		var dyn = zustand.dyn2;
 		var inv = zustand.inv2;
 		var schlange = inv.schlange;
@@ -898,7 +902,7 @@ class Schlacht {
 				sh-buttonheight-10,
 				schlangewidth,
 				buttonheight,
-				S("Zug fertig","End Turn"),
+				S("Zug beenden","End Turn"),
 				einflussbar==false)) {
 				zustand.endZug();
 			}

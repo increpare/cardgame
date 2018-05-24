@@ -144,7 +144,7 @@ class Globals
                 var stufe:Int = Std.parseInt(dat[stufe_index][i]);            
                 var en = e.charAt(0).toUpperCase()+e.substring(1);
                 var beschreibung = new StringPair(dat[beschreibung_de_index][i],dat[beschreibung_en_index][i]);
-                var gesundheit:Int = Std.parseInt(dat[gesundheitplatz_index][i]);            
+                var gesundheit:Int = 5*Std.parseInt(dat[gesundheitplatz_index][i]);            
                 var sichtbareslot:Int = Std.parseInt(dat[sichtbareslot_index][i]);            
                 var ruestung:Array<String> = new Array<String>();
 

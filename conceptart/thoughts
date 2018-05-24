@@ -1,0 +1,29 @@
+while(true){
+    var input : TurnInput = GetTurnInput()
+
+    switch(input){
+        case DoPlayItem(i,x,y):  (have checked before if CanPlayItem)
+            PlayItem(i,x,y);
+        case TurnOver:
+            break;        
+    }
+}
+
+//should be able to tell something to update coords, or set a flag
+
+GAME SHOULD NOT EDIT 
+
+//attack cycle
+
+DoPlayItem(card c){
+    change target coords to 1
+    if (c.effectOnPlay){
+        DoEffect();
+    }
+}
+
+DoDamage:DoEffect(){
+    subtract health;
+    doAnim(hurtWiggle)//could take 0.1 seconds or whatever
+}
+
