@@ -2,8 +2,12 @@ package szene;
 
 class CharakterAuswahl {
 
+	function reset(){
+		init();
+	}
+	
 	function init(){
-		Text.font = GUI.font;
+
 	}	
 
 	function update() {	

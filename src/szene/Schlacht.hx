@@ -22,6 +22,8 @@ class Schlacht {
 	var haufenAnimation1:Bool=false;
 	var haufenAnimation2:Bool=false;
 
+	private var transitioning:Bool=false;
+
 	function cutscene():Bool{
 		return haufenAnimation1||haufenAnimation2;
 	}
@@ -37,10 +39,15 @@ class Schlacht {
 	}
 
 	var iconScale:Float;
-	function init(){		
+
+	function reset(){
+		init();
+	}
+	
+	function init(){	
+		transitioning=false;	
 		ort = Orte[state.ort];
 		owd=state.owd;
-		Text.font = GUI.font;
 
 		var introblend = SpriteManager.AddSprite("sshot",0,0);
 	
@@ -720,9 +727,24 @@ class Schlacht {
 				}
 			}
 		}		
-		trace("habe "+ergebnis.length +" Platzmöglichkeiten für " + dyn.ruestung.name+" gefunden.");
 	}
 
+	function endkontroll(){
+		if(transitioning){
+			return;
+		}
+		if (zustand.dyn1.gesundheit<=0){
+			transitioning=true;		
+			Gfx.grabimagefromscreen("sshot",0,0);
+			Scene.change(szene.Tot);
+			SpriteManager.clear();
+		} else if (zustand.dyn2.gesundheit<=0) {
+			transitioning=true;		
+			Gfx.grabimagefromscreen("sshot",0,0);
+			Scene.change(szene.Sieg);
+			SpriteManager.clear();
+		}
+	}
 	//Ergebnis = true wenn es etwas gemacht hat
 	function Unternehmenversuch():Bool{
 		trace("Unternehmenversuch");
@@ -757,6 +779,7 @@ class Schlacht {
 		} else{
 			AIEndZugDruecken();
 		}
+		endkontroll();
 	}
 	
 	function AIEndZugDruecken(){
@@ -934,6 +957,7 @@ class Schlacht {
 				if (zeichnMarkierung(mc,x,y,w,h)){
 					if (Mouse.leftclick()){
 						zustand.placePiece(mc);
+						endkontroll();
 					}
 				} else {
 					if (Mouse.leftclick()){

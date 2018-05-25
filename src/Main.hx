@@ -1,16 +1,18 @@
 class Main {
 
+	function reset(){
+		//nichts zu machen?
+	}
+	
 	function init(){
 		Gfx.createimage("sshot",Gfx.screenwidth,Gfx.screenheight);
 		SpriteManager.enable();
 		Traenen.enable();
 		Particle.enable();
 
-
 		Globals.LoadDat();
 	
 		CompileTime.importPackage("faehigkeit");
-
 
 		//Truetype fonts look a LOT better when we don't scale the canvas!
 		Text.font = GUI.font;
@@ -20,9 +22,7 @@ class Main {
 		state.sprache = Save.loadvalue("language");
 		if (state.sprache==0){
 			state.sprache=0;//ok does't do much			
-		}
-
-		
+		}	
 	}	
 
 	function update() {	

@@ -8,10 +8,13 @@ class Oberwelt {
 	var spielerklasse:Kreatur;
 	var spielerklassedynamisch:KlasseDynamisch;
 
+	function reset(){
+		init();
+	}
+
 	function init(){		
 		ort = Orte[state.ort];
 		owd=state.owd;
-		Text.font = GUI.font;
 		spielerklasse = KreaturenDictionary[KreaturenSpielbar[state.auserwaehlte]];
 		spielerklassedynamisch = state.dyn;
 	}	

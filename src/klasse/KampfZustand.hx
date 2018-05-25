@@ -94,10 +94,16 @@ class KampfZustand
         for (r in gestellteRuestung){
             wegwerf(zug,r);
         }
+
+
+
+		var inv:Inventar = zug==0?inv1:inv2;
+        if (inv.schlange.length==0 && inv.haufen.length>0){
+            mischenHaufenInSchlange();            
+        }        
     }
 
     public function beginnZug(){
-        
         for (f in faehigkeiten){
             trace(Type.getClass(f));
             f.zugbeginn(zug);  
@@ -148,8 +154,9 @@ class KampfZustand
         }
         var class_type = Type.resolveClass(classname);
 
+        trace(inv.schlange.length+","+inv.haufen.length);
         if (inv.schlange.length==0 && inv.haufen.length>0){
-            mischenHaufenInSchlange();
+            mischenHaufenInSchlange();            
         }
         
       //  var a =  faehigkeit.Schaeden;

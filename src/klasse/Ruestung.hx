@@ -2,17 +2,17 @@ package klasse;
 
 class Ruestung
 {
-    public var name:String;
-    public var druckname:StringPair;
-    public var beschreibung:StringPair;
+    public var name(default, null):String;
+    public var druckname(default, null):StringPair;
+    public var beschreibung(default, null):StringPair;
 
-    public var bild:Array<String>;
-    public var form:Array<Array<Array<Int>>>;
+    public var bild(default, null):Array<String>;
+    public var form(default, null):Array<Array<Array<Int>>>;
 
-    public var skript:String;
-    public var bleibend:Bool;
-    public var w:Array<Int>;
-    public var h:Array<Int>;
+    public var skript(default, null):String;
+    public var bleibend(default, null):Bool;
+    public var w(default, null):Array<Int>;
+    public var h(default, null):Array<Int>;
     
     public function copy():Ruestung{
         var r = new Ruestung(name,bild[0],druckname,beschreibung,"",skript,bleibend);

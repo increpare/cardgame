@@ -2,19 +2,19 @@ package klasse;
 
 class Kreatur
 {
-    public var name:String;
-    public var augen:Array<IntPair>;
-    public var ort:String;
-    public var druckname:StringPair;
-    public var bild:String;
-    public var spielbar:Bool;
-    public var stufe:Int;
-    public var lagerplatz:String;
-    public var beschreibung:StringPair;
-    public var gesundheit:Int;
-    public var sichtbareslot:Int;
-    public var ruestung:Array<String>;
-    
+    public var name(default, null):String;
+    public var augen(default, null):Array<IntPair>;
+    public var ort(default, null):String;
+    public var druckname(default, null):StringPair;
+    public var bild(default, null):String;
+    public var spielbar(default, null):Bool;
+    public var stufe(default, null):Int;
+    public var lagerplatz(default, null):String;
+    public var beschreibung(default, null):StringPair;
+    public var gesundheit(default, null):Int;
+    public var sichtbareslot(default, null):Int;
+    public var ruestung(default, null):Array<String>;
+
     public function new(
         _name:String,
         _augen:Array<IntPair>,

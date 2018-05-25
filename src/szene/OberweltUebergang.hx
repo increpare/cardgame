@@ -3,7 +3,12 @@ package szene;
 
 class OberweltUebergang {
 
-	public var maxZeit:Float = 0.5;
+	public var maxZeit:Float;
+	var zeit:Float;
+	var spriteAlpha:Float;
+	public var pc:Float;
+	public static inline var c_border:Int=20;
+	public static inline var c_border_sm:Int=10;
 
 	var owd:OberweltData;
 	var ort:Ort;
@@ -13,14 +18,8 @@ class OberweltUebergang {
 	var gegnerklasse:Kreatur;
 	var gegnerklassedynamisch:KlasseDynamisch;
 
-	var zeit:Float=0;
-	var spriteAlpha=1.0;
-	
-
 
 	public var dp_w:Float;
-	public var c_border:Int=20;
-	public var c_border_sm:Int=10;
 	
 	public var map_x:Float;
 	public var map_y:Float;
@@ -44,7 +43,6 @@ class OberweltUebergang {
 	public var gegner_y:Float;
 	public var gegner_scale:Float;
 
-	public var pc:Float=0;
 
 
 	function drawDetailsPanel(ox:Float,oy:Float,klasse:Kreatur,klasseDynamisch:KlasseDynamisch,hidePortrait:Bool):Float{
@@ -379,11 +377,20 @@ function zeichnInventar(x:Float, y:Float, w:Float, h:Float,dyn:KlasseDynamisch){
 		Gfx.drawbox(ox,oy,w,h+Gfx.linethickness/2+2,PAL.fg);
 	}
 
-	function init(){		
+	function reset(){
+		init();
+	}
+
+	function init(){	
+
+		maxZeit=0.5;
+		zeit=0;
+		spriteAlpha=1.0;
+		pc=0;
+
 		ort = Orte[state.ort];
 		owd=state.owd;
 		zeit=0;
-		Text.font = GUI.font;
 
 		spielerklasse = KreaturenDictionary[KreaturenSpielbar[state.auserwaehlte]];
 		spielerklassedynamisch = state.dyn;		
